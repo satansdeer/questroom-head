@@ -3,10 +3,8 @@ class GameState:
     stages = []
     current_stage_id = 0
 
-    def __init__(self):
-        pass
-
     def current_stage(self):
+        if self.current_stage_id >= len(self.stages): return
         return self.stages[self.current_stage_id]
 
     def start_game_loop(self):
@@ -22,7 +20,6 @@ class GameState:
 
     def add_stage(self, stage):
         self.stages.append(stage)
-        pass
 
     def advance(self):
         self.current_stage_id += 1
