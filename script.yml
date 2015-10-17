@@ -1,0 +1,61 @@
+---
+repetitive_stages:
+  -
+    - requirements:
+        [FIRST_TUMBLER_ON]
+    - actions:
+        [TURN_FIRST_LED_GREEN]
+sequential_stages:
+  -
+    requirements:
+        [WIRE_CONNECTED]
+    actions:
+        [ENABLE_FUSE_PUZZLE]
+
+  -
+    requirements:
+        [FUZE_PUZZLE_SOLVED]
+    actions:
+        [ENABLE_RADIO]
+
+  -
+    requirements:
+        [CORRECT_SEQUENCE_ENTERED]
+    actions:
+        [OPEN_FIRST_BOX]
+
+  -
+    requirements:
+        [MECHANICS_CARD_USED]
+    actions:
+        [ENABLE_TUMBLER_PUZZLE]
+
+  -
+    requirements:
+        [TUMBLER_PUZZLE_SOLVED]
+    actions:
+        [OPEN_SECOND_BOX]
+
+  -
+    requirements:
+        [HIDDEN_TUMBLER_PUZZLE_SOLVED]
+    actions:
+        [OPEN_THIRD_BOX]
+
+  -
+    requirements:
+        [COMMUTATOR_PUZZLE_SOLVED]
+    actions:
+        [OPEN_FOURTH_BOX]
+
+  -
+    requirements:
+        [ROBOT_ASSEMBLED]
+    actions:
+        [ROBOT_SAY_RIDDLE]
+
+  -
+    requirements:
+        [ENGINE_ASSEMBLED]
+    actions:
+        [ACTIVATE_CAPTAIN_BRIDGE]

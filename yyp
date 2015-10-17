@@ -1,8 +1,10 @@
 class Stage:
 
+    requirements = []
+    actions = []
+
     def __init__(self):
         self.requirements = []
-        self.actions = []
 
     def all_requirements_satisfied(self):
         return all(requirement.satisfied() for requirement in self.requirements)
@@ -14,5 +16,6 @@ class Stage:
         self.actions.append(action)
 
     def perform_actions(self):
+        print("perform actions %", len(self.actions), self)
         map(lambda action: action.perform(), self.actions)
 
