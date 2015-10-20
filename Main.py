@@ -9,8 +9,9 @@ import time
 
 master = SpaceDeviceMaster()
 #
-#simSlave = master.addSlave("simSlave1", "/dev/tty.usbserial-A4033KK5", 1)
-simSlave = master.addSlave("simSlave1", "/dev/tty.usbserial-AL0079CW", 1)
+simSlave = master.addSlave("simSlave1", "/dev/tty.usbserial-A4033KK5", 1)
+#simSlave = master.addSlave("simSlave1", "/dev/tty.usbserial-AL0079CW", 1)
+#simSlave = master.addSlave("simSlave1", "/dev/tty.usbserial-AL0079CW", 1)
 #
 #master.sendConnectionCheck("simSlave1")
 #master.COM_READ_TIMEOUT = 0
@@ -20,13 +21,13 @@ simSlave = master.addSlave("simSlave1", "/dev/tty.usbserial-AL0079CW", 1)
 #    master.sendSetSmartLEDs(simSlave, [0x000, 0x030, 0x000] * 32)
 
 i = 0
-while True:
-    time.sleep(1)
-    i += 1
-    state = master.getButtons(simSlave)
-    print(i, state)
+#master.sendSetRelays(simSlave, [0,0,0,0])
+#master.sendSetRelays(simSlave, [1,1,1,1])
+
 
 game_state = parse("script.yml")
+game_state.device_master = master
+game_state.slave = simSlave
 game_state.start_game_loop()
 
 

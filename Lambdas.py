@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-WIRE_CONNECTED = lambda state: True
+WIRE_CONNECTED = lambda state: state[11] == 1
 ENABLE_FUSE_PUZZLE = lambda: print("Fuse puzzle enabled")
 
 FUZE_PUZZLE_SOLVED = lambda state: True
