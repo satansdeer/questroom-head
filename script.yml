@@ -1,9 +1,9 @@
 ---
 repetitive_stages:
   -
-    - requirements:
+    requirements:
         [FIRST_TUMBLER_ON]
-    - actions:
+    actions:
         [TURN_FIRST_LED_GREEN]
 sequential_stages:
   -

@@ -1,7 +1,13 @@
+# -*- coding: utf-8 -*-
 from __future__ import print_function
 
-WIRE_CONNECTED = lambda state: state[11] == 1
+# Повторяющиеся функции:
+FIRST_TUMBLER_ON = lambda state: True
+TURN_FIRST_LED_GREEN = lambda: print ("FIRST led green was turned")
+
+WIRE_CONNECTED = lambda state: True# state[11] == 1
 ENABLE_FUSE_PUZZLE = lambda: print("Fuse puzzle enabled")
+ENABLE_FUSE_PUZZLE2 = lambda: print("Fuse puzzle 2 enabled")
 
 FUZE_PUZZLE_SOLVED = lambda state: True
 ENABLE_RADIO = lambda: print("Radio enabled")

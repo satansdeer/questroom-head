@@ -11,7 +11,7 @@ logging.basicConfig(
     format=u'%(filename)s[LINE:%(lineno)d]# %(levelname)-8s%(message)s',
     level=logging.DEBUG)
 logPackage = logging.getLogger('package')
-#logging.disable(logging.DEBUG)
+logging.disable(logging.DEBUG)
 
 
 

@@ -9,7 +9,8 @@ import time
 
 master = SpaceDeviceMaster()
 #
-simSlave = master.addSlave("simSlave1", "/dev/tty.usbserial-A4033KK5", 1)
+# simSlave = master.addSlave("simSlave1", "/dev/tty.usbserial-A4033KK5", 1)
+simSlave = master.addSlave("simSlave1", "./ptyp1", 1)
 #simSlave = master.addSlave("simSlave1", "/dev/tty.usbserial-AL0079CW", 1)
 #simSlave = master.addSlave("simSlave1", "/dev/tty.usbserial-AL0079CW", 1)
 #
