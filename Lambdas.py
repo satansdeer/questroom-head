@@ -1,25 +1,148 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
+import time
+
+slavePuzzle="mainPuzzle"
 
 # Повторяющиеся функции:
-FIRST_TUMBLER_ON = lambda state: True
-TURN_FIRST_LED_GREEN = lambda: print ("FIRST led green was turned")
+def FIRST_TUMBLER_ON(master, state):
+    slavePuzzle = "mainPuzzle"
+    # master.sendGetStuckButtons(slavePuzzle)
+    print("Requarement: FIRS_TUMBLER_ON: ", master.getButtons(slavePuzzle))
+    if master.getButtons(slavePuzzle)[17] == 1:
+        print("Button 0 was pressed")
+        # raw_input("Press Enter to continue...")
+        return True
+    return False
 
-WIRE_CONNECTED = lambda state: True# state[11] == 1
-ENABLE_FUSE_PUZZLE = lambda: print("Fuse puzzle enabled")
-ENABLE_FUSE_PUZZLE2 = lambda: print("Fuse puzzle 2 enabled")
+# FIRST_TUMBLER_ON = FirstTumblerOn
 
-FUZE_PUZZLE_SOLVED = lambda state: True
-ENABLE_RADIO = lambda: print("Radio enabled")
+def TURN_FIRST_LED_GREEN(master, state):
+    slavePuzzle = "mainPuzzle"
+    leds = master.getSmartLEDs(slavePuzzle)
+    print ('"Smart Leds: ', leds)
+    leds[31*3 + 0] = 0x00
+    leds[31*3 + 1] = 0xfff
+    leds[31*3 + 2] = 0x00
+    master.sendSetSmartLEDs(slavePuzzle, leds)
+    print("Fist led was turn")
 
-CORRECT_SEQUENCE_ENTERED = lambda state: True
-OPEN_FIRST_BOX = lambda: print("First box opened")
+def NONE_REQUIREMENT(master, state):
+    return True
 
-MECHANICS_CARD_USED = lambda state: True
-ENABLE_TUMBLER_PUZZLE = lambda: print("Tumbler puzzle enabled")
+def GET_STUCK_BUTTONS(master, state):
+    master.sendGetButtons(slavePuzzle)
+    time.sleep(.2)
 
-TUMBLER_PUZZLE_SOLVED = lambda state: True
-OPEN_SECOND_BOX = lambda: print("Second box opened")
+##############################################
+
+
+def WIRE_CONNECTED(master, state):
+    master.sendGetStuckButtons(slavePuzzle)
+    if master.getButtons(slavePuzzle)[11]:
+        return True
+    return False
+
+def ENABLE_FUSE_PUZZLE(master, state):
+    leds = master.getSmartLEDs(slavePuzzle)
+    ledID = 23
+    leds[ledID*3 + 0] = 0x00
+    leds[ledID*3 + 1] = 0xfff
+    leds[ledID*3 + 2] = 0x00
+    master.sendSetSmartLEDs(slavePuzzle, leds)
+
+def FUZE_PUZZLE_SOLVED(master, state):
+    if master.getButtons(slavePuzzle)[6] == 1:
+        return True
+    return False
+
+def ENABLE_RADIO(master, slave):
+    print("Do enable radio")
+    leds = master.getSmartLEDs(slavePuzzle)
+    ledID = 8
+    leds[ledID*3 + 0] = 0xfff
+    leds[ledID*3 + 1] = 0x000
+    leds[ledID*3 + 2] = 0x000
+    master.sendSetSmartLEDs(slavePuzzle, leds)
+
+def CORRECT_SEQUENCE_ENTERED(master, state):
+    lockID = 1
+    master.sendGetADC(slavePuzzle)
+    adcArray = master.getADC(slavePuzzle)
+
+    if adcArray[lockID] > 240 and adcArray[lockID] <= 255:
+        return True
+    return False
+
+
+def OPEN_FIRST_BOX(master, slave):
+    print("First box was open!")
+    leds = master.getSmartLEDs(slavePuzzle)
+    ledID = 8
+    leds[ledID*3 + 0] = 0x0
+    leds[ledID*3 + 1] = 0x0
+    leds[ledID*3 + 2] = 0xfff
+    master.sendSetRelays(slavePuzzle, [1, 1, 1, 1])
+    master.sendSetSmartLEDs(slavePuzzle, leds)
+
+def MECHANICS_CARD_USED(master, state):
+    if master.getButtons(slavePuzzle)[10] == 1:
+        return True
+    return False
+
+def ENABLE_TUMBLER_PUZZLE(master, state):
+    leds = master.getSmartLEDs(slavePuzzle)
+    ledIdStartPosition = 31
+    for index in range(6):
+        ledID = ledIdStartPosition - index
+        leds[ledID*3 + 0] = 0xfff
+        leds[ledID*3 + 1] = 0x0
+        leds[ledID*3 + 2] = 0x0
+    # master.sendSetRelays(slavePuzzle, [1, 1, 1, 1])
+    master.sendSetSmartLEDs(slavePuzzle, leds)
+
+
+    # return True
+
+def TUMBLER_PUZZLE_SOLVED(master, state):
+    leds = master.getSmartLEDs(slavePuzzle)
+    ledIdStartPosition = 31
+    buttonStartPosition = 17
+    buttons = master.getButtons(slavePuzzle)
+    if True:
+        master.sendGetStuckButtons(slavePuzzle)
+        for index in range(6):
+            buttonIndex = buttonStartPosition - index
+            ledID = ledIdStartPosition - index
+            if buttons[buttonIndex]:
+                leds[ledID*3 + 0] = 0x0
+                leds[ledID*3 + 1] = 0x0
+                leds[ledID*3 + 2] = 0xfff
+            else:
+                leds[ledID*3 + 0] = 0xfff
+                leds[ledID*3 + 1] = 0x0
+                leds[ledID*3 + 2] = 0x0
+        master.sendSetSmartLEDs(slavePuzzle, leds)
+    print("Leds in TumblerPuzzle: \n", leds)
+    print("Buttons: ", buttons[12:18])
+    if buttons[12:18] == [1]*6:
+        return True
+    return False
+
+
+
+
+def OPEN_SECOND_BOX(master, state):
+    print("Second box was open!")
+    leds = master.getSmartLEDs(slavePuzzle)
+    ledID = 9
+    leds[ledID*3 + 0] = 0x0
+    leds[ledID*3 + 1] = 0x0
+    leds[ledID*3 + 2] = 0xfff
+    master.sendSetRelays(slavePuzzle, [1, 1, 1, 1])
+    master.sendSetSmartLEDs(slavePuzzle, leds)
+
 
 HIDDEN_TUMBLER_PUZZLE_SOLVED = lambda state: True
 OPEN_THIRD_BOX = lambda: print("Third box opened")

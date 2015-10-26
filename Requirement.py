@@ -4,5 +4,5 @@ class Requirement:
         self.state = state
         self.validation_function = func
 
-    def satisfied(self):
-        return self.validation_function(self.state)
+    def satisfied(self, master, state):
+        return self.validation_function(master, state)

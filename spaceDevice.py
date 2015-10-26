@@ -31,10 +31,10 @@ class SpaceDevice:
         default = 100
 
         connectionCheck = startCommandCRCBytes + numPackageBytes * 7
-        setSimpleLEDs = startCommandCRCBytes + numPackageBytes * 1
-        setSmartLEDs = startCommandCRCBytes + numPackageBytes * 1
-        setLCD = startCommandCRCBytes + numPackageBytes * 1
-        setRelays = startCommandCRCBytes + numPackageBytes * 1
+        setSimpleLEDs = startCommandCRCBytes
+        setSmartLEDs = startCommandCRCBytes
+        setLCD = startCommandCRCBytes
+        setRelays = startCommandCRCBytes
         getButtons = startCommandCRCBytes + numPackageBytes * 3
         getFreezeButtons = startCommandCRCBytes + numPackageBytes * 3
         getADC = startCommandCRCBytes + numPackageBytes * 8
@@ -414,6 +414,6 @@ if __name__ == '__main__':
     # print data
     # while True:
     #     # time.sleep(1)
-    #     
+    #
     #     time.sleep(0.5)
-    #     
+    #

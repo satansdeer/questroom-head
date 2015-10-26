@@ -99,35 +99,33 @@ class SpaceDeviceMaster:
     # COM_READ_TIMEOUT = None: ждать ответа вечно
     # COM_READ_TIMEOUT = 0: без блокировки по чтению
     # COM_READ_TIMEOUT = x: установить таймаут x секунд (можно float)
-    COM_READ_TIMEOUT = 1
+    COM_READ_TIMEOUT = .4
     # Таймаут по записи в com-порт
     COM_WRITE_TIMEOUT = 1
     # Остальные настройки com-порта в функции _initComPort()
 
-    def __init__(self):
+    def __init__(self, queueSize=100):
         # список дескрипторов устройств
         self.__slaveList = []
         # список дескрипторов com-портов
         self.__comPortList = []
 
         # создаём очередь команд
-        self.__commandQueue = Queue.Queue()
+        self.__commandQueue = Queue.Queue(queueSize)
         # создаём поток обработки Очереди команд
         commandQueueThread = threading.Thread(
             target=self._commandQueueThreadHandler)
         commandQueueThread.daemon = True
         commandQueueThread.start()
 
+    def getQueueSize(self):
+        return self.__commandQueue.qsize()
+
     # Функция потока обработки очереди комманд
     def _commandQueueThreadHandler(self):
         while True:
-            # print "Queue size: ", self.__commandQueue.qsize()
-            # if self.__commandQueue.empty:
-                # print "Queue empty"
             slave, commad, data = self.__commandQueue.get()
-
             slave.sendCommand(commad, data)
-            # print "\n\nSend command:"#, commad, " flag: ", sendOk, "\n\n\n"
 
     def addSlave(self, name, comPort, address):
         """
@@ -353,5 +351,5 @@ if __name__ == '__main__':
     # doctest.testmod()
 
     master = SpaceDeviceMaster()
-    master.addSlave("simSlave1", "/dev/cu.usbserial-A500ZL5J", 1)
+    master.addSlave("simSlave1", "./ptyp1", 1)
     master.sendConnectionCheck("simSlave1")

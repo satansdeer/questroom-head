@@ -11,10 +11,12 @@ class GameState:
         if self.current_stage_id >= len(self.stages): return
         return self.stages[self.current_stage_id]
 
-    def perform_repetitive_stages(self):
+    def perform_repetitive_stages(self, master, state):
         if self.current_stage_id >= len(self.stages): return
-        map(lambda cur_stage:
-            cur_stage.perform_actions(), self.repetitive_stages)
+        for stage in self.repetitive_stages:
+            if not stage.all_requirements_satisfied(master, state):
+                continue
+            stage.perform_actions(master, state)
 
     def start_game_loop(self):
         if not self.device_master: return
@@ -25,13 +27,13 @@ class GameState:
             self.game_loop()
 
     def game_loop(self):
-        self.device_master.sendGetStuckButtons(self.slave)
-        self.state = self.device_master.getButtons(self.slave)
-        if not self.state: return
+        state = 1
+        # if not self.state: return
         if not self.current_stage(): return
-        if not self.current_stage().all_requirements_satisfied(): return
-        self.current_stage().perform_actions()
-        self.perform_repetitive_stages()
+        self.perform_repetitive_stages(self.device_master, state)
+        if not self.current_stage().all_requirements_satisfied(self.device_master, state): return
+        self.current_stage().perform_actions(self.device_master, state)
+        print("Current stage", self.current_stage_id)
         self.advance()
 
     def add_stage(self, stage):

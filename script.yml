@@ -1,15 +1,23 @@
 ---
 repetitive_stages:
+  # -
+  #   requirements:
+  #       [FIRST_TUMBLER_ON]
+  #   actions:
+  #       [TURN_FIRST_LED_GREEN]
+
   -
     requirements:
-        [FIRST_TUMBLER_ON]
+        [NONE_REQUIREMENT]
     actions:
-        [TURN_FIRST_LED_GREEN]
+        [GET_STUCK_BUTTONS]
 sequential_stages:
   -
-    requirements:
+     requirements:
         [WIRE_CONNECTED]
-    actions:
+        # [FIRST_TUMBLER_ON]
+     actions:
+        # [TURN_FIRST_LED_GREEN]
         [ENABLE_FUSE_PUZZLE]
 
   -
@@ -36,26 +44,26 @@ sequential_stages:
     actions:
         [OPEN_SECOND_BOX]
 
-  -
-    requirements:
-        [HIDDEN_TUMBLER_PUZZLE_SOLVED]
-    actions:
-        [OPEN_THIRD_BOX]
+#   -
+#     requirements:
+#         [HIDDEN_TUMBLER_PUZZLE_SOLVED]
+#     actions:
+#         [OPEN_THIRD_BOX]
 
-  -
-    requirements:
-        [COMMUTATOR_PUZZLE_SOLVED]
-    actions:
-        [OPEN_FOURTH_BOX]
+#   -
+#     requirements:
+#         [COMMUTATOR_PUZZLE_SOLVED]
+#     actions:
+#         [OPEN_FOURTH_BOX]
 
-  -
-    requirements:
-        [ROBOT_ASSEMBLED]
-    actions:
-        [ROBOT_SAY_RIDDLE]
+#   -
+#     requirements:
+#         [ROBOT_ASSEMBLED]
+#     actions:
+#         [ROBOT_SAY_RIDDLE]
 
-  -
-    requirements:
-        [ENGINE_ASSEMBLED]
-    actions:
-        [ACTIVATE_CAPTAIN_BRIDGE]
+#   -
+#     requirements:
+#         [ENGINE_ASSEMBLED]
+#     actions:
+#         [ACTIVATE_CAPTAIN_BRIDGE]

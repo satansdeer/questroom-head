@@ -15,6 +15,7 @@ logging.disable(logging.DEBUG)
 
 
 
+
 CODE_KEY = 'code'
 LENGTH_DATA_KEY = 'lengthData'
 
@@ -489,6 +490,8 @@ class SpacePackage:
     # дублирования команды
     def _receivePackageValid(self, address, command, package):
         if package:
+            # my stupid bysicle
+            if len(package) < 4: return False
             startByte = ord(package[0])
             logging.debug("Type for package[1]: %s value: 0x%02x",
                           type(startByte),
@@ -513,11 +516,14 @@ class SpacePackage:
             return False
 
         # определяем команду
-        receiveCommand = self._getDataFromBytes(package[1], package[2])
-        if (receiveCommand != command):
-            logPackage.debug("Receive package command code: %s | Not for us",
-                             "0x{0:02x} {0}(0b{0:08b})".format(receiveCommand))
-            return False
+        # в поле Команда на запросы установки - в ответе 0x80
+        #   на запросы получения - дублируется код команды
+
+        # receiveCommand = self._getDataFromBytes(package[1], package[2])
+        # if (receiveCommand != command):
+        #     logPackage.debug("Receive package command code: %s | Not for us",
+        #                      "0x{0:02x} {0}(0b{0:08b})".format(receiveCommand))
+        #     return False
 
         return True
 
@@ -555,8 +561,9 @@ class SpacePackage:
             dataForReturn = data
         else:
             # Для команд установки значений - ответ одинаковый
-            dataForReturn = self._parseSetTypeCommandData(data)
-
+            # dataForReturn = self._parseSetTypeCommandData(data)
+            # У команд установки значений в ответе нет данных
+            dataForReturn = [0x80]
         return dataForReturn
 
     # Проверка телеграммы от слейва. Известна ли ему команда
@@ -611,15 +618,15 @@ class SpacePackage:
     def _parseGetSensorData(self, data):
         return data
 
-    # Парсер данных для команд установления значений
-    def _parseSetTypeCommandData(self, data):
-        if (len(data) == 1):
-            if data[0] == 0x80:
-                logPackage.debug("Slave Receive our Command Successful!")
-                return data
-        logPackage.debug("Unknown value for command in data \
-            | data len = %d", len(data))
-        return None
+    # # Парсер данных для команд установления значений
+    # def _parseSetTypeCommandData(self, data):
+    #     if (len(data) == 1):
+    #         if data[0] == 0x80:
+    #             logPackage.debug("Slave Receive our Command Successful!")
+    #             return data
+    #     logPackage.debug("Unknown value for command in data \
+    #         | data len = %d", len(data))
+    #     return None
 
         # Функция для тестирования. Создание пакета ответа
     def createAnswerPackage(self, address, command, data):
