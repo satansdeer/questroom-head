@@ -235,7 +235,26 @@ class SpaceDeviceMaster:
         Итого: data - массив из 96 элементов со значениями от 0 до 4095
         Получить значения можно командой getSmartLEDs(slaveName)
         """
+        slave = self._getSlaveDescriptor(slaveName)
+        slave._saveSmartLEDs(data)
         return self._putCommandInQueue(slaveName, Command.setSmartLEDs, data)
+
+    def sendSetSmartLEDs2(self, slaveName):
+        """Послать команду установки умных светодиодов
+        96 светодиодов. В каждом по три значения от 0 до 255
+        Итого: data - массив из 96 элементов со значениями от 0 до 4095
+        Получить значения можно командой getSmartLEDs(slaveName)
+        """
+        data = self.getSmartLEDs(slaveName)
+        return self._putCommandInQueue(slaveName, Command.setSmartLEDs, data)
+
+    def setSmartLEDs(self, slaveName, data):
+        slave = self._getSlaveDescriptor(slaveName)
+        if slave:
+            return slave._saveSmartLEDs(data)
+        else:
+            return None
+
 
     def sendSetLCD(self, slaveName, data):
         """Послать команду записи текста на LCD экран
@@ -306,11 +325,11 @@ class SpaceDeviceMaster:
         else:
             return None
 
-    def getRealys(self, slaveName):
+    def getRelays(self, slaveName):
         """Возвращает значения четрых реле"""
         slave = self._getSlaveDescriptor(slaveName)
         if slave:
-            return slave.getRealys()
+            return slave.getRelays()
         else:
             return None
 

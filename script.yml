@@ -10,7 +10,8 @@ repetitive_stages:
     requirements:
         [NONE_REQUIREMENT]
     actions:
-        [GET_STUCK_BUTTONS]
+        [TUMBLER_PUZZLE_SOLVED]
+  #       [GET_STUCK_BUTTONS]
 sequential_stages:
   -
      requirements:
@@ -44,23 +45,29 @@ sequential_stages:
     actions:
         [OPEN_SECOND_BOX]
 
-#   -
-#     requirements:
-#         [HIDDEN_TUMBLER_PUZZLE_SOLVED]
-#     actions:
-#         [OPEN_THIRD_BOX]
+  -
+    requirements:
+        [HIDDEN_TUMBLER_PUZZLE_SOLVED]
+    actions:
+        [OPEN_THIRD_BOX]
 
-#   -
-#     requirements:
-#         [COMMUTATOR_PUZZLE_SOLVED]
-#     actions:
-#         [OPEN_FOURTH_BOX]
+  -
+    requirements:
+        [COMMUTATOR_PUZZLE_SOLVED]
+    actions:
+        [OPEN_FOURTH_BOX]
 
-#   -
-#     requirements:
-#         [ROBOT_ASSEMBLED]
-#     actions:
-#         [ROBOT_SAY_RIDDLE]
+  # -
+  #   requirements:
+  #       [ENGINE_KEY_CORRECT]
+  #   actions:
+  #       [ENGINE_DOOR_OPEN]
+
+  -
+    requirements:
+        [ROBOT_ASSEMBLED]
+    actions:
+        [ROBOT_SAY_RIDDLE]
 
 #   -
 #     requirements:

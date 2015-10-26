@@ -27,7 +27,7 @@ class GameState:
             self.game_loop()
 
     def game_loop(self):
-        state = 1
+        state = None
         # if not self.state: return
         if not self.current_stage(): return
         self.perform_repetitive_stages(self.device_master, state)

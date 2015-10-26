@@ -101,10 +101,11 @@ class SpaceDevice:
 
     def sendSetSmartLEDs(self, diodes):
         logDevice.debug("Set SmartLEDs")
+        diodes = self.getSmartLEDs()
         status = self._sendCommand(Command.setSmartLEDs, diodes)
         success = self._checkSetCommandStatus(status)
         if success:
-            self._saveSmartLEDs(diodes)
+            # self._saveSmartLEDs(diodes)
             return True
         return False
 
