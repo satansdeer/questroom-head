@@ -99,35 +99,33 @@ class SpaceDeviceMaster:
     # COM_READ_TIMEOUT = None: ждать ответа вечно
     # COM_READ_TIMEOUT = 0: без блокировки по чтению
     # COM_READ_TIMEOUT = x: установить таймаут x секунд (можно float)
-    COM_READ_TIMEOUT = 1
+    COM_READ_TIMEOUT = .4
     # Таймаут по записи в com-порт
     COM_WRITE_TIMEOUT = 1
     # Остальные настройки com-порта в функции _initComPort()
 
-    def __init__(self):
+    def __init__(self, queueSize=100):
         # список дескрипторов устройств
         self.__slaveList = []
         # список дескрипторов com-портов
         self.__comPortList = []
 
         # создаём очередь команд
-        self.__commandQueue = Queue.Queue()
+        self.__commandQueue = Queue.Queue(queueSize)
         # создаём поток обработки Очереди команд
         commandQueueThread = threading.Thread(
             target=self._commandQueueThreadHandler)
         commandQueueThread.daemon = True
         commandQueueThread.start()
 
+    def getQueueSize(self):
+        return self.__commandQueue.qsize()
+
     # Функция потока обработки очереди комманд
     def _commandQueueThreadHandler(self):
         while True:
-            # print "Queue size: ", self.__commandQueue.qsize()
-            # if self.__commandQueue.empty:
-                # print "Queue empty"
             slave, commad, data = self.__commandQueue.get()
-
             slave.sendCommand(commad, data)
-            # print "\n\nSend command:"#, commad, " flag: ", sendOk, "\n\n\n"
 
     def addSlave(self, name, comPort, address):
         """
@@ -237,7 +235,26 @@ class SpaceDeviceMaster:
         Итого: data - массив из 96 элементов со значениями от 0 до 4095
         Получить значения можно командой getSmartLEDs(slaveName)
         """
+        slave = self._getSlaveDescriptor(slaveName)
+        slave._saveSmartLEDs(data)
         return self._putCommandInQueue(slaveName, Command.setSmartLEDs, data)
+
+    def sendSetSmartLEDs2(self, slaveName):
+        """Послать команду установки умных светодиодов
+        96 светодиодов. В каждом по три значения от 0 до 255
+        Итого: data - массив из 96 элементов со значениями от 0 до 4095
+        Получить значения можно командой getSmartLEDs(slaveName)
+        """
+        data = self.getSmartLEDs(slaveName)
+        return self._putCommandInQueue(slaveName, Command.setSmartLEDs, data)
+
+    def setSmartLEDs(self, slaveName, data):
+        slave = self._getSlaveDescriptor(slaveName)
+        if slave:
+            return slave._saveSmartLEDs(data)
+        else:
+            return None
+
 
     def sendSetLCD(self, slaveName, data):
         """Послать команду записи текста на LCD экран
@@ -308,11 +325,11 @@ class SpaceDeviceMaster:
         else:
             return None
 
-    def getRealys(self, slaveName):
+    def getRelays(self, slaveName):
         """Возвращает значения четрых реле"""
         slave = self._getSlaveDescriptor(slaveName)
         if slave:
-            return slave.getRealys()
+            return slave.getRelays()
         else:
             return None
 
@@ -353,5 +370,5 @@ if __name__ == '__main__':
     # doctest.testmod()
 
     master = SpaceDeviceMaster()
-    master.addSlave("simSlave1", "/dev/cu.usbserial-A500ZL5J", 1)
+    master.addSlave("simSlave1", "./ptyp1", 1)
     master.sendConnectionCheck("simSlave1")

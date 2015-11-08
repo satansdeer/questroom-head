@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 from __future__ import print_function
 from Parser import parse
 from QuestDeviceMaster import *
@@ -7,29 +9,48 @@ from Stage import Stage
 from Action import Action
 import time
 
-master = SpaceDeviceMaster()
+master = SpaceDeviceMaster(2)
 #
-simSlave = master.addSlave("simSlave1", "/dev/tty.usbserial-A4033KK5", 1)
-#simSlave = master.addSlave("simSlave1", "/dev/tty.usbserial-AL0079CW", 1)
+# simSlave = master.addSlave("simSlave1", "/dev/tty.usbserial-A4033KK5", 1)
+simSlave = master.addSlave("mainPuzzle", "/dev/ttyUSB0", 1)
+slaveCap = master.addSlave("Captain's bridge", "/dev/ttyUSB1", 1)
+# simSlave = master.addSlave("simSlave1", "/dev/tty.usbserial-AL0079CW", 1)
 #simSlave = master.addSlave("simSlave1", "/dev/tty.usbserial-AL0079CW", 1)
 #
 #master.sendConnectionCheck("simSlave1")
 #master.COM_READ_TIMEOUT = 0
 #
-#while True:
+# while True:
 #    master.sendSetSmartLEDs(simSlave, [0x000, 0x000, 0x030] * 32)
 #    master.sendSetSmartLEDs(simSlave, [0x000, 0x030, 0x000] * 32)
-
-i = 0
+#    time.sleep(1)
+# i = 0
 #master.sendSetRelays(simSlave, [0,0,0,0])
 #master.sendSetRelays(simSlave, [1,1,1,1])
 
+leds = [0x000, 0x000, 0x000] * 32
+# leds[8*3:10*3] = [0xfff, 0x000, 0x000]*3
+def setLed(leds, ledID): leds[ledID*3 + 0] = 0xfff; leds[ledID*3 + 1] = 0x0; leds[ledID*3 + 2] = 0x0;
+setLed(leds, 8)
+setLed(leds, 9)
+setLed(leds, 10)
+setLed(leds, 11)
+master.sendSetSmartLEDs(simSlave, leds)
+master.sendGetStuckButtons(simSlave)
+master.sendGetStuckButtons(simSlave)
+master.sendSetRelays(simSlave, [0, 0, 0, 0])
+# closed Engine Door
+master.sendSetRelays(slaveCap, [0, 0, 1, 0])
+time.sleep(4)
+print("Buttons: ", master.getButtons(simSlave))
+print ("Connetction: ", master.connection("mainPuzzle"))
 
 game_state = parse("script.yml")
 game_state.device_master = master
 game_state.slave = simSlave
 game_state.start_game_loop()
 
+time.sleep(12)
 
 if False:
     requirement = Requirement()
