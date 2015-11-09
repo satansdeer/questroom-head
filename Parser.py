@@ -15,6 +15,7 @@ def parse(file_name):
         stage = Stage()
         map(lambda req:    stage.add_requirement(Requirement(eval(req))), sequential_stage["requirements"])
         map(lambda action: stage.add_action(Action(eval(action))), sequential_stage["actions"])
+        stage.title = sequential_stage["title"] if "title" in sequential_stage else "No title"
         game_state.add_stage(stage)
     return game_state
 

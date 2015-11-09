@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+            <link rel="stylesheet" href="{{ static_url("styles.css") }}">
+            <!--<link href='https://fonts.googleapis.com/css?family=Press+Start+2P&subset=latin,cyrillic' rel='stylesheet' type='text/css'>-->
+            <script type="text/javascript">
+            function WebSocketTest() {
+                var messageContainer = document.getElementById("message");
+                if ("WebSocket" in window) {
+                    var id = window.location.search.split("?")[1].split("=")[1]
+                    window.ws = new WebSocket("ws://localhost:8888/socket?Id="+id);
+                    ws.onopen = function() {
+                        messageContainer.innerHTML = "Connected";
+                    };
+                    ws.onmessage = function (evt) {
+                        var received_msg = JSON.parse(evt.data);
+                        messageContainer.innerHTML = unescape(received_msg.message);
+                        resetProgress();
+                        progressBar.style.width = '0%';
+                        setHearts(received_msg.hearts)
+                    };
+                    ws.onclose = function() {
+                        messageContainer.innerHTML = "Connection is closed...";
+                        console.log("Connection closed. Reconnecting...")
+                        setTimeout(function(){
+                          WebSocketTest();
+                        }, 3000)
+                    };
+                } else {
+                    messageContainer.innerHTML = "WebSocket NOT supported by your Browser!";
+                }
+            }
+
+            function setHearts(heartsNumber){
+                var hearts = document.querySelectorAll(".heart");
+                for(var i = 0; i < hearts.length; i++){
+                  hearts[i].style.display = 'inline-block';
+                }
+                if(hearts.length == heartsNumber){return}
+                var diff = hearts.length - heartsNumber;
+                for(var i = 0; i < diff; i++){
+                  hearts[i].style.display = 'none';
+                }
+            }
+
+            function resetProgress(){
+              var progressBar = document.querySelector(".time-left_progress");
+              progressBar.style.transition = 'width 0s';
+              progressBar.style.width = '100%';
+              setTimeout(function(){
+                progressBar.style.transition = 'width 10s'
+              }, 1);
+            }
+            document.addEventListener("DOMContentLoaded", function(event) {
+              WebSocketTest();
+              var progressBar = document.querySelector(".time-left_progress");
+              progressBar.addEventListener("webkitTransitionEnd", function(event){
+                resetProgress();
+                console.log("Reset progress");
+                setTimeout(function(){
+                  progressBar.style.width = '0%';
+                }, 1)
+                ws.send("Time end")
+              }, false)
+            })
+        </script>
+    </head>
+    <body>
+      <div class="screen">
+        <div class="hearts">
+          <div class="heart"></div>
+          <div class="heart"></div>
+          <div class="heart"></div>
+        </div>
+        <div class="message" id="message"div></div>
+        <div class="time-left" id="time-left">
+          <div class="time-left_progress" id="time-left"></div>
+        </div>
+      </div>
+      <div class="buttons">
+      </div>
+    </body>
+</html>

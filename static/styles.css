@@ -1,0 +1,86 @@
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+}
+
+.message {
+  font-size: 45px;
+  font-family: 'Press Start 2P', sans-serif;
+  color: crimson;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+}
+
+.hearts {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+}
+
+.heart {
+  position: relative;
+  margin: 10px 0;
+  width: 60px;
+  display: inline-block;
+}
+
+.time-left {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+  width: 80%;
+  height: 30px;
+  background-color: beige;
+  border-radius: 8px;
+  padding: 4px
+}
+
+.time-left_progress {
+  width: 100%;
+  height: 100%;
+  background-color: cadetblue;
+  border-radius: 6px;
+  transition: width 10s
+}
+
+.heart:before, .heart:after {
+  position: absolute;
+  background-color: crimson;
+  display: block;
+  content: '';
+  width: 30px;
+  height: 20px;
+}
+
+.heart:before {
+  border-radius: 20px 0 0 20px;
+  transform: rotate(45deg)
+}
+
+.heart:after {
+  border-radius: 20px 0 0 20px;
+  transform: rotate(135deg)translate(-5px, -5px)
+}
+
+.screen {
+  position: relative;
+  height: 50%;
+  width: 100%;
+}
+
+.buttons {
+  position: relative;
+  height: 50%;
+  width: 100%;
+  background-color: grey;
+}
