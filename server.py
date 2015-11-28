@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 import os
 import tornado.ioloop
 import tornado.web
@@ -5,12 +7,28 @@ import tornado.websocket
 from GameState import GameState
 from time import sleep
 from QuestRoom import QuestRoom
+from KeyboardListener import KeyboardListener
 
 from tornado.options import define, options, parse_command_line
+
+BUTTONS_NUM = 4
 
 define("port", default=8888, help="run on the given port", type=int)
 
 clients = dict()
+quest_room = None
+
+all_buttons = [
+        {'title': 'Глюкало',  'id': 0},
+        {'title': 'Трюндель', 'id': 1},
+        {'title': 'Пресло',   'id': 2},
+        {'title': 'Коковник', 'id': 3},
+        {'title': 'Бедодька', 'id': 4},
+        {'title': 'Сорвалец', 'id': 5},
+        {'title': 'Глевло',   'id': 6},
+        {'title': 'Плевло',   'id': 7},
+]
+used_buttons = []
 
 class IndexHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
@@ -22,14 +40,21 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         self.id = self.get_argument("Id")
         self.stream.set_nodelay(True)
         clients[self.id] = { "id": self.id, "object": self }
+        data = {'msg_type': 'init', 'buttons': self.get_buttons(int(self.id)), 'hearts': 3}
+        self.write_message(data)
 
     def on_message(self, message):
-        self.write_message("%s: %s" % (self.id, message))
-        print "Client %s received a message: %s" % (self.id, message)
+        if "Button clicked:" in message:
+            button_id = message.split(':')[1]
+            quest_room.button_pressed(button_id)
+
 
     def on_close(self):
         if self.id not in clients: return
         del clients[self.id]
+
+    def get_buttons(self, device_id):
+        return all_buttons[(device_id-1)*BUTTONS_NUM:device_id*BUTTONS_NUM]
 
 app = tornado.web.Application([
     (r'/', IndexHandler),
@@ -42,6 +67,7 @@ app = tornado.web.Application([
 if __name__ == '__main__':
     parse_command_line()
     app.listen(options.port)
-    QuestRoom(clients).start()
-    print("Questroom thread started..")
+    quest_room = QuestRoom(clients)
+    quest_room.start()
+    #KeyboardListener().start()
     tornado.ioloop.IOLoop.instance().start()

@@ -7,6 +7,8 @@
             <script type="text/javascript">
             function WebSocketTest() {
                 var messageContainer = document.getElementById("message");
+                var buttonsContainer = document.getElementById("buttons");
+                var progressBar = document.querySelector(".time-left_progress");
                 if ("WebSocket" in window) {
                     var id = window.location.search.split("?")[1].split("=")[1]
                     window.ws = new WebSocket("ws://localhost:8888/socket?Id="+id);
@@ -16,9 +18,18 @@
                     ws.onmessage = function (evt) {
                         var received_msg = JSON.parse(evt.data);
                         messageContainer.innerHTML = unescape(received_msg.message);
+                        console.log("RECEIVED MESSAGE")
                         resetProgress();
-                        progressBar.style.width = '0%';
                         setHearts(received_msg.hearts)
+                        if(received_msg.msg_type == 'init'){
+                          buttonsHTML = ""
+                          for(var button in received_msg.buttons){
+                            var title = received_msg.buttons[button].title
+                            var id = received_msg.buttons[button].id
+                            buttonsHTML += "<div class='button' data-id='"+id+"' onClick='sendButton(event)'>"+title+"</div>";
+                          }
+                          buttonsContainer.innerHTML = buttonsHTML;
+                        }
                     };
                     ws.onclose = function() {
                         messageContainer.innerHTML = "Connection is closed...";
@@ -44,12 +55,22 @@
                 }
             }
 
+            function sendButton(event){
+                buttonId = event.currentTarget.dataset.id
+                ws.send("Button clicked:"+buttonId)
+            }
+
             function resetProgress(){
               var progressBar = document.querySelector(".time-left_progress");
-              progressBar.style.transition = 'width 0s';
+              console.log(progressBar)
+              progressBar.style = ''
+              progressBar.style.transition = 'none';
               progressBar.style.width = '100%';
+              console.log(progressBar)
+              console.log("-----")
               setTimeout(function(){
                 progressBar.style.transition = 'width 10s'
+                progressBar.style.width = '0%';
               }, 1);
             }
             document.addEventListener("DOMContentLoaded", function(event) {
@@ -78,7 +99,7 @@
           <div class="time-left_progress" id="time-left"></div>
         </div>
       </div>
-      <div class="buttons">
+      <div id="buttons" class="buttons">
       </div>
     </body>
 </html>

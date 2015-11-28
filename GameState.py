@@ -1,36 +1,57 @@
+# -*- coding: utf-8 -*-
 class GameState:
 
     def __init__(self):
         self.device_master = None
-        self.stages = []
-        self.current_stage_id = 0
+        self.tasks = []
+        self.active_tasks = []
+        self.state = {'pressed_buttons':[]}
 
-    def current_stage(self):
-        if self.current_stage_id >= len(self.stages): return
-        return self.stages[self.current_stage_id]
 
     def start_game_loop(self, callback):
-        if not self.master: return
+        if not self.device_master: return
         if not self.slave: return
-        if len(self.stages) == 0: return
-        while self.current_stage_id < len(self.stages):
+
+        root_task = self.find_task_with_id(0)
+        self.active_tasks.append(root_task)
+        while len(self.active_tasks):
             self.game_loop(callback)
+            self.state['pressed_buttons'] = []
+
 
     def game_loop(self, callback):
-        #self.device_master.sendGetStuckButtons(self.slave)
-        #self.state = self.device_master.getButtons(self.slave)
         if not self.state: return
-        if not self.current_stage(): return
-        if not self.current_stage().all_requirements_satisfied(): return
-        print(self.current_stage().title)
-        self.current_stage().perform_actions()
-        title = self.current_stage().title
-        message = {'message': title, 'hearts': 2}
-        callback(message) if callback else None
-        self.advance()
+        for task in self.active_tasks:
+            self.perform_task_if_satisfies(task)
+        #callback(message) if callback else None
 
-    def add_stage(self, stage):
-        self.stages.append(stage)
 
-    def advance(self):
-        self.current_stage_id += 1
+    def perform_task_if_satisfies(self, task):
+        if task.success_requirements_satisfied(self.device_master, self.state, self):
+            task.perform_success_actions(self.device_master, self.state, self)
+            self.active_tasks.remove(task)
+            print("---- %s" % task.title)
+        elif task.failure_requirements_satisfied(self.device_master, self.state, self):
+            task.perform_failure_actions(self.device_master, self.state, self)
+            self.active_tasks.remove(task)
+
+
+
+    def add_task(self, task):
+        self.tasks.append(task)
+
+
+    def add_active_task_with_id(self, id):
+        task = self.find_task_with_id(id)
+        self.quest_room.send_ws_message(1, {'message':task.title})
+        self.active_tasks.append(task)
+
+
+    def find_task_with_id(self, id):
+        for task in self.tasks:
+            if int(task.id) == int(id):
+                return task
+
+
+    def apply_state(self, state):
+        pass

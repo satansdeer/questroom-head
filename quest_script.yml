@@ -1,0 +1,134 @@
+---
+  tasks:
+    -
+      id: 0
+      success_requirements:
+        [WIRE_CONNECTED]
+      success_actions:
+        [ENABLE_FUSE_PUZZLE, ADD_FUSE_PUZZLE, ADD_DISCONNECT_WIRE, ADD_SECRET]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Соединить провод'
+    -
+      id: 1
+      success_requirements:
+        [WIRE_DISCONNECTED]
+      success_actions:
+        [DISABLE_FUSE_PUZZLE, ADD_CONNECT_WIRE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Разъединить провод'
+    -
+      id: 2
+      success_requirements:
+        [FUSE_PUZZLE_SOLVED]
+      success_actions:
+        [ENABLE_RADIO, ADD_SEQUENCE_PUZZLE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Заменить предохранитель'
+    -
+      id: 3
+      success_requirements:
+        [FUSE_REMOVED]
+      success_actions:
+        [DISABLE_RADIO, ADD_FUSE_PUZZLE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Убрать предохранитель'
+    -
+      id: 4
+      success_requirements:
+        [CORRECT_SEQUENCE_ENTERED]
+      success_actions:
+        [OPEN_FIRST_BOX, ADD_MECHANICS_CARD_PUZZLE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Ввести последовательность'
+    -
+      id: 5
+      success_requirements:
+        [MECHANICS_CARD_USED]
+      success_actions:
+        [ENABLE_TUMBLER_PUZZLE, ADD_TUMBLER_PUZZLE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Убрать предохранитель'
+    -
+      id: 6
+      success_requirements:
+        [TUMBLER_PUZZLE_SOLVED]
+      success_actions:
+        [OPEN_SECOND_BOX, ADD_HIDDEN_TUMBLER_PUZZLE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Решить загадку с переключателями'
+    -
+      id: 7
+      success_requirements:
+        [HIDDEN_TUMBLER_PUZZLE_SOLVED]
+      success_actions:
+        [OPEN_THIRD_BOX, ADD_COMMUTATOR_PUZZLE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Убрать предохранитель'
+    -
+      id: 8
+      success_requirements:
+        [COMMUTATOR_PUZZLE_SOLVED]
+      success_actions:
+        [OPEN_FOURTH_BOX, ADD_ROBOT_PUZZLE, ADD_ENGINE_PUZZLE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Убрать предохранитель'
+    -
+      id: 9
+      success_requirements:
+        [SECRET_DOORS]
+      success_actions:
+        [OPEN_FOURTH_BOX, ADD_COMMUTATOR_PUZZLE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Убрать предохранитель'
+    -
+      id: 10
+      success_requirements:
+        [ROBOT_ASSEMBLED]
+      success_actions:
+        [ROBOT_SAY_RIDDLE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Убрать предохранитель'
+    -
+      id: 11
+      success_requirements:
+        [ENGINE_ASSEMBLED]
+      success_actions:
+        []
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Убрать предохранитель'

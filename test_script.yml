@@ -1,17 +1,10 @@
 ---
 repetitive_stages:
-  # -
-  #   requirements:
-  #       [FIRST_TUMBLER_ON]
-  #   actions:
-  #       [TURN_FIRST_LED_GREEN]
-
   -
     requirements:
-        [NONE_REQUIREMENT]
+        []
     actions:
-        [TUMBLER_PUZZLE_SOLVED]
-  #       [GET_STUCK_BUTTONS]
+        []
 sequential_stages:
   -
     requirements:
