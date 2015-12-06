@@ -1,6 +1,7 @@
 from __future__ import print_function
 from Parser import parse
-from QuestDeviceMaster import *
+# from QuestDeviceMaster import *
+from deviceMaster.devicemaster import DeviceMaster
 from GameState import GameState
 from Requirement import Requirement
 from Task import Task
@@ -8,7 +9,7 @@ from Action import Action
 import time
 import threading
 from KeyboardListener import KeyboardListener
-from NewFunctions import *
+from NewFunctions_map import *
 
 clients = None
 
@@ -19,26 +20,30 @@ class QuestRoom(threading.Thread):
         clients = cli
         super(QuestRoom, self).__init__()
 
-
     def run(self):
         print("quest room thread start")
-        master = SpaceDeviceMaster(1)
-        simSlave = master.addSlave("mainPuzzle", "/dev/tty.usbserial-A4033KK5", 1)
-        simSlave2 = master.addSlave("capSlave", "/dev/tty.usbserial-AL0079CW", 1)
+        master = DeviceMaster()
+        # hallwayPort = "/dev/tty.usbserial-A4033KK5"
+        hallwayPort = "/dev/ttyUSB0"
+        hallwayPuzzles = master.addSlave("hallwayPuzzles", hallwayPort, 1, boudrate=5)
+        captainsBridge = master.addSlave("captainsBridge", "/dev/tty.usbserial-AL0079CW", 1, boudrate=5)
         init_leds = [0x000, 0x000, 0x000] * 32
-        master.sendSetSmartLEDs(simSlave, init_leds)
-        leds = master.getSmartLEDs(simSlave)
+        master.setSmartLeds(hallwayPuzzles, init_leds)
+        leds = master.getSmartLeds(hallwayPuzzles).get()
         setLedValue(leds, 8, [0xfff, 0x0, 0x0])
         setLedValue(leds, 9, [0xfff, 0x0, 0x0])
         setLedValue(leds, 10, [0xfff, 0x0, 0x0])
         setLedValue(leds, 11, [0xfff, 0x0, 0x0])
 
-        relays = [1,1,1,0]
-        master.sendSetRelays(simSlave2, relays)
+        # relays = [1,1,1,0]
+        # master.setRelays(captainsBridge, relays)
+        keyboardListener = KeyboardListener(master)
+        keyboardListener.start()
 
         self.game_state = parse("quest_script.yml")
+        # self.game_state = parse("new_script.yml")
         self.game_state.device_master = master
-        self.game_state.slave = simSlave
+        self.game_state.slave = hallwayPuzzles
         self.game_state.quest_room = self
         self.game_state.start_game_loop(self.on_gameloop)
 

@@ -4,7 +4,7 @@ from GameState import GameState
 from Requirement import Requirement
 from Task import Task
 from Action import Action
-from NewFunctions import *
+from NewFunctions_map import *
 #from TestLambdas import *
 #from Lambdas import *
 
