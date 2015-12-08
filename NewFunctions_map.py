@@ -181,12 +181,12 @@ def SECRET_DOORS(master, task, game_state):
 
 def HIDDEN_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles).get()
-    
+
     ledIdStartPosition = 0
     buttonStartPosition = 0
     buttons = master.getButtons(hallwayPuzzles).get()
     # print("---Time before true {:.3} seconds ---".format(time.time() - start_time))
-    
+
     for index in range(6):
         buttonIndex = buttonStartPosition + index
         ledID = ledIdStartPosition + index
@@ -234,11 +234,11 @@ def OPEN_FOURTH_BOX(master, task, game_state):
     print("Fourth box was open!")
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.BOX_4, Colors.BLUE)
-    
+
     relays = master.getRelays(hallwayPuzzles).get()
     relays[3] = 1
     master.setRelays(hallwayPuzzles, relays)
-   
+
 
 
 
@@ -252,12 +252,12 @@ def COMMUTATOR_PUZZLE_SOLVED(master, task, game_state):
 
 
 def TUMBLER_PUZZLE_SOLVED(master, task, game_state):
-    
+
     smartLeds = master.getSmartLeds(hallwayPuzzles).get()
     ledIdStartPosition = 31
     buttonStartPosition = 17
     buttons = master.getButtons(hallwayPuzzles).get()
-    
+
     for index in range(6):
         buttonIndex = buttonStartPosition - index
         ledID = ledIdStartPosition - index
@@ -265,7 +265,7 @@ def TUMBLER_PUZZLE_SOLVED(master, task, game_state):
             setLedValue(smartLeds, ledID, Colors.BLUE)
         else:
             setLedValue(smartLeds, ledID, Colors.RED)
-    
+
     master.setSmartLeds(hallwayPuzzles, smartLeds)
 
     if buttons[12:18] == [1] * 6:
@@ -276,9 +276,25 @@ def TUMBLER_PUZZLE_SOLVED(master, task, game_state):
 def DISABLE_RADIO(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.NONE)
-    
+
 lastLockPosition = 0
 state = 0
+# Пока будут глобальными, потом перенесём в стек
+# Проблема в следующем. При повороте тумблера возникают шумы, которые
+# мы успеваем считывать на нашей скорости. Шумы надо убрать и оставить
+# только устоявшиеся значения.
+# Чтение с задержкой не подходит - влияет на остальные функции
+# Проверим идею.
+# На каждом вхождении в функцию будем считывать значение с АЦП
+# и складывать в массив. Через определённое количество входений
+# выберем то число, которое чаще всех встречается в массиве.
+# Проверку можно делать с определённого считывания,
+# и продолжать пока какое-нибудь число не повторить больше N раз.
+
+# массив значений
+READ_DATA_STACK = []
+# максимальная длина массива, после достижение которой массив сброситься
+READ_DATA_STACK_LENGTH = 40
 
 
 def turnLeft(lastValue, newValue):
@@ -303,10 +319,13 @@ def turn(lastValue, newValue):
     if turnRigth(lastValue, newValue):
         return "R"
 
+def findValue(stack):
+
 
 def CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     # Сохраняем последнее выбранное значение
     global lastLockPosition, state
+    global READ_DATA_STACK, READ_DATA_STACK_LENGTH
     # Позиция в массиве ADC
     LOCK_ID = 1
     # погрешность
@@ -320,7 +339,11 @@ def CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     if state > len(ACTIVATION_SEQUENCE):
         return True
 
-    lockPosition = master.getAdc(hallwayPuzzles).get()[LOCK_ID]
+    value = master.getAdc(hallwayPuzzles).get()[LOCK_ID]
+    # READ_DATA_STACK.append(value)
+
+
+    lockPosition = value
 
     print("LastValue: {}, newValue: {}, state: {} {}".format(
         lastLockPosition, lockPosition, state, ACTIVATION_SEQUENCE[state - 1]))

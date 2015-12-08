@@ -27,6 +27,10 @@ class QuestRoom(threading.Thread):
         hallwayPort = "/dev/ttyUSB0"
         hallwayPuzzles = master.addSlave("hallwayPuzzles", hallwayPort, 1, boudrate=5)
         captainsBridge = master.addSlave("captainsBridge", "/dev/tty.usbserial-AL0079CW", 1, boudrate=5)
+
+        # Запускаем мастер устройств
+        master.start()
+
         init_leds = [0x000, 0x000, 0x000] * 32
         master.setSmartLeds(hallwayPuzzles, init_leds)
         leds = master.getSmartLeds(hallwayPuzzles).get()
