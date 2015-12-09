@@ -49,7 +49,7 @@
       success_requirements:
         [CORRECT_SEQUENCE_ENTERED]
       success_actions:
-        [OPEN_FIRST_BOX, ADD_MECHANICS_CARD_PUZZLE]
+        [DISABLE_RADIO, OPEN_FIRST_BOX, ADD_MECHANICS_CARD_PUZZLE]
       failure_requirements:
         []
       failure_actions:
@@ -132,3 +132,15 @@
       failure_actions:
         []
       title: 'Собрать двигатель'
+
+    -
+      id: 12
+      success_requirements:
+        [RADIO_BROADCAST]
+      success_actions:
+        []
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Трансляция радио'

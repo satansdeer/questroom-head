@@ -3,6 +3,7 @@
 from __future__ import print_function
 import time
 import random
+from Radio import Radio
 
 start_time = time.time()
 # slavePuzzle = "mainPuzzle"
@@ -38,6 +39,10 @@ class Colors:
     GREEN = [0x0, 0xfff, 0x0]
     BLUE = [0x0, 0x0, 0xfff]
     NONE = [0x0, 0x0, 0x0]
+
+class AdcIdTable:
+    RADIO = 0
+    BOX_LOCK = 1
 
 
 def setLedValue(leds, id, color):
@@ -89,13 +94,40 @@ def FUSE_REMOVED(master, task, game_state):
         return True
     return False
 
+radio = 0
 
 def ENABLE_RADIO(master, task, game_state):
+    global radio
     print("Radio puzzle solved")
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.RED)
+    # add radio broadcast
+    # radio = Radio(0.015, 0.025)
 
-    # game_state.add_active_task_with_id(2)
+    # sounds = [('harp.wav',1.0,3.0), ('island_music_x.wav',5.0,8.0), ('1.wav',12.0,13.0)]
+
+    # radio.init_sounds(sounds, 'noize.wav')
+
+    # radio.start()
+
+    # radio.set_target_value(0)
+    game_state.add_active_task_with_id(12)
+
+
+def RADIO_BROADCAST(master, task, game_state):
+    radioValue = master.getAdc(hallwayPuzzles).get()[AdcIdTable.RADIO]
+    # if 0 <= radioValue <= 50:
+    #     print("value: {} song1".format(radioValue))
+    #     # radio.set_target_value(20)
+    # elif 50 < radioValue <= 120:
+    #     print("value: {} song2".format(radioValue))
+    #     # radio.set_target_value(50)
+    # else:
+    #     print("value: {} song1".format(radioValue))
+    #     # radio.set_target_value(100)
+
+
+    
 
 #=============== ADDING TASKS =================================================
 
@@ -319,7 +351,7 @@ def turn(lastValue, newValue):
     if turnRigth(lastValue, newValue):
         return "R"
 
-def findValue(stack):
+# def findValue(stack):
 
 
 def CORRECT_SEQUENCE_ENTERED(master, task, game_state):
@@ -335,7 +367,7 @@ def CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     # Последовательность для открытия
     # L - влево; R - вправо
     ACTIVATION_SEQUENCE = ['L', 'L', 'R', 'L']
-    time.sleep(0.6)
+    # time.sleep(0.6)
     if state > len(ACTIVATION_SEQUENCE):
         return True
 
@@ -345,8 +377,8 @@ def CORRECT_SEQUENCE_ENTERED(master, task, game_state):
 
     lockPosition = value
 
-    print("LastValue: {}, newValue: {}, state: {} {}".format(
-        lastLockPosition, lockPosition, state, ACTIVATION_SEQUENCE[state - 1]))
+    # print("LastValue: {}, newValue: {}, state: {} {}".format(
+    #     lastLockPosition, lockPosition, state, ACTIVATION_SEQUENCE[state - 1]))
 
     if state == 0:
         lastLockPosition = lockPosition

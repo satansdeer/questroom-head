@@ -24,11 +24,13 @@ class QuestRoom(threading.Thread):
         print("quest room thread start")
         master = DeviceMaster()
         # hallwayPort = "/dev/tty.usbserial-A4033KK5"
-        hallwayPort = "/dev/ttyUSB0"
+        hallwayPort = "COM3"
+        # "/dev/tty.usbserial-AL0079CW"
+        captainsBridgePort = "COM4"
         hallwayPuzzles = master.addSlave("hallwayPuzzles", hallwayPort, 1, boudrate=5)
-        captainsBridge = master.addSlave("captainsBridge", "/dev/tty.usbserial-AL0079CW", 1, boudrate=5)
+        # captainsBridge = master.addSlave("captainsBridge", captainsBridgePort, 1, boudrate=5)
 
-        # Запускаем мастер устройств
+        
         master.start()
 
         init_leds = [0x000, 0x000, 0x000] * 32
@@ -41,8 +43,8 @@ class QuestRoom(threading.Thread):
 
         # relays = [1,1,1,0]
         # master.setRelays(captainsBridge, relays)
-        keyboardListener = KeyboardListener(master)
-        keyboardListener.start()
+        # keyboardListener = KeyboardListener(master)
+        # keyboardListener.start()
 
         self.game_state = parse("quest_script.yml")
         # self.game_state = parse("new_script.yml")
