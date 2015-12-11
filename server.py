@@ -67,7 +67,7 @@ app = tornado.web.Application([
 if __name__ == '__main__':
     parse_command_line()
     app.listen(options.port)
-    quest_room = QuestRoom(clients)
-    quest_room.start()
+    #quest_room = QuestRoom(clients)
+    #quest_room.start()
     #KeyboardListener().start()
     tornado.ioloop.IOLoop.instance().start()
