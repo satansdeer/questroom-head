@@ -102,20 +102,22 @@ def ENABLE_RADIO(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.RED)
     # add radio broadcast
-    # radio = Radio(0.015, 0.025)
+    radio = Radio(0.5, 0.001)
 
-    # sounds = [('harp.wav',1.0,3.0), ('island_music_x.wav',5.0,8.0), ('1.wav',12.0,13.0)]
+    sounds = [('harp.wav',40.0,80.0), ('island_music_x.wav',120.0,160.0), ('1.wav',200.0,240.0)]
 
-    # radio.init_sounds(sounds, 'noize.wav')
+    radio.init_sounds(sounds, 'noize.wav')
 
-    # radio.start()
+    radio.start()
 
-    # radio.set_target_value(0)
+    # radio.set_target_value(15)
     game_state.add_active_task_with_id(12)
 
 
 def RADIO_BROADCAST(master, task, game_state):
     radioValue = master.getAdc(hallwayPuzzles).get()[AdcIdTable.RADIO]
+    print("Radio value: {}".format(radioValue))
+    radio.set_target_value(radioValue)
     # if 0 <= radioValue <= 50:
     #     print("value: {} song1".format(radioValue))
     #     # radio.set_target_value(20)

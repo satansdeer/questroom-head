@@ -2,6 +2,7 @@ from __future__ import print_function
 import threading
 import time
 import pygame
+import sys
 
 class Radio(threading.Thread):
 
@@ -31,7 +32,7 @@ class Radio(threading.Thread):
         self.noize_sound.play(-1)
         for sound in self.sounds:
             sound.play(-1)
-            sound.set_volume(0)
+            sound.set_volume(1)
 
 
     def update_sounds_volumes(self, value):
@@ -59,11 +60,10 @@ class Radio(threading.Thread):
             second_sound = self.sounds[range_id]
 
         for sound in self.sounds:
-            if (sound != first_sound) and (sound != second_sound):
-                sound.set_volume(0)
+            sound.set_volume(0)
 
-        first_sound.set_volume(percents/100)
-        second_sound.set_volume(1-percents/100)
+        first_sound.set_volume(1-percents/100)
+        second_sound.set_volume(percents/100)
 
 
     def run(self):
@@ -72,6 +72,7 @@ class Radio(threading.Thread):
             if (clock - self.last_time_clock) < self.tick:
                 continue
             if abs(self.target_value - self.value) <= self.step:
+                # sys.exit()
                 continue
             if self.value < self.target_value:
                 self.value += self.step
@@ -79,13 +80,12 @@ class Radio(threading.Thread):
             elif self.value > self.target_value:
                 self.value -= self.step
                 self.update_sounds_volumes(self.value)
-            print(self.value)
             self.last_time_clock = time.clock()
 
 
 # radio = Radio(0.015, 0.025)
 
-# sounds = [('harp.wav',1.0,3.0), ('island_music_x.wav',5.0,8.0), ('1.wav',12.0,13.0)]
+# sounds = [('harp.wav',2.0,4.0), ('island_music_x.wav',6.0,8.0), ('1.wav',10.0,12.0)]
 
 # radio.init_sounds(sounds, 'noize.wav')
 
