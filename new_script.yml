@@ -5,7 +5,7 @@
       success_requirements:
         [WIRE_CONNECTED]
       success_actions:
-        [ENABLE_FUSE_PUZZLE]
+        [ENABLE_FUSE_PUZZLE, ADD_FUSE_PUZZLE, ADD_DISCONNECT_WIRE]
       failure_requirements:
         []
       failure_actions:
@@ -14,7 +14,7 @@
     -
       id: 1
       success_requirements:
-        [FUZE_PUZZLE_SOLVED]
+        [FUSE_PUZZLE_SOLVED]
       success_actions:
         [ENABLE_RADIO]
       failure_requirements:

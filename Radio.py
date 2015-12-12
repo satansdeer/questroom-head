@@ -72,7 +72,6 @@ class Radio(threading.Thread):
             if (clock - self.last_time_clock) < self.tick:
                 continue
             if abs(self.target_value - self.value) <= self.step:
-                sys.exit()
                 continue
             if self.value < self.target_value:
                 self.value += self.step
@@ -83,12 +82,16 @@ class Radio(threading.Thread):
             self.last_time_clock = time.clock()
 
 
-radio = Radio(0.015, 0.025)
+# radio = Radio(0.015, 0.025)
 
+<<<<<<< HEAD
 sounds = [('harp.wav',2.0,4.0), ('island_music_x.wav',6.0,8.0), ('1.wav',10.0,12.0)]
+=======
+# sounds = [('harp.wav',2.0,4.0), ('island_music_x.wav',6.0,8.0), ('1.wav',10.0,12.0)]
+>>>>>>> origin/addNewDeviceMasterAPI
 
-radio.init_sounds(sounds, 'noize.wav')
+# radio.init_sounds(sounds, 'noize.wav')
 
-radio.start()
+# radio.start()
 
-radio.set_target_value(15)
+# radio.set_target_value(15)

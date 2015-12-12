@@ -27,7 +27,7 @@
       success_requirements:
         [FUSE_PUZZLE_SOLVED]
       success_actions:
-        [ENABLE_RADIO, ADD_SEQUENCE_PUZZLE]
+        [ENABLE_RADIO, ADD_SEQUENCE_PUZZLE, ADD_FUSE_REMOVED]
       failure_requirements:
         []
       failure_actions:
@@ -38,7 +38,7 @@
       success_requirements:
         [FUSE_REMOVED]
       success_actions:
-        [DISABLE_RADIO, ADD_FUSE_PUZZLE]
+        [DISABLE_RADIO, ENABLE_FUSE_PUZZLE, ADD_FUSE_PUZZLE]
       failure_requirements:
         []
       failure_actions:
@@ -49,7 +49,7 @@
       success_requirements:
         [CORRECT_SEQUENCE_ENTERED]
       success_actions:
-        [OPEN_FIRST_BOX, ADD_MECHANICS_CARD_PUZZLE]
+        [DISABLE_RADIO, OPEN_FIRST_BOX, ADD_MECHANICS_CARD_PUZZLE]
       failure_requirements:
         []
       failure_actions:
@@ -65,7 +65,7 @@
         []
       failure_actions:
         []
-      title: 'Убрать предохранитель'
+      title: 'Приложить карточку механика'
     -
       id: 6
       success_requirements:
@@ -87,7 +87,7 @@
         []
       failure_actions:
         []
-      title: 'Убрать предохранитель'
+      title: 'Решить загадку со спрятанными переключателями'
     -
       id: 8
       success_requirements:
@@ -98,7 +98,7 @@
         []
       failure_actions:
         []
-      title: 'Убрать предохранитель'
+      title: 'Правильно расположить патчкорды'
     -
       id: 9
       success_requirements:
@@ -109,7 +109,7 @@
         []
       failure_actions:
         []
-      title: 'Убрать предохранитель'
+      title: 'Открыть секретную дверь'
     -
       id: 10
       success_requirements:
@@ -120,7 +120,7 @@
         []
       failure_actions:
         []
-      title: 'Убрать предохранитель'
+      title: 'Собрать робота'
     -
       id: 11
       success_requirements:
@@ -131,4 +131,16 @@
         []
       failure_actions:
         []
-      title: 'Убрать предохранитель'
+      title: 'Собрать двигатель'
+
+    -
+      id: 12
+      success_requirements:
+        [RADIO_BROADCAST]
+      success_actions:
+        []
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Трансляция радио'
