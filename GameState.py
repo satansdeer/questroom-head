@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 class GameState:
-
+    startCBTaskId = 6
+    numCBTasks = 6
     def __init__(self):
         self.device_master = None
         self.tasks = []
@@ -52,6 +53,11 @@ class GameState:
             if int(task.id) == int(id):
                 return task
 
+    #def getAvaliableCBTaskIds():
+	#allCBTask = self.task[startCBTaskId:numCBTasks] 
+        #[x for x in y if x ]	
+
+    	#return avaliableTaskIds
 
     def apply_state(self, state):
         pass

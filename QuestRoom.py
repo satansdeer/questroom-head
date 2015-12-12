@@ -28,7 +28,7 @@ class QuestRoom(threading.Thread):
         # "/dev/tty.usbserial-AL0079CW"
         captainsBridgePort = "COM4"
         hallwayPuzzles = master.addSlave("hallwayPuzzles", hallwayPort, 1, boudrate=5)
-        # captainsBridge = master.addSlave("captainsBridge", captainsBridgePort, 1, boudrate=5)
+        #captainsBridge = master.addSlave("captainsBridge", captainsBridgePort, 1, boudrate=5)
 
         
         master.start()
@@ -46,8 +46,9 @@ class QuestRoom(threading.Thread):
         # keyboardListener = KeyboardListener(master)
         # keyboardListener.start()
 
+        #self.game_state = parse("captain_script.yml")
+
         self.game_state = parse("quest_script.yml")
-        # self.game_state = parse("new_script.yml")
         self.game_state.device_master = master
         self.game_state.slave = hallwayPuzzles
         self.game_state.quest_room = self

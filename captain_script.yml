@@ -1,0 +1,96 @@
+---
+  tasks:
+    -
+      id: 0 
+      success_requirements:
+        [REC_ENGINE_ASSEMBLED]
+      success_actions:
+        [AC_ADD_4_BATTARIES_TASKS]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Собрать двигатель'
+
+    -
+      id: 1
+      success_requirements:
+        [REC_CHECK_BATTARIES]
+      success_actions:
+        [AC_PRESS_HERABORA]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Собрать двигатель'
+
+    -
+      id: 2
+      success_requirements:
+        [REC_CHECK_HERABORA]
+      success_actions:
+        [AC_ADD_END_GAME_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Собрать двигатель'
+	
+
+    -
+      id: 3
+      success_requirements:
+        [REC_AMOUNT_OF_TASK_SUCCESSED]
+      success_actions:
+        [AC_ENTERED_DOOR_OPEN, AC_SHOW_SUCCESS_MESSAGE]
+      failure_requirements:
+        [REC_AMOUNT_OF_TASK_FAILURE]
+      failure_actions:
+        [AC_SHOW_FAILURE_MESSAGE]
+      title: 'Собрать двигатель'
+
+
+    -
+      id: 6
+      success_requirements:
+        [PRESLO_PRESSED]
+      success_actions:
+        [ADD_RANDOM_TASK]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Нажмите пресло'
+    -
+      id: 7
+      success_requirements:
+        [KOKOVNIK_PRESSED]
+      success_actions:
+        [ADD_RANDOM_TASK]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Нажмите коковник'
+    -
+      id: 8
+      success_requirements:
+        [TRUNDEL_PRESSED]
+      success_actions:
+        [ADD_RANDOM_TASK]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Нажмите коковник'
+    -
+      id: 9
+      success_requirements:
+        [GLUKALO_PRESSED]
+      success_actions:
+        [ADD_RANDOM_TASK]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Нажмите коковник'

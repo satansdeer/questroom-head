@@ -8,8 +8,8 @@ from GameState import GameState
 from time import sleep
 from QuestRoom import QuestRoom
 from KeyboardListener import KeyboardListener
-
 from tornado.options import define, options, parse_command_line
+import json
 
 BUTTONS_NUM = 4
 
@@ -43,7 +43,10 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         data = {'msg_type': 'init', 'buttons': self.get_buttons(int(self.id)), 'hearts': 3}
         self.write_message(data)
 
-    def on_message(self, message):
+    def on_message(self, jsonMessage):
+    	message = json.loads(jsonMessage)
+	print("Id: {id}, message: {msgStr} \nclients {clients}".format(
+		id=message['id'], msgStr=message['message'], clients=clients))
         if "Button clicked:" in message:
             button_id = message.split(':')[1]
             quest_room.button_pressed(button_id)
@@ -67,7 +70,7 @@ app = tornado.web.Application([
 if __name__ == '__main__':
     parse_command_line()
     app.listen(options.port)
-    #quest_room = QuestRoom(clients)
-    #quest_room.start()
+    quest_room = QuestRoom(clients)
+    quest_room.start()
     #KeyboardListener().start()
     tornado.ioloop.IOLoop.instance().start()
