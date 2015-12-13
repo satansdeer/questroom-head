@@ -6,7 +6,7 @@ class Requirement:
 
     def satisfied(self, master, state, game_state):
         value = self.validation_function(master, self.state, game_state)
-
+	value = bool(value)
         if isinstance(value, bool):
             return value
          # print("Reuirement: value:", value)

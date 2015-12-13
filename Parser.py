@@ -4,7 +4,8 @@ from GameState import GameState
 from Requirement import Requirement
 from Task import Task
 from Action import Action
-from NewFunctions_map import *
+#from NewFunctions_map import *
+from cb_functions import *
 #from TestLambdas import *
 #from Lambdas import *
 
@@ -33,4 +34,6 @@ def fillTask(task_source):
             Action(eval(action))), task_source["failure_actions"])
     task.title = task_source["title"] if "title" in task_source else "No title"
     task.id = task_source["id"]
+    if "showOnMonitor" in task_source:
+	task.showOnMonitor = task_source["showOnMonitor"]
     return task

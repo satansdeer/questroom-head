@@ -5,6 +5,7 @@ class Task:
         self.failure_requirements = []
         self.success_actions = []
         self.failure_actions = []
+	self.showOnMonitor = False
 
 
     def success_requirements_satisfied(self, master, state, game_state):

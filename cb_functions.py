@@ -1,35 +1,39 @@
-
+import random
 CB_SLAVE_1="CB_SLAVE_1"
 CB_SLAVE_2="CB_SLAVE_2"
 
 def REC_ENGINE_ASSEMBLED(master, task, game_state):
+	print("REC_ENGINE_ASSEMBLED")
 	return True
 
-def AC_ADD_4_BATARIES_TASK(master, task, game_state):
+def AC_ADD_4_BATTARIES_TASKS(master, task, game_state):
 	game_state.add_active_task_with_id(1)
 
 
 def REC_CHECK_BATTARIES(master, task, game_state):
-	return True
-
-
-def REC_CHECK_BATTARIES(master, task, game_state):
+	print("REC_CHECK_BATTARIES")
 	return True
 
 def AC_PRESS_HERABORA(master, task, game_state):
-	add_active_task_with_id(2)
+	game_state.add_active_task_with_id(2)
 
 def REC_CHECK_HERABORA(master, task, game_state):
 	heraboraPressed = master.getButtons(CB_SLAVE_2).get()[12]
+	print("Herabora value: {}\n", heraboraPressed)
 	return heraboraPressed
 
 def AC_CB_ADD_RANDOM_TASK(master, task, game_state):
 
 	avaliableTaskIds = game_state.getAvaliableCBTaskIds()
-	randomId = random.randInt(0, len(avaliableTaskIds) -1)
+	print("len avaliableTasksid = {}".format(len(avaliableTaskIds)))
+	if len(avaliableTaskIds) == 0:
+		return 
+	randomId = random.randint(0, len(avaliableTaskIds) -1)
+	print("avaliable task with random id {}".format(avaliableTaskIds[randomId]))
 	game_state.add_active_task_with_id(avaliableTaskIds[randomId])
 
 def AC_ADD_END_GAME_TASK(master, task, game_state):
+	print("!!!!!!!!!!!!!!!!!!!!!!!!!!")
 	game_state.add_active_task_with_id(3)
 
 def REC_AMOUNT_OF_TASK_SUCCESSED(master, task, game_state):
@@ -59,6 +63,7 @@ class Cb2Buttons:
 	KOKOVNIK = 1
 	TRUNDEL = 2
 	GLUKALO = 3
+	HERABORA = 12
 
 def PRESLO_PRESSED(master, task, game_state):
 	buttons = master.getButtons(CB_SLAVE_2).get()
@@ -80,6 +85,10 @@ def GLUKALO_PRESSED(master, task, game_state):
 	glukaloPressed = buttons[Cb2Buttons.GLUKALO]
 	return glukaloPressed
 
+def HERABORA_PRESSED(master, task, game_state):
+	buttons = master.getButtons(CB_SLAVE_2).get()
+	glukaloPressed = buttons[Cb2Buttons.HERABORA]
+	return glukaloPressed
 
 
 

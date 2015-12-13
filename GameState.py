@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import random
 class GameState:
     startCBTaskId = 6
     numCBTasks = 6
@@ -8,10 +9,10 @@ class GameState:
         self.active_tasks = []
         self.state = {'pressed_buttons':[]}
 
-	self.monitors = [ { 'id': 0, 'task': None }
-			  { 'id': 1, 'task': None }
-			  { 'id': 2, 'task': None }
-			  { 'id': 3, 'task': None }
+	self.monitors = [ { 'id': 1, 'task': None },
+			  { 'id': 2, 'task': None },
+			  { 'id': 3, 'task': None },
+			  { 'id': 4, 'task': None },
 			]
 
     def start_game_loop(self, callback):
@@ -34,12 +35,16 @@ class GameState:
 
     def perform_task_if_satisfies(self, task):
         if task.success_requirements_satisfied(self.device_master, self.state, self):
-            task.perform_success_actions(self.device_master, self.state, self)
             self.remove_active_task(task)
+	    print("After remove action")
+	    print("Active task name: {}".format([taskm.title for taskm in  self.active_tasks]))
+	    print("Active task id: {}".format([taskm.id for taskm in  self.active_tasks]))
+	    print("All task id: {}".format([taskm.id for taskm in  self.tasks]))
+            task.perform_success_actions(self.device_master, self.state, self)
             print("---- %s" % task.title)
         elif task.failure_requirements_satisfied(self.device_master, self.state, self):
-            task.perform_failure_actions(self.device_master, self.state, self)
             self.remove_active_task(task)
+            task.perform_failure_actions(self.device_master, self.state, self)
 
 
 
@@ -47,18 +52,24 @@ class GameState:
         self.tasks.append(task)
 
     def remove_active_task(self, task):
-	self.freeMonitor(task)
+    	print("Remove task with id: {}".format(task.id))
+	if task.showOnMonitor:
+		self.freeMonitor(task)
+		print("Free monitor with id {}".format(task.id))
 	self.active_tasks.remove(task)	
 
     def add_active_task_with_id(self, id):
         task = self.find_task_with_id(id)
-	monitorId = self.fillMonitor(task)
-        self.quest_room.send_ws_message(monitorId, {'message':task.title})
-        self.active_tasks.append(task)
+	if task.showOnMonitor:
+		monitorId = self.fillMonitor(task)
+		print("Add active Task id: {taskId} | monitorId: {monitorId}\n".format(taskId=id, monitorId=monitorId))
+        	self.quest_room.send_ws_message(str(monitorId), {'message':task.title})
+        print("self.active_tasks.append task: {}".format(task.id))
+	self.active_tasks.append(task)
 
 
     def cbTaskType(self, task):
-	if startCBTaskId <= int(task.id) <= (startCBTaskId + numCBTasks):
+	if self.startCBTaskId <= int(task.id) <= (self.startCBTaskId + self.numCBTasks):
 		return True
 	return False
     def freeMonitor(self, task):
@@ -71,20 +82,22 @@ class GameState:
 	for monitor in self.monitors:
 		if monitor['task'] is None:
 			monitor['task'] = task.id
-			return
+			return monitor['id']
 
     def find_task_with_id(self, id):
         for task in self.tasks:
             if int(task.id) == int(id):
                 return task
 
-    def getAvaliableCBTaskIds():
+    def getAvaliableCBTaskIds(self):
 	# get  only CaptainBridge Tasks
-	allCBTask = self.task[startCBTaskId:numCBTasks] 
+	allCBTask = [self.find_task_with_id(6), self.find_task_with_id(7), self.find_task_with_id(8), self.find_task_with_id(9), self.find_task_with_id(10) ]
+	#allCBTask = self.tasks[self.startCBTaskId:self.numCBTasks] 
+
 	# get id not active tasks only
         avaliableTaskIds = [task.id for task in allCBTask if task not in self.active_tasks]	
 
-	print('Avaliable task Ids: {ids}'.format(avaliableTaskIds))
+	print('Avaliable task Ids: {}'.format(avaliableTaskIds))
 
     	return avaliableTaskIds
 

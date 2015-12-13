@@ -22,20 +22,19 @@
         []
       failure_actions:
         []
-      title: 'Собрать двигатель'
-
+      title: 'Insert bataries'
     -
       id: 2
       success_requirements:
         [REC_CHECK_HERABORA]
       success_actions:
-        [AC_ADD_END_GAME_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK]
+        [AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK]
       failure_requirements:
         []
       failure_actions:
         []
-      title: 'Собрать двигатель'
-	
+      title: 'Press Herabora'
+
 
     -
       id: 3
@@ -47,7 +46,7 @@
         [REC_AMOUNT_OF_TASK_FAILURE]
       failure_actions:
         [AC_SHOW_FAILURE_MESSAGE]
-      title: 'Собрать двигатель'
+      title: 'AMOUNT_OF_TASK_SUCCESSED'
 
 
     -
@@ -55,42 +54,58 @@
       success_requirements:
         [PRESLO_PRESSED]
       success_actions:
-        [ADD_RANDOM_TASK]
+        [AC_CB_ADD_RANDOM_TASK]
       failure_requirements:
         []
       failure_actions:
         []
       title: 'Нажмите пресло'
+      showOnMonitor: True
     -
       id: 7
       success_requirements:
         [KOKOVNIK_PRESSED]
       success_actions:
-        [ADD_RANDOM_TASK]
+        [AC_CB_ADD_RANDOM_TASK]
       failure_requirements:
         []
       failure_actions:
         []
       title: 'Нажмите коковник'
+      showOnMonitor: True
     -
       id: 8
       success_requirements:
         [TRUNDEL_PRESSED]
       success_actions:
-        [ADD_RANDOM_TASK]
+        [AC_CB_ADD_RANDOM_TASK]
       failure_requirements:
         []
       failure_actions:
         []
       title: 'Нажмите трундель'
+      showOnMonitor: True
     -
       id: 9
       success_requirements:
         [GLUKALO_PRESSED]
       success_actions:
-        [ADD_RANDOM_TASK]
+        [AC_CB_ADD_RANDOM_TASK]
       failure_requirements:
         []
       failure_actions:
         []
       title: 'Нажмите глюкало'
+      showOnMonitor: True
+    -
+      id: 10 
+      success_requirements:
+        [HERABORA_PRESSED]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'PRESS HERABORA!'
+      showOnMonitor: True
