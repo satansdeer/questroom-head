@@ -82,7 +82,7 @@
         []
       failure_actions:
         []
-      title: 'Нажмите коковник'
+      title: 'Нажмите трундель'
     -
       id: 9
       success_requirements:
@@ -93,4 +93,4 @@
         []
       failure_actions:
         []
-      title: 'Нажмите коковник'
+      title: 'Нажмите глюкало'
