@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{{ static_url("dashboard.css") }}">
+        <script type="text/javascript">
+            function initWebSocket() {
+                if ("WebSocket" in window) {
+                    window.ws = new WebSocket("ws://localhost:8888/socket?Id=42");
+                    ws.onopen = function() {
+                        console.log("WebSocket connected...")
+                    };
+                }
+            }
+
+            function playSound(event){
+                sound = event.currentTarget.dataset.sound
+                ws.send("play_sound:"+sound)
+            }
+
+            document.addEventListener("DOMContentLoaded", function(event) {
+                initWebSocket();
+            });
+        </script>
+    </head>
+    <body>
+       <h1>Панель управления</h1>
+       <hr/>
+       <table>
+         <tr><th>Фразы робота</th></tr>
+         <tr><td><button data-sound='2.wav' onClick='playSound(event)'>Тест</button></td></tr>
+       </table>
+       <table>
+         <tr><th>Звуковые эффекты</th></tr>
+         <tr><td><button data-sound='coin.wav' onClick='playSound(event)'>Coin</button></td></tr>
+       </table>
+       <table>
+         <tr><th>Управление дверями</th></tr>
+         <tr>
+           <td><button data-door_id='0' onClick='openDoor(event)'>Открыть дверь 1</button></td>
+           <td><button data-door_id='0' onClick='closeDoor(event)'>Закрыть дверь 1</button></td>
+         </tr>
+         <tr>
+           <td><button data-door_id='1' onClick='openDoor(event)'>Открыть дверь 2</button></td>
+           <td><button data-door_id='1' onClick='closeDoor(event)'>Закрыть дверь 2</button></td>
+         </tr>
+         <tr>
+           <td><button data-door_id='2' onClick='openDoor(event)'>Открыть дверь 3</button></td>
+           <td><button data-door_id='2' onClick='closeDoor(event)'>Закрыть дверь 3</button></td>
+         </tr>
+       </table>
+    </body>
+</html>

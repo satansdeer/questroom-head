@@ -6,7 +6,8 @@ import tornado.web
 import tornado.websocket
 from GameState import GameState
 from time import sleep
-from QuestRoom import QuestRoom
+from SoundManager import SoundManager
+#from QuestRoom import QuestRoom
 from KeyboardListener import KeyboardListener
 
 from tornado.options import define, options, parse_command_line
@@ -17,6 +18,7 @@ define("port", default=8888, help="run on the given port", type=int)
 
 clients = dict()
 quest_room = None
+sound_manager = None
 
 all_buttons = [
         {'title': 'Глюкало',  'id': 0},
@@ -35,6 +37,13 @@ class IndexHandler(tornado.web.RequestHandler):
     def get(self):
         self.render('index.html')
 
+
+class DashboardHandler(tornado.web.RequestHandler):
+    @tornado.web.asynchronous
+    def get(self):
+        self.render('dashboard.html')
+
+
 class WebSocketHandler(tornado.websocket.WebSocketHandler):
     def open(self, *args):
         self.id = self.get_argument("Id")
@@ -44,6 +53,10 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         self.write_message(data)
 
     def on_message(self, message):
+        print(message)
+        if "play_sound:" in message:
+            sound_id = message.split(':')[1]
+            sound_manager.play_sound(sound_id)
         if "Button clicked:" in message:
             button_id = message.split(':')[1]
             quest_room.button_pressed(button_id)
@@ -58,6 +71,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
 app = tornado.web.Application([
     (r'/', IndexHandler),
+    (r'/dashboard', DashboardHandler),
     (r'/socket', WebSocketHandler),
     ],
     static_path=os.path.join(os.path.dirname(__file__), "static"),
@@ -67,6 +81,8 @@ app = tornado.web.Application([
 if __name__ == '__main__':
     parse_command_line()
     app.listen(options.port)
+    sound_manager = SoundManager()
+    sound_manager.start()
     #quest_room = QuestRoom(clients)
     #quest_room.start()
     #KeyboardListener().start()

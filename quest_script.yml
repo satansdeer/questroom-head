@@ -71,34 +71,12 @@
       success_requirements:
         [TUMBLER_PUZZLE_SOLVED]
       success_actions:
-        [OPEN_SECOND_BOX, ADD_HIDDEN_TUMBLER_PUZZLE]
+        [OPEN_SECOND_BOX, OPEN_THIRD_BOX]
       failure_requirements:
         []
       failure_actions:
         []
       title: 'Решить загадку с переключателями'
-    -
-      id: 7
-      success_requirements:
-        [HIDDEN_TUMBLER_PUZZLE_SOLVED]
-      success_actions:
-        [OPEN_THIRD_BOX, ADD_COMMUTATOR_PUZZLE]
-      failure_requirements:
-        []
-      failure_actions:
-        []
-      title: 'Решить загадку со спрятанными переключателями'
-    -
-      id: 8
-      success_requirements:
-        [COMMUTATOR_PUZZLE_SOLVED]
-      success_actions:
-        [OPEN_FOURTH_BOX, ADD_ROBOT_PUZZLE, ADD_ENGINE_PUZZLE]
-      failure_requirements:
-        []
-      failure_actions:
-        []
-      title: 'Правильно расположить патчкорды'
     -
       id: 9
       success_requirements:

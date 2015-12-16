@@ -83,15 +83,11 @@ class Radio(threading.Thread):
 
 
 # radio = Radio(0.015, 0.025)
-
-<<<<<<< HEAD
-sounds = [('harp.wav',2.0,4.0), ('island_music_x.wav',6.0,8.0), ('1.wav',10.0,12.0)]
-=======
-# sounds = [('harp.wav',2.0,4.0), ('island_music_x.wav',6.0,8.0), ('1.wav',10.0,12.0)]
->>>>>>> origin/addNewDeviceMasterAPI
-
+#
+# sounds = [('2.wav',2.0,4.0), ('island_music_x.wav',6.0,8.0), ('1.wav',10.0,12.0)]
+#
 # radio.init_sounds(sounds, 'noize.wav')
-
+#
 # radio.start()
-
+#
 # radio.set_target_value(15)
