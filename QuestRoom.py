@@ -61,7 +61,7 @@ class QuestRoom(threading.Thread):
         if str_id not in clients: return
         clients[str_id]['object'].write_message(message)
 
-
+    
     def on_gameloop(self, message):
         map(lambda client: clients[client]['object'].write_message(message), clients)
 
@@ -69,3 +69,7 @@ class QuestRoom(threading.Thread):
     def button_pressed(self, button_id):
         self.game_state.state['pressed_buttons'].append(button_id)
         print(self.game_state.state)
+
+
+    def progress_bar_zero(self, monitorId):
+        self.game_state.updateMonitorsListWithProgressBarZero(monitorId) 

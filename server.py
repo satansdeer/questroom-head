@@ -47,9 +47,13 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
     	message = json.loads(jsonMessage)
 	#print("Id: {id}, message: {msgStr} \nclients {clients}".format(
 #		id=message['id'], msgStr=message['message'], clients=clients))
-        if "Button clicked:" in message:
-            button_id = message.split(':')[1]
-            quest_room.button_pressed(button_id)
+
+        # Progress bar is zero
+        if "Time end" in message['message']:
+           quest_room.progress_bar_zero(message['id']
+       #  if "Button clicked:" in message:
+       #      button_id = message.split(':')[1]
+       #      quest_room.button_pressed(button_id)
 
 
     def on_close(self):
