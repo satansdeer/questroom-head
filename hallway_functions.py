@@ -120,7 +120,7 @@ def RADIO_BROADCAST(master, task, game_state):
     radio.set_target_value(radioValue)
 
 
-    
+
 
 #=============== ADDING TASKS =================================================
 
@@ -282,26 +282,109 @@ def COMMUTATOR_PUZZLE_SOLVED(master, task, game_state):
     return False
 
 
+class pColors:
+    RED = Colors.RED
+    GREEN = Colors.GREEN
+    BLUE = Colors.BLUE
+
+def toggleHiddenColor(color):
+    if pColors.RED == color:
+        color = pColors.GREEN
+    else:
+        color = pColors.RED
+    return color
+
+
+def toggleVisibleColor(color):
+    if pColors.GREEN == color:
+        color = pColors.BLUE
+    elif pColors.BLUE == color:
+        color = pColors.RED
+    else:
+        color = pColors.GREEN
+    return color
+
+# initialization value
+hiddenPanelColors = [pColors.RED] * 6
+visiblePanelColors = [pColors.RED] * 6
+
+visiblePanelSwitchers = []
+oldVisiblePanelSwitchers = []
+hiddenPanelSwitchers = []
+oldHiddenPanelSwitchers = []
+
 def TUMBLER_PUZZLE_SOLVED(master, task, game_state):
 
-    smartLeds = master.getSmartLeds(hallwayPuzzles).get()
-    ledIdStartPosition = 31
-    buttonStartPosition = 17
+    global hiddenPanelColors
+    global visiblePanelColors
+
+    global visiblePanelSwitchers
+    global oldVisiblePanelSwitchers
+
+    global hiddenPanelSwitchers
+    global oldHiddenPanelSwitchers
+
+    ELEMENTS_NUMBER = 6
+    VISIBLE_SWITCHERS_START_NUM = 12
+    VISIBLE_SWITCHERS_END_NUM = 17
+
+    HIDDEN_SWITCHERS_START_NUM = 0
+    HIDDEN_SWITCHERS_END_NUM = 5
+
     buttons = master.getButtons(hallwayPuzzles).get()
 
-    for index in range(6):
-        buttonIndex = buttonStartPosition - index
-        ledID = ledIdStartPosition - index
-        if buttons[buttonIndex]:
-            setLedValue(smartLeds, ledID, Colors.BLUE)
-        else:
-            setLedValue(smartLeds, ledID, Colors.RED)
+    # get values from visible Panel
+    visiblePanelSwitchers = buttons[VISIBLE_SWITCHERS_START_NUM:
+            VISIBLE_SWITCHERS_END_NUM + 1]
+    # doing reverse because num 12 in buttons is 6 on panel
+    visiblePanelSwitchers.reverse()
 
-    master.setSmartLeds(hallwayPuzzles, smartLeds)
+    hiddenPanelSwitchers = buttons[HIDDEN_SWITCHERS_START_NUM:
+            HIDDEN_SWITCHERS_END_NUM + 1]
 
-    if buttons[12:18] == [1] * 6:
-        return True
-    return False
+    print("Visible values: {}".format(visiblePanelSwitchers))
+    print("Hidden values: {}".format(hiddenPanelSwitchers))
+    
+    # checked Visible Panel
+    for index in range(ELEMENTS_NUMBER):
+        if oldVisiblePanelSwitchers[index] != visiblePanelSwitchers[index]:
+            # change color for current tumbler
+            visiblePanelColors[index] = toggleVisibleColor(
+                    visiblePanelColors[index])
+
+            # change color for nex tumbler on the same line
+            # on hidden panel
+            colorId = index + 1
+            # if element before inc was been the last on the line
+            # next element been first on the same line
+            if colorId % 3 == 0:
+                colorId = colorId - 3
+            hiddenPanelColors[colorId] = toggleHiddenColor(
+                    hiddenPanelColors[colorId])
+    # checked Hidden Panel
+    for index in range(ELEMENTS_NUMBER):
+        if oldHiddenPanelSwitchers[index] != hiddenPanelSwitchers[index]:
+           hiddenPanelColors[index] = toggleHiddenColor(hiddenPanelColors[index])
+
+           colorId = index + 1
+           if colorId % 3 == 0:
+               colorId = colorId - 3
+           visiblePanelColors[colorId] = toggleVisibleColor(
+                   visiblePanelColors[colorId])
+
+    # save new values in global lists
+    oldVisiblePanelSwitchers = visiblePanelSwitchers[:]
+    oldHiddenPanelSwitchers = hiddenPanelSwitchers[:]
+
+    # set new colors on device
+    # 12 times executed function, whom used Rlock
+    # It's might be critical
+    smartLedsObj = master.getSmartLeds(hallwayPuzzles)
+    for index in range(ELEMENTS_NUMBER):
+        smartLedsObj.setOneLed(index, hiddenPanelColors[index]) 
+        # NUM_LEDS 32, but index from 0 to 31
+        visibleIndex = smartLedsObj.NUM_LEDS - 1 - index
+        smartLedsObj.setOneLed(visibleIndex, visiblePanelColors[index])
 
 
 def DISABLE_RADIO(master, task, game_state):
