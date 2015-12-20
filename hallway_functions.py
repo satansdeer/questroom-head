@@ -5,6 +5,8 @@ import time
 import random
 from Radio import Radio
 
+from collections import Counter
+
 start_time = time.time()
 # slavePuzzle = "mainPuzzle"
 hallwayPuzzles = "hallwayPuzzles"
@@ -454,8 +456,14 @@ def CORRECT_SEQUENCE_ENTERED(master, task, game_state):
         return True
 
     value = master.getAdc(hallwayPuzzles).get()[LOCK_ID]
-    # READ_DATA_STACK.append(value)
+    READ_DATA_STACK.append(value)
 
+    if len(READ_DATA_STACK) < READ_DATA_STACK_LENGTH:
+        return
+
+    # get most freq value 
+    value = Counter(READ_DATA_STACK).most_common(1)[0][0]
+    READ_DATA_STACK = []
 
     lockPosition = value
 
