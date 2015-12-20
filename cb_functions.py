@@ -94,7 +94,6 @@ class CB_CTRL:
     KRIVOSHUP_PLUS = 5
     SERVO_COOLING_SYSTEM = 6
     # ADC
-    # Муфта обратного цикла
     CLUTCH_REVERSE_CYCLE = 1
     SUPER_BRAIN = 0
 
@@ -189,31 +188,6 @@ def REQ_SUPER_BRAIN_TO_86(master, task, game_state):
 def REQ_SUPER_BRAIN_TO_45(master, task, game_state):
     adc = master.getAdc(CB_SLAVE_1).get()
     return 45 == adc[CB_CTRL.CLUTCH_REVERSE_CYCLE]
-
-def PRESLO_PRESSED(master, task, game_state):
-        buttons = master.getButtons(CB_SLAVE_2).get()
-        presloPressed = buttons[Cb2Buttons.PRESLO]
-        return presloPressed
-
-def KOKOVNIK_PRESSED(master, task, game_state):
-        buttons = master.getButtons(CB_SLAVE_2).get()
-        kokovnikPressed = buttons[Cb2Buttons.KOKOVNIK]
-        return kokovnikPressed
-
-def TRUNDEL_PRESSED(master, task, game_state):
-        buttons = master.getButtons(CB_SLAVE_2).get()
-        trundelPressed = buttons[Cb2Buttons.TRUNDEL]
-        return trundelPressed
-
-def GLUKALO_PRESSED(master, task, game_state):
-        buttons = master.getButtons(CB_SLAVE_2).get()
-        glukaloPressed = buttons[Cb2Buttons.GLUKALO]
-        return glukaloPressed
-
-def HERABORA_PRESSED(master, task, game_state):
-        buttons = master.getButtons(CB_SLAVE_2).get()
-        glukaloPressed = buttons[Cb2Buttons.HERABORA]
-        return glukaloPressed
 
 
 
