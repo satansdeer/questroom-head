@@ -85,7 +85,7 @@ class Cb2Buttons:
 class CB_CTRL:
     """Named constant for Captain's Bridge controls"""
     # Controller 1
-    # Buttons
+    #    # Buttons
     REPULSIVE_DESYNCRONISER = 0
     LEVITRON = 1
     DEFLECTOR = 2
@@ -93,9 +93,31 @@ class CB_CTRL:
     KRIVOSHUP_MINUS = 4
     KRIVOSHUP_PLUS = 5
     SERVO_COOLING_SYSTEM = 6
-    # ADC
+    ULTRAFOTON = 11
+    REPAIR_NANOROBOTS = 12
+    C3PO = 14
+    R2D2 = 15
+    TETRAGEKS = 16
+    #    # ADC
     CLUTCH_REVERSE_CYCLE = 1
     SUPER_BRAIN = 0
+
+    # Controller 2
+    #    # Buttons
+    TPBACH_1 = 0
+    TPBACH_2 = 1
+    DVORNIKI = 2
+    ECO_LAZER = 3
+    PROTON_LAUNCHERS_BATTERY = 4
+    DARK_MATTER_STABILIZER = 5
+    HERABORA = 12
+
+    #    # ADC
+    CHAMAEMELUM_NOBILE = 0
+    DIPSOMANIA_SUPERCHARGER = 1
+    HYPER_DRIVE_GENERATOR = 2
+    CONDENSER = 6
+
 
 def REQ_SERVO_COOLING_SYSTEM_ON(master, task, game_state):
     buttons = master.getButtons(CB_SLAVE_1).get()
@@ -189,6 +211,154 @@ def REQ_SUPER_BRAIN_TO_45(master, task, game_state):
     adc = master.getAdc(CB_SLAVE_1).get()
     return 45 == adc[CB_CTRL.CLUTCH_REVERSE_CYCLE]
 
+# Panel 1_2
 
+def REQ_TETRAGEKS_ON(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_1).get()
+    return 1 == buttons[CB_CTRL.TETRAGEKS]
 
+def REQ_TETRAGEKS_OFF(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_1).get()
+    return 0 == buttons[CB_CTRL.TETRAGEKS]
 
+def REQ_C3PO_ON(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_1).get()
+    return 1 == buttons[CB_CTRL.C3PO]
+
+def REQ_C3PO_OFF(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_1).get()
+    return 0 == buttons[CB_CTRL.C3PO]
+
+def REQ_R2D2_ON(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_1).get()
+    return 1 == buttons[CB_CTRL.R2D2]
+
+def REQ_R2D2_OFF(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_1).get()
+    return 0 == buttons[CB_CTRL.R2D2]
+
+def REQ_REPAIR_NANOROBOTS_ON(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_1).get()
+    return 1 == buttons[CB_CTRL.REPAIR_NANOROBOTS]
+
+def REQ_REPAIR_NANOROBOTS_OFF(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_1).get()
+    return 0 == buttons[CB_CTRL.REPAIR_NANOROBOTS]
+
+def REQ_ULTRAFOTON_ON(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_1).get()
+    return 1 == buttons[CB_CTRL.ULTRAFOTON]
+
+def REQ_ULTRAFOTON_OFF(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_1).get()
+    return 0 == buttons[CB_CTRL.ULTRAFOTON]
+
+# Panel 2_3
+
+def REQ_TPBACH_1_ON(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 1 == buttons[CB_CTRL.TPBACH_1]
+
+def REQ_TPBACH_1_OFF(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 0 == buttons[CB_CTRL.TPBACH_1]
+
+def REQ_TPBACH_2_ON(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 1 == buttons[CB_CTRL.TPBACH_2]
+
+def REQ_TPBACH_2_OFF(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 0 == buttons[CB_CTRL.TPBACH_2]
+
+def REQ_ECO_LAZER_ON(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 1 == buttons[CB_CTRL.ECO_LAZER]
+
+def REQ_ECO_LAZER_OFF(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 0 == buttons[CB_CTRL.ECO_LAZER]
+
+def REQ_DARK_MATTER_STABILIZER_ON(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 1 == buttons[CB_CTRL.DARK_MATTER_STABILIZER]
+
+def REQ_DARK_MATTER_STABILIZER_OFF(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 0 == buttons[CB_CTRL.DARK_MATTER_STABILIZER]
+
+def REQ_DVORNIKI_ON(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 1 == buttons[CB_CTRL.DVORNIKI]
+
+def REQ_DVORNIKI_OFF(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 0 == buttons[CB_CTRL.DVORNIKI]
+
+def REQ_PROTON_LAUNCHERS_BATTERY_ON(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 1 == buttons[CB_CTRL.PROTON_LAUNCHERS_BATTERY]
+
+def REQ_PROTON_LAUNCHERS_BATTERY_OFF(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 0 == buttons[CB_CTRL.PROTON_LAUNCHERS_BATTERY]
+
+def REQ_HYPER_DRIVE_GENERATOR_TO_MAX(master, task, game_state):
+    adc = master.getAdc(CB_SLAVE_2).get()
+    return 255 == adc[CB_CTRL.HYPER_DRIVE_GENERATOR]
+
+def REQ_HYPER_DRIVE_GENERATOR_TO_MIN(master, task, game_state):
+    adc = master.getAdc(CB_SLAVE_2).get()
+    return 0 == adc[CB_CTRL.HYPER_DRIVE_GENERATOR]
+
+def REQ_DIPSOMANIA_SUPERCHARGER_TO_3(master, task, game_state):
+    adc = master.getAdc(CB_SLAVE_2).get()
+    return 130 == adc[CB_CTRL.DIPSOMANIA_SUPERCHARGER]
+
+def REQ_DIPSOMANIA_SUPERCHARGER_TO_2(master, task, game_state):
+    adc = master.getAdc(CB_SLAVE_2).get()
+    return 86 == adc[CB_CTRL.DIPSOMANIA_SUPERCHARGER]
+
+def REQ_DIPSOMANIA_SUPERCHARGER_TO_1(master, task, game_state):
+    adc = master.getAdc(CB_SLAVE_2).get()
+    return 45 == adc[CB_CTRL.DIPSOMANIA_SUPERCHARGER]
+
+def REQ_DIPSOMANIA_SUPERCHARGER_TO_0(master, task, game_state):
+    adc = master.getAdc(CB_SLAVE_2).get()
+    return 0 == adc[CB_CTRL.DIPSOMANIA_SUPERCHARGER]
+
+def REQ_CHAMAEMELUM_NOBILE_TO_3(master, task, game_state):
+    adc = master.getAdc(CB_SLAVE_2).get()
+    return 255 == adc[CB_CTRL.CHAMAEMELUM_NOBILE]
+
+def REQ_CHAMAEMELUM_NOBILE_TO_2(master, task, game_state):
+    adc = master.getAdc(CB_SLAVE_2).get()
+    return 182 == adc[CB_CTRL.CHAMAEMELUM_NOBILE]
+
+def REQ_CHAMAEMELUM_NOBILE_TO_1(master, task, game_state):
+    adc = master.getAdc(CB_SLAVE_2).get()
+    return 86 == adc[CB_CTRL.CHAMAEMELUM_NOBILE]
+
+def REQ_CHAMAEMELUM_NOBILE_TO_0(master, task, game_state):
+    adc = master.getAdc(CB_SLAVE_2).get()
+    return 0 == adc[CB_CTRL.CHAMAEMELUM_NOBILE]
+
+def REQ_CONDENSER_TO_3(master, task, game_state):
+    adc = master.getAdc(CB_SLAVE_2).get()
+    return 255 == adc[CB_CTRL.CONDENSER]
+
+def REQ_CONDENSER_TO_2(master, task, game_state):
+    adc = master.getAdc(CB_SLAVE_2).get()
+    return 183 == adc[CB_CTRL.CONDENSER]
+
+def REQ_CONDENSER_TO_1(master, task, game_state):
+    adc = master.getAdc(CB_SLAVE_2).get()
+    return 87 == adc[CB_CTRL.CONDENSER]
+
+def REQ_CONDENSER_TO_0(master, task, game_state):
+    adc = master.getAdc(CB_SLAVE_2).get()
+    return 0 == adc[CB_CTRL.CONDENSER]
+
+def REQ_HERABORA_PRESSED(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 1 == buttons[CB_CTRL.HERABORA]
