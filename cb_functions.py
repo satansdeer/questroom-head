@@ -2,6 +2,62 @@ import random
 CB_SLAVE_1="CB_SLAVE_1"
 CB_SLAVE_2="CB_SLAVE_2"
 
+class Cb1Buttons:
+        pass
+
+class Cb2Buttons:
+        PRESLO = 0
+        KOKOVNIK = 1
+        TRUNDEL = 2
+        GLUKALO = 3
+        HERABORA = 12
+
+class CB_CTRL:
+    """Named constant for Captain's Bridge controls"""
+    # Controller 1
+    #    # Buttons
+    REPULSIVE_DESYNCRONISER = 0
+    LEVITRON = 1
+    DEFLECTOR = 2
+    BIG_RED_BUTTON = 3
+    KRIVOSHUP_MINUS = 4
+    KRIVOSHUP_PLUS = 5
+    SERVO_COOLING_SYSTEM = 6
+    ULTRAFOTON = 11
+    REPAIR_NANOROBOTS = 12
+    C3PO = 14
+    R2D2 = 15
+    TETRAGEKS = 16
+    #    # ADC
+    CLUTCH_REVERSE_CYCLE = 1
+    SUPER_BRAIN = 0
+
+    # Controller 2
+    #    # Buttons
+    TPBACH_1 = 0
+    TPBACH_2 = 1
+    DVORNIKI = 2
+    ECO_LAZER = 3
+
+    BATTERY_1 = 7
+    BATTERY_2 = 8
+    BATTERY_3 = 10
+    BATTERY_4 = 6
+
+    PROTON_LAUNCHERS_BATTERY = 4
+    DARK_MATTER_STABILIZER = 5
+    HERABORA = 12
+
+    #    # ADC
+    CHAMAEMELUM_NOBILE = 0
+    DIPSOMANIA_SUPERCHARGER = 1
+    HYPER_DRIVE_GENERATOR = 2
+    CONDENSER = 6
+
+class MESSAGE:
+    BATTERY_AVALIABLE = "Battery {id} is inserted"
+    BATTERY_ABSENT = "ERROR: Battery {id} missing!"
+
 def REQ_ENGINE_ASSEMBLED(master, task, game_state):
         print("REQ_ENGINE_ASSEMBLED")
         return True
@@ -11,8 +67,59 @@ def AC_ADD_4_BATTARIES_TASKS(master, task, game_state):
 
 
 def REQ_CHECK_BATTARIES(master, task, game_state):
-        print("REQ_CHECK_BATTARIES")
-        return True
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    battery_1 = buttons[CB_CTRL.BATTERY_1]
+    battery_2 = buttons[CB_CTRL.BATTERY_2]
+    battery_3 = buttons[CB_CTRL.BATTERY_3]
+    battery_4 = buttons[CB_CTRL.BATTERY_4]
+    print("REQ_CHECK_BATTARIES")
+    return True
+
+def sendBatteryMessage(game_state, monitorId, battery, batteryId):
+    if battery:
+        game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.BATTERY_AVALIABLE.format(id=batteryId)})
+    else:
+        game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.BATTERY_ABSENT.format(id=batteryId)})
+
+def REQ_CHECK_BATTERY_1(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    battery = buttons[CB_CTRL.BATTERY_1]
+
+    monitorId = game_state.getMonitorIdByTask(task)
+
+    batteryId = 1
+
+    sendBatteryMessage(game_state, monitorId, battery, batteryId)
+
+def REQ_CHECK_BATTERY_2(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    battery = buttons[CB_CTRL.BATTERY_2]
+
+    monitorId = game_state.getMonitorIdByTask(task)
+
+    batteryId = 2
+
+    sendBatteryMessage(game_state, monitorId, battery, batteryId)
+
+def REQ_CHECK_BATTERY_3(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    battery = buttons[CB_CTRL.BATTERY_3]
+
+    monitorId = game_state.getMonitorIdByTask(task)
+
+    batteryId = 3
+
+    sendBatteryMessage(game_state, monitorId, battery, batteryId)
+
+def REQ_CHECK_BATTERY_4(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    battery = buttons[CB_CTRL.BATTERY_4]
+
+    monitorId = game_state.getMonitorIdByTask(task)
+
+    batteryId = 4
+
+    sendBatteryMessage(game_state, monitorId, battery, batteryId)
 
 def AC_PRESS_HERABORA(master, task, game_state):
         game_state.add_active_task_with_id(2)
@@ -72,51 +179,6 @@ def REQ_CB_TASK_FAILURE(master, task, game_state):
     return game_state.cbTaskFailure(task)
 
 
-class Cb1Buttons:
-        pass
-
-class Cb2Buttons:
-        PRESLO = 0
-        KOKOVNIK = 1
-        TRUNDEL = 2
-        GLUKALO = 3
-        HERABORA = 12
-
-class CB_CTRL:
-    """Named constant for Captain's Bridge controls"""
-    # Controller 1
-    #    # Buttons
-    REPULSIVE_DESYNCRONISER = 0
-    LEVITRON = 1
-    DEFLECTOR = 2
-    BIG_RED_BUTTON = 3
-    KRIVOSHUP_MINUS = 4
-    KRIVOSHUP_PLUS = 5
-    SERVO_COOLING_SYSTEM = 6
-    ULTRAFOTON = 11
-    REPAIR_NANOROBOTS = 12
-    C3PO = 14
-    R2D2 = 15
-    TETRAGEKS = 16
-    #    # ADC
-    CLUTCH_REVERSE_CYCLE = 1
-    SUPER_BRAIN = 0
-
-    # Controller 2
-    #    # Buttons
-    TPBACH_1 = 0
-    TPBACH_2 = 1
-    DVORNIKI = 2
-    ECO_LAZER = 3
-    PROTON_LAUNCHERS_BATTERY = 4
-    DARK_MATTER_STABILIZER = 5
-    HERABORA = 12
-
-    #    # ADC
-    CHAMAEMELUM_NOBILE = 0
-    DIPSOMANIA_SUPERCHARGER = 1
-    HYPER_DRIVE_GENERATOR = 2
-    CONDENSER = 6
 
 
 def REQ_SERVO_COOLING_SYSTEM_ON(master, task, game_state):

@@ -16,7 +16,7 @@
       -
         id: 1
         success_requirements:
-          [REQ_CHECK_BATTARIES]
+          [REQ_CHECK_BATTERIES]
         success_actions:
           [AC_PRESS_HERABORA]
         failure_requirements:
@@ -24,6 +24,54 @@
         failure_actions:
           []
         title: 'Insert bataries'
+
+      -
+        id: 151
+        success_requirements:
+          [REQ_CHECK_BATTERY_1]
+        success_actions:
+          [AC_PRESS_HERABORA]
+        failure_requirements:
+          []
+        failure_actions:
+          []
+        title: 'Insert battary 1'
+
+      -
+        id: 152
+        success_requirements:
+          [REQ_CHECK_BATTERY_2]
+        success_actions:
+          [AC_PRESS_HERABORA]
+        failure_requirements:
+          []
+        failure_actions:
+          []
+        title: 'Insert batery 2'
+
+      -
+        id: 153
+        success_requirements:
+          [REQ_CHECK_BATTERY_3]
+        success_actions:
+          [AC_PRESS_HERABORA]
+        failure_requirements:
+          []
+        failure_actions:
+          []
+        title: 'Insert batery 3'
+
+      -
+        id: 154
+        success_requirements:
+          [REQ_CHECK_BATTERY_4]
+        success_actions:
+          [AC_PRESS_HERABORA]
+        failure_requirements:
+          []
+        failure_actions:
+          []
+        title: 'Insert batery 4'
 
       -
         id: 2
