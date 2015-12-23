@@ -2,21 +2,9 @@
 ---
     tasks:
       -
-        id: 0
+        id: 101
         success_requirements:
-          [REQ_ENGINE_ASSEMBLED]
-        success_actions:
-          [AC_ADD_4_BATTARIES_TASKS]
-        failure_requirements:
-          []
-        failure_actions:
-          []
-        title: 'Собрать двигатель'
-
-      -
-        id: 1
-        success_requirements:
-          [REQ_CHECK_BATTERIES]
+          [REQ_CHECK_BATTERIES, REQ_ENGINE_ASSEMBLED]
         success_actions:
           [AC_PRESS_HERABORA]
         failure_requirements:
@@ -26,52 +14,69 @@
         title: 'Insert bataries'
 
       -
-        id: 151
+        # Показать сообщение о неисправном двигателе, если надо
+        id: 102
         success_requirements:
-          [REQ_CHECK_BATTERY_1]
+          [REQ_CHECK_BATTARIES]
         success_actions:
-          [AC_PRESS_HERABORA]
+          [AC_SHOW_ENGINE_MESSAGE]
         failure_requirements:
           []
         failure_actions:
           []
-        title: 'Insert battary 1'
+        title: ''
+
+      -
+        id: 151
+        success_requirements:
+          [REQ_CHECK_BATTERY_1]
+        success_actions:
+          []
+        failure_requirements:
+          []
+        failure_actions:
+          []
+        title: ''
+        showOnMonitor: True
 
       -
         id: 152
         success_requirements:
           [REQ_CHECK_BATTERY_2]
         success_actions:
-          [AC_PRESS_HERABORA]
+          []
         failure_requirements:
           []
         failure_actions:
           []
-        title: 'Insert batery 2'
+        title: ''
+        showOnMonitor: True
 
       -
         id: 153
         success_requirements:
           [REQ_CHECK_BATTERY_3]
         success_actions:
-          [AC_PRESS_HERABORA]
+          []
         failure_requirements:
           []
         failure_actions:
           []
-        title: 'Insert batery 3'
+        title: ''
+        showOnMonitor: True
 
       -
         id: 154
         success_requirements:
           [REQ_CHECK_BATTERY_4]
         success_actions:
-          [AC_PRESS_HERABORA]
+          []
         failure_requirements:
           []
         failure_actions:
           []
-        title: 'Insert batery 4'
+        title: ''
+        showOnMonitor: True
 
       -
         id: 2

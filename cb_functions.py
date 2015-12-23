@@ -1,6 +1,15 @@
 import random
 CB_SLAVE_1="CB_SLAVE_1"
 CB_SLAVE_2="CB_SLAVE_2"
+hallwayPuzzles = "hallwayPuzzles"
+
+class ButtonsIdTable:
+    WIRE_CONNECTION = 11
+    FUSE = 6
+    MECHANICS_CARD = 10
+    ROBOT_HEAD = 8
+    ENGINE = 9
+    COMMUTATOR = 7
 
 class Cb1Buttons:
         pass
@@ -57,13 +66,28 @@ class CB_CTRL:
 class MESSAGE:
     BATTERY_AVALIABLE = "Battery {id} is inserted"
     BATTERY_ABSENT = "ERROR: Battery {id} missing!"
+    ENGINE_BROKEN = "Repair engine"
 
 def REQ_ENGINE_ASSEMBLED(master, task, game_state):
-        print("REQ_ENGINE_ASSEMBLED")
-        return True
+    buttons = master.getButtons(hallwayPuzzles).get()
+    engine = buttons[ButtonsIdTable.ENGINE]
+    return engine
+
+def AC_SHOW_ENGINE_MESSAGE(master, task, game_state):
+    if REQ_ENGINE_ASSEMBLED(master, None, game_state):
+        return
+
+    for monitorId in range(1,5):
+        game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.ENGINE_BROKEN})
 
 def AC_ADD_4_BATTARIES_TASKS(master, task, game_state):
-        game_state.add_active_task_with_id(1)
+    # Add req all batteries
+    game_state.add_active_task_with_id(101)
+    # One by one 
+    game_state.add_active_task_with_id(151)
+    game_state.add_active_task_with_id(152)
+    game_state.add_active_task_with_id(153)
+    game_state.add_active_task_with_id(154)
 
 
 def REQ_CHECK_BATTARIES(master, task, game_state):
@@ -72,7 +96,16 @@ def REQ_CHECK_BATTARIES(master, task, game_state):
     battery_2 = buttons[CB_CTRL.BATTERY_2]
     battery_3 = buttons[CB_CTRL.BATTERY_3]
     battery_4 = buttons[CB_CTRL.BATTERY_4]
-    print("REQ_CHECK_BATTARIES")
+    # print("REQ_CHECK_BATTARIES")
+    batteryState = (battery_1 and battery_2 and battery_3 and battery_4)
+
+    if not batteryState:
+        return batteryState
+
+    taskList = [151, 152, 153, 154]
+    for taskId in taskList:
+        task = game_state.find_task_with_id(taskId)
+        game_state.remove_active_task(task)
     return True
 
 def sendBatteryMessage(game_state, monitorId, battery, batteryId):
@@ -90,6 +123,7 @@ def REQ_CHECK_BATTERY_1(master, task, game_state):
     batteryId = 1
 
     sendBatteryMessage(game_state, monitorId, battery, batteryId)
+    return False
 
 def REQ_CHECK_BATTERY_2(master, task, game_state):
     buttons = master.getButtons(CB_SLAVE_2).get()
@@ -100,6 +134,7 @@ def REQ_CHECK_BATTERY_2(master, task, game_state):
     batteryId = 2
 
     sendBatteryMessage(game_state, monitorId, battery, batteryId)
+    return False
 
 def REQ_CHECK_BATTERY_3(master, task, game_state):
     buttons = master.getButtons(CB_SLAVE_2).get()
@@ -110,6 +145,7 @@ def REQ_CHECK_BATTERY_3(master, task, game_state):
     batteryId = 3
 
     sendBatteryMessage(game_state, monitorId, battery, batteryId)
+    return False
 
 def REQ_CHECK_BATTERY_4(master, task, game_state):
     buttons = master.getButtons(CB_SLAVE_2).get()
@@ -120,13 +156,17 @@ def REQ_CHECK_BATTERY_4(master, task, game_state):
     batteryId = 4
 
     sendBatteryMessage(game_state, monitorId, battery, batteryId)
+    return False
 
 def AC_PRESS_HERABORA(master, task, game_state):
-        game_state.add_active_task_with_id(2)
+    for monitorId in range(1,5):
+        game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.ENGINE_BROKEN})
+
+    game_state.add_active_task_with_id(2)
 
 def REQ_CHECK_HERABORA(master, task, game_state):
         heraboraPressed = master.getButtons(CB_SLAVE_2).get()[12]
-        print("Herabora value: {}\n", heraboraPressed)
+        #print("Herabora value: {}\n", heraboraPressed)
         return heraboraPressed
 
 def AC_CB_ADD_RANDOM_TASK(master, task, game_state):
