@@ -68,6 +68,8 @@ class MESSAGE:
     BATTERY_ABSENT = "ERROR: Battery {id} missing!"
     ENGINE_BROKEN = "Repair engine"
     PRESS_HERABORA = "When you're ready press HERABORA"
+    WINNER = "You're winner! Entered door are open"
+    FAIL = "You're fail! Entered door are open"
 
 def REQ_ENGINE_ASSEMBLED(master, task, game_state):
     buttons = master.getButtons(hallwayPuzzles).get()
@@ -162,8 +164,8 @@ def REQ_CHECK_BATTERY_4(master, task, game_state):
 def AC_PRESS_HERABORA(master, task, game_state):
     for monitorId in range(1,5):
         game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.PRESS_HERABORA})
-
-    game_state.add_active_task_with_id(2)
+    # added REQ_CHECK_HERABORA task
+    game_state.add_active_task_with_id(201)
 
 def REQ_CHECK_HERABORA(master, task, game_state):
         heraboraPressed = master.getButtons(CB_SLAVE_2).get()[12]
@@ -193,7 +195,7 @@ def AC_CB_ADD_RANDOM_TASK(master, task, game_state):
         game_state.update_used_task_ids_list(randomTaskId)
 
 def AC_ADD_END_GAME_TASK(master, task, game_state):
-        game_state.add_active_task_with_id(3)
+        game_state.add_active_task_with_id(203)
 
 def REQ_AMOUNT_OF_TASK_SUCCESSED(master, task, game_state):
     if game_state.successfullTasksForWin == game_state.successfullTasksCounter:
@@ -201,16 +203,20 @@ def REQ_AMOUNT_OF_TASK_SUCCESSED(master, task, game_state):
     return False
 
 def AC_ENTERED_DOOR_OPEN(master, task, game_state):
-        print("Entered door opened")
+    print("Entered door opened")
 
 def AC_SHOW_SUCCESS_MESSAGE(master, task, game_state):
-        print("You are WINNER!")
+    print("You are WINNER!")
+    game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.WINNER})
 
 def REQ_AMOUNT_OF_TASK_FAILURE(master, task, game_state):
-        return False
+    if game_state.failureTasksForLose == game_state.failureTasksCounter:
+            return True
+    return False
 
 def AC_SHOW_FAILURE_MESSAGE(master, task, game_state):
-        print("You lose")
+    game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.FAIL})
+    print("You lose")
 
 
 # Tasks

@@ -79,11 +79,11 @@
         showOnMonitor: True
 
       -
-        id: 2
+        id: 201
         success_requirements:
           [REQ_CHECK_HERABORA]
         success_actions:
-          [REQ_AMOUNT_OF_TASK_SUCCESSED, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK]
+          [AC_ADD_END_GAME_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK]
         failure_requirements:
           []
         failure_actions:
@@ -91,7 +91,7 @@
         title: 'Press Herabora'
 
       -
-        id: 3
+        id: 203 
         success_requirements:
           [REQ_AMOUNT_OF_TASK_SUCCESSED]
         success_actions:
@@ -103,7 +103,7 @@
         title: 'AMOUNT_OF_TASK_SUCCESSED'
 
       -
-        id: 20
+        id: 220
         success_requirements:
           [REQ_SERVO_COOLING_SYSTEM_ON]
         success_actions:
@@ -117,7 +117,7 @@
         type: 'CB_TASK'
 
       -
-        id: 21
+        id: 221
         success_requirements:
           [REQ_SERVO_COOLING_SYSTEM_OFF]
         success_actions:
@@ -131,7 +131,7 @@
         type: 'CB_TASK'
 
       -
-        id: 22
+        id: 222
         success_requirements:
           [REQ_DEFLECTOR_ON]
         success_actions:
@@ -145,7 +145,7 @@
         type: 'CB_TASK'
 
       -
-        id: 23
+        id: 223
         success_requirements:
           [REQ_DEFLECTOR_OFF]
         success_actions:
@@ -159,7 +159,7 @@
         type: 'CB_TASK'
 
       -
-        id: 24
+        id: 224
         success_requirements:
           [REQ_LEVITRON_ON]
         success_actions:
@@ -173,7 +173,7 @@
         type: 'CB_TASK'
 
       -
-        id: 25
+        id: 225
         success_requirements:
           [REQ_LEVITRON_OFF]
         success_actions:
@@ -187,7 +187,7 @@
         type: 'CB_TASK'
 
       -
-        id: 26
+        id: 226
         success_requirements:
           [REQ_KRIVOSHUP_PLUS_ON]
         success_actions:
@@ -201,7 +201,7 @@
         type: 'CB_TASK'
 
       -
-        id: 27
+        id: 227
         success_requirements:
           [REQ_KRIVOSHUP_PLUS_OFF]
         success_actions:
@@ -215,7 +215,7 @@
         type: 'CB_TASK'
 
       -
-        id: 28
+        id: 228
         success_requirements:
           [REQ_KRIVOSHUP_MINUS_ON]
         success_actions:
@@ -229,7 +229,7 @@
         type: 'CB_TASK'
 
       -
-        id: 29
+        id: 229
         success_requirements:
           [REQ_KRIVOSHUP_MINUS_OFF]
         success_actions:
@@ -243,7 +243,7 @@
         type: 'CB_TASK'
 
       -
-        id: 30
+        id: 230
         success_requirements:
           [REQ_REPULSIVE_DESYCHRONISER_ON]
         success_actions:
@@ -257,7 +257,7 @@
         type: 'CB_TASK'
 
       -
-        id: 31
+        id: 231
         success_requirements:
           [REQ_REPULSIVE_DESYCHRONISER_OFF]
         success_actions:
@@ -271,7 +271,7 @@
         type: 'CB_TASK'
 
       -
-        id: 32
+        id: 232
         success_requirements:
           [REQ_BIG_RED_BUTTON_PRESSED]
         success_actions:
@@ -285,7 +285,7 @@
         type: 'CB_TASK'
 
       -
-        id: 33
+        id: 233
         success_requirements:
           [REQ_CLUTCH_REVERSE_SYCLE_TO_0]
         success_actions:
@@ -299,7 +299,7 @@
         type: 'CB_TASK'
 
       -
-        id: 34
+        id: 234
         success_requirements:
           [REQ_CLUTCH_REVERSE_SYCLE_TO_255]
         success_actions:
@@ -313,7 +313,7 @@
         type: 'CB_TASK'
 
       -
-        id: 35
+        id: 235
         success_requirements:
           [REQ_CLUTCH_REVERSE_SYCLE_TO_77]
         success_actions:
@@ -327,7 +327,7 @@
         type: 'CB_TASK'
 
       -
-        id: 36
+        id: 236
         success_requirements:
           [REQ_CLUTCH_REVERSE_SYCLE_TO_150]
         success_actions:
@@ -341,7 +341,7 @@
         type: 'CB_TASK'
 
       -
-        id: 37
+        id: 237
         success_requirements:
           [REQ_SUPER_BRAIN_TO_0]
         success_actions:
@@ -355,7 +355,7 @@
         type: 'CB_TASK'
 
       -
-        id: 38
+        id: 238
         success_requirements:
           [REQ_SUPER_BRAIN_TO_255]
         success_actions:
@@ -369,7 +369,7 @@
         type: 'CB_TASK'
 
       -
-        id: 39
+        id: 239
         success_requirements:
           [REQ_SUPER_BRAIN_TO_182]
         success_actions:
@@ -383,7 +383,7 @@
         type: 'CB_TASK'
 
       -
-        id: 40
+        id: 240
         success_requirements:
           [REQ_SUPER_BRAIN_TO_129]
         success_actions:
@@ -397,7 +397,7 @@
         type: 'CB_TASK'
 
       -
-        id: 41
+        id: 241
         success_requirements:
           [REQ_SUPER_BRAIN_TO_86]
         success_actions:
@@ -411,7 +411,7 @@
         type: 'CB_TASK'
 
       -
-        id: 42
+        id: 242
         success_requirements:
           [REQ_SUPER_BRAIN_TO_45]
         success_actions:
@@ -425,7 +425,7 @@
         type: 'CB_TASK'
 
       -
-        id: 43 
+        id: 243 
         success_requirements:
           [REQ_TETRAGEKS_ON]
         success_actions:
@@ -439,7 +439,7 @@
         type: 'CB_TASK'
 
       -
-        id: 44
+        id: 244
         success_requirements:
           [REQ_TETRAGEKS_OFF]
         success_actions:
@@ -453,7 +453,7 @@
         type: 'CB_TASK'
 
       -
-        id: 45 
+        id: 245 
         success_requirements:
           [REQ_C3PO_ON]
         success_actions:
@@ -467,7 +467,7 @@
         type: 'CB_TASK'
 
       -
-        id: 46
+        id: 246
         success_requirements:
           [REQ_C3PO_OFF]
         success_actions:
@@ -481,7 +481,7 @@
         type: 'CB_TASK'
 
       -
-        id: 47 
+        id: 247 
         success_requirements:
           [REQ_REPAIR_NANOROBOTS_ON]
         success_actions:
@@ -495,7 +495,7 @@
         type: 'CB_TASK'
 
       -
-        id: 48
+        id: 248
         success_requirements:
           [REQ_REPAIR_NANOROBOTS_OFF]
         success_actions:
@@ -509,7 +509,7 @@
         type: 'CB_TASK'
 
       -
-        id: 49 
+        id: 249 
         success_requirements:
           [REQ_ULTRAFOTON_ON]
         success_actions:
@@ -523,7 +523,7 @@
         type: 'CB_TASK'
 
       -
-        id: 50
+        id: 250
         success_requirements:
           [REQ_ULTRAFOTON_OFF]
         success_actions:
@@ -537,7 +537,7 @@
         type: 'CB_TASK'
 
       -
-        id: 51
+        id: 251
         success_requirements:
           [REQ_TPBACH_1_ON]
         success_actions:
@@ -551,7 +551,7 @@
         type: 'CB_TASK'
 
       -
-        id: 52
+        id: 252
         success_requirements:
           [REQ_TPBACH_1_OFF]
         success_actions:
@@ -565,7 +565,7 @@
         type: 'CB_TASK'
 
       -
-        id: 53
+        id: 253
         success_requirements:
           [REQ_TPBACH_2_ON]
         success_actions:
@@ -579,7 +579,7 @@
         type: 'CB_TASK'
 
       -
-        id: 54
+        id: 254
         success_requirements:
           [REQ_TPBACH_2_OFF]
         success_actions:
@@ -593,7 +593,7 @@
         type: 'CB_TASK'
 
       -
-        id: 55
+        id: 255
         success_requirements:
           [REQ_ECO_LAZER_ON]
         success_actions:
@@ -607,7 +607,7 @@
         type: 'CB_TASK'
 
       -
-        id: 56
+        id: 256
         success_requirements:
           [REQ_ECO_LAZER_OFF]
         success_actions:
@@ -621,7 +621,7 @@
         type: 'CB_TASK'
 
       -
-        id: 57
+        id: 257
         success_requirements:
           [REQ_DARK_MATTER_STABILIZER_ON]
         success_actions:
@@ -635,7 +635,7 @@
         type: 'CB_TASK'
 
       -
-        id: 58
+        id: 258
         success_requirements:
           [REQ_DARK_MATTER_STABILIZER_OFF]
         success_actions:
@@ -649,7 +649,7 @@
         type: 'CB_TASK'
 
       -
-        id: 59
+        id: 259
         success_requirements:
           [REQ_DVORNIKI_ON]
         success_actions:
@@ -663,7 +663,7 @@
         type: 'CB_TASK'
 
       -
-        id: 60
+        id: 260
         success_requirements:
           [REQ_DVORNIKI_OFF]
         success_actions:
@@ -677,7 +677,7 @@
         type: 'CB_TASK'
 
       -
-        id: 61
+        id: 261
         success_requirements:
           [REQ_PROTON_LAUNCHERS_BATTERY_ON]
         success_actions:
@@ -691,7 +691,7 @@
         type: 'CB_TASK'
 
       -
-        id: 62
+        id: 262
         success_requirements:
           [REQ_HYPER_DRIVE_GENERATOR_TO_MAX]
         success_actions:
@@ -705,7 +705,7 @@
         type: 'CB_TASK'
 
       -
-        id: 63
+        id: 263
         success_requirements:
           [REQ_HYPER_DRIVE_GENERATOR_TO_MAX]
         success_actions:
@@ -719,7 +719,7 @@
         type: 'CB_TASK'
 
       -
-        id: 64
+        id: 264
         success_requirements:
           [REQ_HYPER_DRIVE_GENERATOR_TO_MIN]
         success_actions:
@@ -733,7 +733,7 @@
         type: 'CB_TASK'
 
       -
-        id: 65
+        id: 265
         success_requirements:
           [REQ_HERABORA_PRESSED]
         success_actions:
@@ -747,7 +747,7 @@
         type: 'CB_TASK'
 
       -
-        id: 66
+        id: 266
         success_requirements:
           [REQ_R2D2_ON]
         success_actions:
@@ -761,7 +761,7 @@
         type: 'CB_TASK'
 
       -
-        id: 67
+        id: 267
         success_requirements:
           [REQ_R2D2_OFF]
         success_actions:
@@ -775,7 +775,7 @@
         type: 'CB_TASK'
 
       -
-        id: 68
+        id: 268
         success_requirements:
           [REQ_DIPSOMANIA_SUPERCHARGER_TO_0]
         success_actions:
@@ -789,7 +789,7 @@
         type: 'CB_TASK'
 
       -
-        id: 69
+        id: 269
         success_requirements:
           [REQ_DIPSOMANIA_SUPERCHARGER_TO_1]
         success_actions:
@@ -803,7 +803,7 @@
         type: 'CB_TASK'
 
       -
-        id: 70
+        id: 270
         success_requirements:
           [REQ_DIPSOMANIA_SUPERCHARGER_TO_2]
         success_actions:
@@ -817,7 +817,7 @@
         type: 'CB_TASK'
 
       -
-        id: 71
+        id: 271
         success_requirements:
           [REQ_DIPSOMANIA_SUPERCHARGER_TO_3]
         success_actions:
@@ -831,7 +831,7 @@
         type: 'CB_TASK'
 
       -
-        id: 72
+        id: 272
         success_requirements:
           [REQ_CHAMAEMELUM_NOBILE_TO_0]
         success_actions:
@@ -845,7 +845,7 @@
         type: 'CB_TASK'
 
       -
-        id: 73
+        id: 273
         success_requirements:
           [REQ_CHAMAEMELUM_NOBILE_TO_1]
         success_actions:
@@ -859,7 +859,7 @@
         type: 'CB_TASK'
 
       -
-        id: 74
+        id: 274
         success_requirements:
           [REQ_CHAMAEMELUM_NOBILE_TO_2]
         success_actions:
@@ -873,7 +873,7 @@
         type: 'CB_TASK'
 
       -
-        id: 75
+        id: 275
         success_requirements:
           [REQ_CHAMAEMELUM_NOBILE_TO_3]
         success_actions:
@@ -887,7 +887,7 @@
         type: 'CB_TASK'
 
       -
-        id: 76
+        id: 276
         success_requirements:
           [REQ_CONDENSER_TO_0]
         success_actions:
@@ -901,7 +901,7 @@
         type: 'CB_TASK'
 
       -
-        id: 77
+        id: 277
         success_requirements:
           [REQ_CONDENSER_TO_1]
         success_actions:
@@ -915,7 +915,7 @@
         type: 'CB_TASK'
 
       -
-        id: 78
+        id: 278
         success_requirements:
           [REQ_CONDENSER_TO_2]
         success_actions:
@@ -929,7 +929,7 @@
         type: 'CB_TASK'
 
       -
-        id: 79
+        id: 279
         success_requirements:
           [REQ_CONDENSER_TO_3]
         success_actions:
