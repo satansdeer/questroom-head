@@ -67,6 +67,7 @@ class MESSAGE:
     BATTERY_AVALIABLE = "Battery {id} is inserted"
     BATTERY_ABSENT = "ERROR: Battery {id} missing!"
     ENGINE_BROKEN = "Repair engine"
+    PRESS_HERABORA = "When you're ready press HERABORA"
 
 def REQ_ENGINE_ASSEMBLED(master, task, game_state):
     buttons = master.getButtons(hallwayPuzzles).get()
@@ -160,7 +161,7 @@ def REQ_CHECK_BATTERY_4(master, task, game_state):
 
 def AC_PRESS_HERABORA(master, task, game_state):
     for monitorId in range(1,5):
-        game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.ENGINE_BROKEN})
+        game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.PRESS_HERABORA})
 
     game_state.add_active_task_with_id(2)
 
