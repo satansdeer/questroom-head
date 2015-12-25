@@ -35,7 +35,7 @@ def fillTask(task_source):
     task.title = task_source["title"] if "title" in task_source else "No title"
     task.id = task_source["id"]
     if "showOnMonitor" in task_source:
-	task.showOnMonitor = task_source["showOnMonitor"]
+        task.showOnMonitor = task_source["showOnMonitor"]
     if "type" in task_source:
         task.type = task_source["type"]
     return task

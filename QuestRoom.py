@@ -31,12 +31,12 @@ class QuestRoom(threading.Thread):
         hallwayPuzzles = master.addSlave("hallwayPuzzles", hallwayPort, 1, boudrate=5)
         captainsBridge = master.addSlave("CB_SLAVE_2", captainsBridgePort, 1, boudrate=5)
 
-        
+
         master.start()
 
-        init_leds = [0x000, 0x000, 0x000] * 32
-        master.setSmartLeds(hallwayPuzzles, init_leds)
-        leds = master.getSmartLeds(hallwayPuzzles).get()
+        # init_leds = [0x000, 0x000, 0x000] * 32
+        # master.setSmartLeds(hallwayPuzzles, init_leds)
+        # leds = master.getSmartLeds(hallwayPuzzles).get()
         #setLedValue(leds, 8, [0xfff, 0x0, 0x0])
         #setLedValue(leds, 9, [0xfff, 0x0, 0x0])
         #setLedValue(leds, 10, [0xfff, 0x0, 0x0])
@@ -47,7 +47,7 @@ class QuestRoom(threading.Thread):
         # keyboardListener = KeyboardListener(master)
         # keyboardListener.start()
 
-        self.game_state = parse("captain_script.yml")
+        self.game_state = parse("cb_quest.yml")
 
         #self.game_state = parse("quest_script.yml")
         self.game_state.device_master = master
@@ -61,7 +61,7 @@ class QuestRoom(threading.Thread):
         if str_id not in clients: return
         clients[str_id]['object'].write_message(message)
 
-    
+
     def on_gameloop(self, message):
         map(lambda client: clients[client]['object'].write_message(message), clients)
 
@@ -72,4 +72,4 @@ class QuestRoom(threading.Thread):
 
 
     def progress_bar_zero(self, monitorId):
-        self.game_state.updateMonitorsListWithProgressBarZero(monitorId) 
+        self.game_state.updateMonitorsListWithProgressBarZero(monitorId)
