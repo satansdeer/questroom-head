@@ -54,17 +54,16 @@ class GameState:
             # print("TAsi to perform satisfies: {id}, {obj}".format(id=task.id, obj=task))
             self.perform_task_if_satisfies(task)
         #callback(message) if callback else None
-        os.system('cls' if os.name=='nt' else 'clear')
-        print("CB_SLAVE_1")
-        self.device_master.getButtons(CB_SLAVE_1).printResource()
-        self.device_master.getAdc(CB_SLAVE_1).printResource()
-        print("CB_SLAVE_2")
-        self.device_master.getButtons(CB_SLAVE_2).printResource()
-        self.device_master.getAdc(CB_SLAVE_2).printResource()
+       # os.system('cls' if os.name=='nt' else 'clear')
+       # print("CB_SLAVE_1")
+       # self.device_master.getButtons(CB_SLAVE_1).printResource()
+       # self.device_master.getAdc(CB_SLAVE_1).printResource()
+       # print("CB_SLAVE_2")
+       # self.device_master.getButtons(CB_SLAVE_2).printResource()
+       # self.device_master.getAdc(CB_SLAVE_2).printResource()
 
 
     def perform_task_if_satisfies(self, task):
-        
         # print("TAsk in perform satisfies: {id}, {obj}".format(id=task.id, obj=task))
         if task.success_requirements_satisfied(self.device_master, self.state, self):
             self.remove_active_task(task)

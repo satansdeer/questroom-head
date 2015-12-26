@@ -10,6 +10,7 @@ import time
 import threading
 from KeyboardListener import KeyboardListener
 #from NewFunctions_map import *
+from hallway_function import *
 from cb_functions import *
 
 clients = None
@@ -28,14 +29,14 @@ class QuestRoom(threading.Thread):
     def run(self):
         print("quest room thread start")
         master = DeviceMaster()
-        # hallwayPort = "/dev/tty.usbserial-A4033KK5"
-        hallwayPort = "COM3"
+        hallwayPort = "/dev/tty.usbserial-A4033KK5"
+        #hallwayPort = "COM3"
         # "/dev/tty.usbserial-AL0079CW"
-        captainsBridgePort_1 = "COM5"
-        captainsBridgePort_2 = "COM4"
+        #captainsBridgePort_1 = "COM5"
+        #captainsBridgePort_2 = "COM4"
         hallwayPuzzles = master.addSlave("hallwayPuzzles", hallwayPort, 1, boudrate=5)
-        captainsBridge_1 = master.addSlave("CB_SLAVE_1", captainsBridgePort_1, 1, boudrate=5)
-        captainsBridge_2 = master.addSlave("CB_SLAVE_2", captainsBridgePort_2, 1, boudrate=5)
+        #captainsBridge_1 = master.addSlave("CB_SLAVE_1", captainsBridgePort_1, 1, boudrate=5)
+        #captainsBridge_2 = master.addSlave("CB_SLAVE_2", captainsBridgePort_2, 1, boudrate=5)
 
 
         master.start()
@@ -53,7 +54,8 @@ class QuestRoom(threading.Thread):
         # keyboardListener = KeyboardListener(master)
         # keyboardListener.start()
 
-        self.game_state = parse("cb_quest.yml")
+        #self.game_state = parse("cb_quest.yml")
+        self.game_state = parse("hallway_quest.yml")
 
         #self.game_state = parse("quest_script.yml")
         self.game_state.device_master = master

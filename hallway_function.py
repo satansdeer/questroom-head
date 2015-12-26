@@ -451,6 +451,7 @@ def turn(lastValue, newValue):
 
 
 def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
+    return True
     # Сохраняем последнее выбранное значение
     global lastLockPosition, state
     global READ_DATA_STACK, READ_DATA_STACK_LENGTH

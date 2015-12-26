@@ -7,7 +7,7 @@ import tornado.websocket
 from GameState import GameState
 from time import sleep
 from SoundManager import SoundManager
-#from QuestRoom import QuestRoom
+from QuestRoom import QuestRoom
 from KeyboardListener import KeyboardListener
 from tornado.options import define, options, parse_command_line
 import json
@@ -87,5 +87,5 @@ if __name__ == '__main__':
     #sound_manager.start()
     quest_room = QuestRoom(clients)
     quest_room.start()
-    KeyboardListener().start()
+    #KeyboardListener().start()
     tornado.ioloop.IOLoop.instance().start()

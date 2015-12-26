@@ -5,6 +5,7 @@ from Requirement import Requirement
 from Task import Task
 from Action import Action
 #from NewFunctions_map import *
+from hallway_function import *
 from cb_functions import *
 #from TestLambdas import *
 #from Lambdas import *
