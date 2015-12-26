@@ -19,7 +19,11 @@ class QuestRoom(threading.Thread):
     def __init__(self, cli):
         global clients
         clients = cli
+        game_state = None
         super(QuestRoom, self).__init__()
+
+    def progress_bar_zero(self, monitorId):
+        self.game_state.updateMonitorsListWithProgressBarZero(monitorId)
 
     def run(self):
         print("quest room thread start")
@@ -27,9 +31,11 @@ class QuestRoom(threading.Thread):
         # hallwayPort = "/dev/tty.usbserial-A4033KK5"
         hallwayPort = "COM3"
         # "/dev/tty.usbserial-AL0079CW"
-        captainsBridgePort = "COM4"
+        captainsBridgePort_1 = "COM5"
+        captainsBridgePort_2 = "COM4"
         hallwayPuzzles = master.addSlave("hallwayPuzzles", hallwayPort, 1, boudrate=5)
-        captainsBridge = master.addSlave("CB_SLAVE_2", captainsBridgePort, 1, boudrate=5)
+        captainsBridge_1 = master.addSlave("CB_SLAVE_1", captainsBridgePort_1, 1, boudrate=5)
+        captainsBridge_2 = master.addSlave("CB_SLAVE_2", captainsBridgePort_2, 1, boudrate=5)
 
 
         master.start()
@@ -71,5 +77,3 @@ class QuestRoom(threading.Thread):
         print(self.game_state.state)
 
 
-    def progress_bar_zero(self, monitorId):
-        self.game_state.updateMonitorsListWithProgressBarZero(monitorId)

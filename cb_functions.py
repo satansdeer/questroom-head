@@ -32,7 +32,7 @@ class CB_CTRL:
     KRIVOSHUP_MINUS = 4
     KRIVOSHUP_PLUS = 5
     SERVO_COOLING_SYSTEM = 6
-    ULTRAFOTON = 11
+    ULTRAFOTON = 13
     REPAIR_NANOROBOTS = 12
     C3PO = 14
     R2D2 = 15
@@ -61,7 +61,7 @@ class CB_CTRL:
     CHAMAEMELUM_NOBILE = 0
     DIPSOMANIA_SUPERCHARGER = 1
     HYPER_DRIVE_GENERATOR = 2
-    CONDENSER = 6
+    CONDENSER = 7
 
 class MESSAGE:
     BATTERY_AVALIABLE = "Battery {id} is inserted"
@@ -70,6 +70,13 @@ class MESSAGE:
     PRESS_HERABORA = "When you're ready press HERABORA"
     WINNER = "You're winner! Entered door are open"
     FAIL = "You're fail! Entered door are open"
+
+def REQ_TRUE(master, task, game_state):
+    return True
+def AC_INIT(master, task, game_state):
+    taskList = [151, 152, 153, 154, 102, 101]
+    for taskId in taskList:
+        game_state.add_active_task_with_id(taskId)
 
 def REQ_ENGINE_ASSEMBLED(master, task, game_state):
     buttons = master.getButtons(hallwayPuzzles).get()
@@ -93,7 +100,7 @@ def AC_ADD_4_BATTARIES_TASKS(master, task, game_state):
     game_state.add_active_task_with_id(154)
 
 
-def REQ_CHECK_BATTARIES(master, task, game_state):
+def REQ_CHECK_BATTERIES(master, task, game_state):
     buttons = master.getButtons(CB_SLAVE_2).get()
     battery_1 = buttons[CB_CTRL.BATTERY_1]
     battery_2 = buttons[CB_CTRL.BATTERY_2]
@@ -108,6 +115,8 @@ def REQ_CHECK_BATTARIES(master, task, game_state):
     taskList = [151, 152, 153, 154]
     for taskId in taskList:
         task = game_state.find_task_with_id(taskId)
+        print("Task for delete from check_battaries: {}".format(task)) 
+        print("Task for delete from check_battaries: {}".format(task.id)) 
         game_state.remove_active_task(task)
     return True
 
@@ -131,6 +140,8 @@ def REQ_CHECK_BATTERY_1(master, task, game_state):
 def REQ_CHECK_BATTERY_2(master, task, game_state):
     buttons = master.getButtons(CB_SLAVE_2).get()
     battery = buttons[CB_CTRL.BATTERY_2]
+    print("Task Battery_2: {}".format(task))
+    print("Task Battery_2: {}".format(task.title))
 
     monitorId = game_state.getMonitorIdByTask(task)
 
@@ -188,7 +199,7 @@ def AC_CB_ADD_RANDOM_TASK(master, task, game_state):
 
             randomTaskId = avaliableTaskIds[randomId]
             randomTask = game_state.find_task_with_id(randomTaskId)
-            randomTaskRequirement = randomTask.success_requirements(master, game_state.state, game_state)
+            randomTaskRequirement = randomTask.success_requirements_satisfied(master, randomTask, game_state)
 
         game_state.add_active_task_with_id(randomTaskId)
 
@@ -298,27 +309,27 @@ def REQ_CLUTCH_REVERSE_SYCLE_TO_255(master, task, game_state):
 
 def REQ_SUPER_BRAIN_TO_0(master, task, game_state):
     adc = master.getAdc(CB_SLAVE_1).get()
-    return 0 == adc[CB_CTRL.CLUTCH_REVERSE_CYCLE]
+    return 0 == adc[CB_CTRL.SUPER_BRAIN]
 
 def REQ_SUPER_BRAIN_TO_255(master, task, game_state):
     adc = master.getAdc(CB_SLAVE_1).get()
-    return 255 == adc[CB_CTRL.CLUTCH_REVERSE_CYCLE]
+    return 255 == adc[CB_CTRL.SUPER_BRAIN]
 
 def REQ_SUPER_BRAIN_TO_182(master, task, game_state):
     adc = master.getAdc(CB_SLAVE_1).get()
-    return 182 == adc[CB_CTRL.CLUTCH_REVERSE_CYCLE]
+    return 182 == adc[CB_CTRL.SUPER_BRAIN]
 
 def REQ_SUPER_BRAIN_TO_129(master, task, game_state):
     adc = master.getAdc(CB_SLAVE_1).get()
-    return 129 == adc[CB_CTRL.CLUTCH_REVERSE_CYCLE]
+    return 129 == adc[CB_CTRL.SUPER_BRAIN]
 
 def REQ_SUPER_BRAIN_TO_86(master, task, game_state):
     adc = master.getAdc(CB_SLAVE_1).get()
-    return 86 == adc[CB_CTRL.CLUTCH_REVERSE_CYCLE]
+    return 86 == adc[CB_CTRL.SUPER_BRAIN]
 
 def REQ_SUPER_BRAIN_TO_45(master, task, game_state):
     adc = master.getAdc(CB_SLAVE_1).get()
-    return 45 == adc[CB_CTRL.CLUTCH_REVERSE_CYCLE]
+    return 45 == adc[CB_CTRL.SUPER_BRAIN]
 
 # Panel 1_2
 

@@ -2,6 +2,18 @@
 ---
     tasks:
       -
+        id: 0
+        success_requirements:
+          [REQ_TRUE]
+        success_actions:
+          [AC_INIT]
+        failure_requirements:
+          []
+        failure_actions:
+          []
+        title: ''
+
+      -
         id: 101
         success_requirements:
           [REQ_CHECK_BATTERIES, REQ_ENGINE_ASSEMBLED]
@@ -17,7 +29,7 @@
         # Показать сообщение о неисправном двигателе, если надо
         id: 102
         success_requirements:
-          [REQ_CHECK_BATTARIES]
+          [REQ_CHECK_BATTERIES]
         success_actions:
           [AC_SHOW_ENGINE_MESSAGE]
         failure_requirements:
@@ -284,145 +296,15 @@
         showOnMonitor: True
         type: 'CB_TASK'
 
-      -
-        id: 233
-        success_requirements:
-          [REQ_CLUTCH_REVERSE_SYCLE_TO_0]
-        success_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        failure_requirements:
-          [REQ_CB_TASK_FAILURE]
-        failure_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        title: 'Переключить Муфту обратного цикла на 0'
-        showOnMonitor: True
-        type: 'CB_TASK'
 
-      -
-        id: 234
-        success_requirements:
-          [REQ_CLUTCH_REVERSE_SYCLE_TO_255]
-        success_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        failure_requirements:
-          [REQ_CB_TASK_FAILURE]
-        failure_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        title: 'Переключить Муфту обратного цикла на MAX'
-        showOnMonitor: True
-        type: 'CB_TASK'
 
-      -
-        id: 235
-        success_requirements:
-          [REQ_CLUTCH_REVERSE_SYCLE_TO_77]
-        success_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        failure_requirements:
-          [REQ_CB_TASK_FAILURE]
-        failure_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        title: 'Переключить Муфту обратного цикла на 77'
-        showOnMonitor: True
-        type: 'CB_TASK'
 
-      -
-        id: 236
-        success_requirements:
-          [REQ_CLUTCH_REVERSE_SYCLE_TO_150]
-        success_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        failure_requirements:
-          [REQ_CB_TASK_FAILURE]
-        failure_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        title: 'Переключить Муфту обратного цикла на 150'
-        showOnMonitor: True
-        type: 'CB_TASK'
 
-      -
-        id: 237
-        success_requirements:
-          [REQ_SUPER_BRAIN_TO_0]
-        success_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        failure_requirements:
-          [REQ_CB_TASK_FAILURE]
-        failure_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        title: 'Переключить Супер мозг на 0'
-        showOnMonitor: True
-        type: 'CB_TASK'
 
-      -
-        id: 238
-        success_requirements:
-          [REQ_SUPER_BRAIN_TO_255]
-        success_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        failure_requirements:
-          [REQ_CB_TASK_FAILURE]
-        failure_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        title: 'Переключить Супер мозг на 255'
-        showOnMonitor: True
-        type: 'CB_TASK'
 
-      -
-        id: 239
-        success_requirements:
-          [REQ_SUPER_BRAIN_TO_182]
-        success_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        failure_requirements:
-          [REQ_CB_TASK_FAILURE]
-        failure_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        title: 'Переключить Супер мозг на 182'
-        showOnMonitor: True
-        type: 'CB_TASK'
 
-      -
-        id: 240
-        success_requirements:
-          [REQ_SUPER_BRAIN_TO_129]
-        success_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        failure_requirements:
-          [REQ_CB_TASK_FAILURE]
-        failure_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        title: 'Переключить Супер мозг на 129'
-        showOnMonitor: True
-        type: 'CB_TASK'
 
-      -
-        id: 241
-        success_requirements:
-          [REQ_SUPER_BRAIN_TO_86]
-        success_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        failure_requirements:
-          [REQ_CB_TASK_FAILURE]
-        failure_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        title: 'Переключить Супер мозг на 86'
-        showOnMonitor: True
-        type: 'CB_TASK'
 
-      -
-        id: 242
-        success_requirements:
-          [REQ_SUPER_BRAIN_TO_45]
-        success_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        failure_requirements:
-          [REQ_CB_TASK_FAILURE]
-        failure_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        title: 'Переключить Супер мозг на 45'
-        showOnMonitor: True
-        type: 'CB_TASK'
 
       -
         id: 243 
@@ -690,6 +572,270 @@
         showOnMonitor: True
         type: 'CB_TASK'
 
+
+
+
+      -
+        id: 265
+        success_requirements:
+          [REQ_HERABORA_PRESSED]
+        success_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        failure_requirements:
+          [REQ_CB_TASK_FAILURE]
+        failure_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        title: 'Нажать Herabora'
+        showOnMonitor: True
+        type: 'CB_TASK'
+
+      -
+        id: 266
+        success_requirements:
+          [REQ_R2D2_ON]
+        success_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        failure_requirements:
+          [REQ_CB_TASK_FAILURE]
+        failure_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        title: 'Включить R2D2'
+        showOnMonitor: True
+        type: 'CB_TASK'
+
+      -
+        id: 267
+        success_requirements:
+          [REQ_R2D2_OFF]
+        success_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        failure_requirements:
+          [REQ_CB_TASK_FAILURE]
+        failure_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        title: 'Выключить R2D2'
+        showOnMonitor: True
+        type: 'CB_TASK'
+
+
+
+
+
+
+
+
+
+
+
+
+
+      # -
+      #   id: 6
+      #   success_requirements:
+      #     [PRESLO_PRESSED]
+      #   success_actions:
+      #     [AC_CB_ADD_RANDOM_TASK]
+      #   failure_requirements:
+      #     [REQ_CB_TASK_FAILURE]
+      #   failure_actions: [AC_CB_ADD_RANDOM_TASK]
+      #   title: 'Нажмите пресло'
+      #   showOnMonitor: True
+      #   type: 'CB_TASK'
+      #
+      # -
+      #   id: 7
+      #   success_requirements:
+      #     [KOKOVNIK_PRESSED]
+      #   success_actions:
+      #     [AC_CB_ADD_RANDOM_TASK]
+      #   failure_requirements:
+      #     [REQ_CB_TASK_FAILURE]
+      #   failure_actions:
+      #     [AC_CB_ADD_RANDOM_TASK]
+      #   title: 'Нажмите коковник'
+      #   showOnMonitor: True
+      #   type: 'CB_TASK'
+      #
+      # -
+      #   id: 8
+      #   success_requirements:
+      #     [TRUNDEL_PRESSED]
+      #   success_actions:
+      #     [AC_CB_ADD_RANDOM_TASK]
+      #   failure_requirements:
+      #     [REQ_CB_TASK_FAILURE]
+      #   failure_actions:
+      #     [AC_CB_ADD_RANDOM_TASK]
+      #   title: 'Нажмите трундель'
+      #   showOnMonitor: True
+      #   type: 'CB_TASK'
+      # -
+      #   id: 9
+      #   success_requirements:
+      #     [GLUKALO_PRESSED]
+      #   success_actions:
+      #     [AC_CB_ADD_RANDOM_TASK]
+      #   failure_requirements:
+      #     []
+      #   failure_actions:
+      #     []
+      #   title: 'Нажмите глюкало'
+      #   showOnMonitor: True
+      #   type: 'CB_TASK'
+      # -
+      #   id: 10
+      #   success_requirements:
+      #     [HERABORA_PRESSED]
+      #   success_actions:
+      #     [AC_CB_ADD_RANDOM_TASK]
+      #   failure_requirements:
+      #     []
+      #   failure_actions:
+      #     []
+      #   title: 'PRESS HERABORA!'
+      #   showOnMonitor: True
+      #   type: 'CB_TASK'
+
+      -
+        id: 233
+        success_requirements:
+          [REQ_CLUTCH_REVERSE_SYCLE_TO_0]
+        success_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        failure_requirements:
+          [REQ_CB_TASK_FAILURE]
+        failure_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        title: 'Переключить Муфту обратного цикла на 0'
+        showOnMonitor: True
+        type: 'CB_TASK'
+
+      -
+        id: 234
+        success_requirements:
+          [REQ_CLUTCH_REVERSE_SYCLE_TO_255]
+        success_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        failure_requirements:
+          [REQ_CB_TASK_FAILURE]
+        failure_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        title: 'Переключить Муфту обратного цикла на MAX'
+        showOnMonitor: True
+        type: 'CB_TASK'
+
+      -
+        id: 235
+        success_requirements:
+          [REQ_CLUTCH_REVERSE_SYCLE_TO_77]
+        success_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        failure_requirements:
+          [REQ_CB_TASK_FAILURE]
+        failure_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        title: 'Переключить Муфту обратного цикла на 77'
+        showOnMonitor: True
+        type: 'CB_TASK'
+
+      -
+        id: 236
+        success_requirements:
+          [REQ_CLUTCH_REVERSE_SYCLE_TO_150]
+        success_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        failure_requirements:
+          [REQ_CB_TASK_FAILURE]
+        failure_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        title: 'Переключить Муфту обратного цикла на 150'
+        showOnMonitor: True
+        type: 'CB_TASK'
+
+      -
+        id: 237
+        success_requirements:
+          [REQ_SUPER_BRAIN_TO_0]
+        success_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        failure_requirements:
+          [REQ_CB_TASK_FAILURE]
+        failure_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        title: 'Переключить Супер мозг на 0'
+        showOnMonitor: True
+        type: 'CB_TASK'
+
+      -
+        id: 238
+        success_requirements:
+          [REQ_SUPER_BRAIN_TO_255]
+        success_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        failure_requirements:
+          [REQ_CB_TASK_FAILURE]
+        failure_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        title: 'Переключить Супер мозг на 255'
+        showOnMonitor: True
+        type: 'CB_TASK'
+
+      -
+        id: 239
+        success_requirements:
+          [REQ_SUPER_BRAIN_TO_182]
+        success_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        failure_requirements:
+          [REQ_CB_TASK_FAILURE]
+        failure_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        title: 'Переключить Супер мозг на 182'
+        showOnMonitor: True
+        type: 'CB_TASK'
+
+      -
+        id: 240
+        success_requirements:
+          [REQ_SUPER_BRAIN_TO_129]
+        success_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        failure_requirements:
+          [REQ_CB_TASK_FAILURE]
+        failure_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        title: 'Переключить Супер мозг на 129'
+        showOnMonitor: True
+        type: 'CB_TASK'
+
+      -
+        id: 241
+        success_requirements:
+          [REQ_SUPER_BRAIN_TO_86]
+        success_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        failure_requirements:
+          [REQ_CB_TASK_FAILURE]
+        failure_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        title: 'Переключить Супер мозг на 86'
+        showOnMonitor: True
+        type: 'CB_TASK'
+
+      -
+        id: 242
+        success_requirements:
+          [REQ_SUPER_BRAIN_TO_45]
+        success_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        failure_requirements:
+          [REQ_CB_TASK_FAILURE]
+        failure_actions:
+          [AC_CB_ADD_RANDOM_TASK]
+        title: 'Переключить Супер мозг на 45'
+        showOnMonitor: True
+        type: 'CB_TASK'
+
       -
         id: 262
         success_requirements:
@@ -729,48 +875,6 @@
         failure_actions:
           [AC_CB_ADD_RANDOM_TASK]
         title: 'Выкрутить Генератор гипер драйва на минимум'
-        showOnMonitor: True
-        type: 'CB_TASK'
-
-      -
-        id: 265
-        success_requirements:
-          [REQ_HERABORA_PRESSED]
-        success_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        failure_requirements:
-          [REQ_CB_TASK_FAILURE]
-        failure_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        title: 'Нажать Herabora'
-        showOnMonitor: True
-        type: 'CB_TASK'
-
-      -
-        id: 266
-        success_requirements:
-          [REQ_R2D2_ON]
-        success_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        failure_requirements:
-          [REQ_CB_TASK_FAILURE]
-        failure_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        title: 'Включить R2D2
-        showOnMonitor: True
-        type: 'CB_TASK'
-
-      -
-        id: 267
-        success_requirements:
-          [REQ_R2D2_OFF]
-        success_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        failure_requirements:
-          [REQ_CB_TASK_FAILURE]
-        failure_actions:
-          [AC_CB_ADD_RANDOM_TASK]
-        title: 'Выключить R2D2'
         showOnMonitor: True
         type: 'CB_TASK'
 
@@ -941,70 +1045,3 @@
         title: 'Переключить Конденсатор на 3'
         showOnMonitor: True
         type: 'CB_TASK'
-
-      # -
-      #   id: 6
-      #   success_requirements:
-      #     [PRESLO_PRESSED]
-      #   success_actions:
-      #     [AC_CB_ADD_RANDOM_TASK]
-      #   failure_requirements:
-      #     [REQ_CB_TASK_FAILURE]
-      #   failure_actions: [AC_CB_ADD_RANDOM_TASK]
-      #   title: 'Нажмите пресло'
-      #   showOnMonitor: True
-      #   type: 'CB_TASK'
-      #
-      # -
-      #   id: 7
-      #   success_requirements:
-      #     [KOKOVNIK_PRESSED]
-      #   success_actions:
-      #     [AC_CB_ADD_RANDOM_TASK]
-      #   failure_requirements:
-      #     [REQ_CB_TASK_FAILURE]
-      #   failure_actions:
-      #     [AC_CB_ADD_RANDOM_TASK]
-      #   title: 'Нажмите коковник'
-      #   showOnMonitor: True
-      #   type: 'CB_TASK'
-      #
-      # -
-      #   id: 8
-      #   success_requirements:
-      #     [TRUNDEL_PRESSED]
-      #   success_actions:
-      #     [AC_CB_ADD_RANDOM_TASK]
-      #   failure_requirements:
-      #     [REQ_CB_TASK_FAILURE]
-      #   failure_actions:
-      #     [AC_CB_ADD_RANDOM_TASK]
-      #   title: 'Нажмите трундель'
-      #   showOnMonitor: True
-      #   type: 'CB_TASK'
-      # -
-      #   id: 9
-      #   success_requirements:
-      #     [GLUKALO_PRESSED]
-      #   success_actions:
-      #     [AC_CB_ADD_RANDOM_TASK]
-      #   failure_requirements:
-      #     []
-      #   failure_actions:
-      #     []
-      #   title: 'Нажмите глюкало'
-      #   showOnMonitor: True
-      #   type: 'CB_TASK'
-      # -
-      #   id: 10
-      #   success_requirements:
-      #     [HERABORA_PRESSED]
-      #   success_actions:
-      #     [AC_CB_ADD_RANDOM_TASK]
-      #   failure_requirements:
-      #     []
-      #   failure_actions:
-      #     []
-      #   title: 'PRESS HERABORA!'
-      #   showOnMonitor: True
-      #   type: 'CB_TASK'
