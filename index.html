@@ -3,11 +3,14 @@
     <head>
         <meta charset="utf-8">
             <link rel="stylesheet" href="{{ static_url("styles.css") }}">
+            <link rel="stylesheet" href="static/styles.css">
             <!--<link href='https://fonts.googleapis.com/css?family=Press+Start+2P&subset=latin,cyrillic' rel='stylesheet' type='text/css'>-->
             <script type="text/javascript">
+            countdownActive = true;
+            progressValue = 100;
+            setTimeout('progressBarCountDown()', 1000)
             function WebSocketTest() {
                 var messageContainer = document.getElementById("message");
-                var buttonsContainer = document.getElementById("buttons");
                 var progressBar = document.querySelector(".time-left_progress");
                 if ("WebSocket" in window) {
                     var id = window.location.search.split("?")[1].split("=")[1]
@@ -20,16 +23,8 @@
                         messageContainer.innerHTML = unescape(received_msg.message);
                         console.log("RECEIVED MESSAGE")
                         resetProgress();
-                        setHearts(received_msg.hearts)
-                        if(received_msg.msg_type == 'init'){
-                          buttonsHTML = ""
-                          for(var button in received_msg.buttons){
-                            var title = received_msg.buttons[button].title
-                            var id = received_msg.buttons[button].id
-                            buttonsHTML += "<div class='button' data-id='"+id+"' onClick='sendButton(event)'>"+title+"</div>";
-                          }
-                          buttonsContainer.innerHTML = buttonsHTML;
-                        }
+                        setProgressVisibility(received_msg.progress_visible);
+                        setHearts(received_msg.hearts);
                     };
                     ws.onclose = function() {
                         messageContainer.innerHTML = "Connection is closed...";
@@ -41,6 +36,30 @@
                 } else {
                     messageContainer.innerHTML = "WebSocket NOT supported by your Browser!";
                 }
+            }
+
+            function progressBarCountDown(){
+              var progressBar = document.querySelector(".time-left_progress");
+              progressValue -= .1;
+              if(progressValue < 0){
+                progressValue = 100;
+                try{
+                  ws.send("Time end")
+                }catch(err){}
+              }
+              if(countdownActive){
+                progressBar.style.width = progressValue + '%'
+                setTimeout('progressBarCountDown()', 10)
+              }
+            }
+
+            function setProgressVisibility(progressBarVisible){
+              var progressBar = document.querySelector(".time-left");
+              if(progressBarVisible){
+                progressBar.style.display = 'block';
+              }else{
+                progressBar.style.display = 'none';
+              }
             }
 
             function setHearts(heartsNumber){
@@ -55,35 +74,12 @@
                 }
             }
 
-            function sendButton(event){
-                buttonId = event.currentTarget.dataset.id
-                ws.send("Button clicked:"+buttonId)
+            function resetProgress(){
+              progressValue = 100;
             }
 
-            function resetProgress(){
-              var progressBar = document.querySelector(".time-left_progress");
-              console.log(progressBar)
-              progressBar.style = ''
-              progressBar.style.transition = 'none';
-              progressBar.style.width = '100%';
-              console.log(progressBar)
-              console.log("-----")
-              setTimeout(function(){
-                progressBar.style.transition = 'width 10s'
-                progressBar.style.width = '0%';
-              }, 1);
-            }
             document.addEventListener("DOMContentLoaded", function(event) {
               WebSocketTest();
-              var progressBar = document.querySelector(".time-left_progress");
-              progressBar.addEventListener("webkitTransitionEnd", function(event){
-                resetProgress();
-                console.log("Reset progress");
-                setTimeout(function(){
-                  progressBar.style.width = '0%';
-                }, 1)
-                ws.send("Time end")
-              }, false)
             })
         </script>
     </head>
@@ -98,8 +94,6 @@
         <div class="time-left" id="time-left">
           <div class="time-left_progress" id="time-left"></div>
         </div>
-      </div>
-      <div id="buttons" class="buttons">
       </div>
     </body>
 </html>
