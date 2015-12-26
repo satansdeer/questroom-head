@@ -29,12 +29,12 @@ class QuestRoom(threading.Thread):
     def run(self):
         print("quest room thread start")
         master = DeviceMaster()
-        hallwayPort = "/dev/tty.usbserial-A4033KK5"
+        #hallwayPort = "/dev/tty.usbserial-A4033KK5"
         #hallwayPort = "COM3"
         # "/dev/tty.usbserial-AL0079CW"
         #captainsBridgePort_1 = "COM5"
         #captainsBridgePort_2 = "COM4"
-        hallwayPuzzles = master.addSlave("hallwayPuzzles", hallwayPort, 1, boudrate=5)
+        #hallwayPuzzles = master.addSlave("hallwayPuzzles", hallwayPort, 1, boudrate=5)
         #captainsBridge_1 = master.addSlave("CB_SLAVE_1", captainsBridgePort_1, 1, boudrate=5)
         #captainsBridge_2 = master.addSlave("CB_SLAVE_2", captainsBridgePort_2, 1, boudrate=5)
 
@@ -67,6 +67,8 @@ class QuestRoom(threading.Thread):
     def send_ws_message(self, client_id, message):
         str_id = str(client_id)
         if str_id not in clients: return
+        if 'progress_visible' not in message: message['progress_visible'] = true
+        if 'countdown_active' not in message: message['countdown_active'] = true
         clients[str_id]['object'].write_message(message)
 
 

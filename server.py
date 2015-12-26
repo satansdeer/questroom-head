@@ -55,14 +55,12 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
     def on_message(self, jsonMessage):
         message = json.loads(jsonMessage)
         print(message)
+        print(message['message'])
         if "Time end" in message['message']:
             quest_room.progress_bar_zero(message['id'])
-        if "play_sound:" in message:
-            sound_id = message.split(':')[1]
+        if "play_sound" == message['message']:
+            sound_id = message['sound']
             sound_manager.play_sound(sound_id)
-        if "Button clicked:" in message:
-            button_id = message.split(':')[1]
-            quest_room.button_pressed(button_id)
 
     def on_close(self):
         if self.id not in clients: return
@@ -83,9 +81,9 @@ app = tornado.web.Application([
 if __name__ == '__main__':
     parse_command_line()
     app.listen(options.port)
-    #sound_manager = SoundManager()
-    #sound_manager.start()
-    quest_room = QuestRoom(clients)
-    quest_room.start()
+    sound_manager = SoundManager()
+    sound_manager.start()
+    #quest_room = QuestRoom(clients)
+    #quest_room.start()
     #KeyboardListener().start()
     tornado.ioloop.IOLoop.instance().start()

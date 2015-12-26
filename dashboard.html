@@ -15,7 +15,7 @@
 
             function playSound(event){
                 sound = event.currentTarget.dataset.sound
-                ws.send("play_sound:"+sound)
+                  ws.send('{"message": "play_sound", "sound":"'+sound+'"}')
             }
 
             document.addEventListener("DOMContentLoaded", function(event) {
