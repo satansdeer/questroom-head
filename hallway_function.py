@@ -4,7 +4,8 @@ from __future__ import print_function
 import time
 import random
 from Radio import Radio
-
+from collections import Counter
+from copy import copy
 start_time = time.time()
 # slavePuzzle = "mainPuzzle"
 hallwayPuzzles = "hallwayPuzzles"
@@ -102,25 +103,26 @@ def AC_ENABLE_RADIO(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.RED)
     # add radio broadcast
-    radio = Radio(0.5, 0.001)
+    # radio = Radio(0.5, 0.001)
 
-    sounds = [('harp.wav',40.0,80.0), ('island_music_x.wav',120.0,160.0), ('1.wav',200.0,240.0)]
+    # sounds = [('harp.wav',40.0,80.0), ('island_music_x.wav',120.0,160.0), ('1.wav',200.0,240.0)]
 
-    radio.init_sounds(sounds, 'noize.wav')
+    # radio.init_sounds(sounds, 'noize.wav')
 
-    radio.start()
+    # radio.start()
 
     # radio.set_target_value(15)
     game_state.add_active_task_with_id(12)
 
 
 def REQ_RADIO_BROADCAST(master, task, game_state):
-    radioValue = master.getAdc(hallwayPuzzles).get()[AdcIdTable.RADIO]
-    #print("Radio value: {}".format(radioValue))
-    radio.set_target_value(radioValue)
+    pass
+   #  radioValue = master.getAdc(hallwayPuzzles).get()[AdcIdTable.RADIO]
+   #  #print("Radio value: {}".format(radioValue))
+   #  radio.set_target_value(radioValue)
 
 
-    
+
 
 #=============== ADDING TASKS =================================================
 
@@ -231,8 +233,8 @@ def AC_OPEN_FIRST_BOX(master, task, game_state):
     # blue, because blue and green are switched
     smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.BLUE)
     relays = master.getRelays(hallwayPuzzles).get()
-    relays[0] = 1
-    master.setRelays(hallwayPuzzles, relays)
+    # relays[0] = 1
+    # master.setRelays(hallwayPuzzles, relays)
 
 def AC_OPEN_SECOND_BOX(master, task, game_state):
     print("Second box was open!")
@@ -240,8 +242,8 @@ def AC_OPEN_SECOND_BOX(master, task, game_state):
     smartLeds.setOneLed(LedsIdTable.BOX_2, Colors.BLUE)
 
     relays = master.getRelays(hallwayPuzzles).get()
-    relays[1] = 1
-    master.setRelays(hallwayPuzzles, relays)
+    # relays[1] = 1
+    # master.setRelays(hallwayPuzzles, relays)
 
 
 def AC_OPEN_THIRD_BOX(master, task, game_state):
@@ -250,8 +252,8 @@ def AC_OPEN_THIRD_BOX(master, task, game_state):
     smartLeds.setOneLed(LedsIdTable.BOX_3, Colors.BLUE)
 
     relays = master.getRelays(hallwayPuzzles).get()
-    relays[2] = 1
-    master.setRelays(hallwayPuzzles, relays)
+    # relays[2] = 1
+    # master.setRelays(hallwayPuzzles, relays)
 
 
 def AC_OPEN_FOURTH_BOX(master, task, game_state):
@@ -260,8 +262,8 @@ def AC_OPEN_FOURTH_BOX(master, task, game_state):
     smartLeds.setOneLed(LedsIdTable.BOX_4, Colors.BLUE)
 
     relays = master.getRelays(hallwayPuzzles).get()
-    relays[3] = 1
-    master.setRelays(hallwayPuzzles, relays)
+    # relays[3] = 1
+    # master.setRelays(hallwayPuzzles, relays)
 
 
 
@@ -302,9 +304,9 @@ hiddenPanelColors = [pColors.RED] * 6
 visiblePanelColors = [pColors.RED] * 6
 
 visiblePanelSwitchers = []
-oldVisiblePanelSwitchers = []
+oldVisiblePanelSwitchers = [None] * 6
 hiddenPanelSwitchers = []
-oldHiddenPanelSwitchers = []
+oldHiddenPanelSwitchers = [None] * 6
 
 def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
 
@@ -337,7 +339,7 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
 
     print("Visible values: {}".format(visiblePanelSwitchers))
     print("Hidden values: {}".format(hiddenPanelSwitchers))
-    
+
     # checked Visible Panel
     for index in range(ELEMENTS_NUMBER):
         if oldVisiblePanelSwitchers[index] != visiblePanelSwitchers[index]:
@@ -374,11 +376,16 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
     # It's might be critical
     smartLedsObj = master.getSmartLeds(hallwayPuzzles)
     for index in range(ELEMENTS_NUMBER):
-        smartLedsObj.setOneLed(index, hiddenPanelColors[index]) 
+        smartLedsObj.setOneLed(index, hiddenPanelColors[index])
         # NUM_LEDS 32, but index from 0 to 31
         visibleIndex = smartLedsObj.NUM_LEDS - 1 - index
         smartLedsObj.setOneLed(visibleIndex, visiblePanelColors[index])
 
+    WINNER_COLOR_LIST= [pColors.GREEN] * 6
+    visiblePanelState = (WINNER_COLOR_LIST == visiblePanelColors)
+    hiddenPanelState = (WINNER_COLOR_LIST == hiddenPanelColors)
+
+    return visiblePanelState and hiddenPanelState
 # def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
 #
 #     smartLeds = master.getSmartLeds(hallwayPuzzles).get()
@@ -422,7 +429,7 @@ state = 0
 # массив значений
 READ_DATA_STACK = []
 # максимальная длина массива, после достижение которой массив сброситься
-READ_DATA_STACK_LENGTH = 40
+READ_DATA_STACK_LENGTH = 180*2
 
 
 def turnLeft(lastValue, newValue):
@@ -448,12 +455,13 @@ def turn(lastValue, newValue):
         return "R"
 
 # def findValue(stack):
-
+PLAYER_SEQUENCE=[]
 
 def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
-    return True
+    # return True
     # Сохраняем последнее выбранное значение
     global lastLockPosition, state
+    global PLAYER_SEQUENCE
     global READ_DATA_STACK, READ_DATA_STACK_LENGTH
     # Позиция в массиве ADC
     LOCK_ID = 1
@@ -463,10 +471,8 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     # ACTIVATION_SEQUENCE = ['L', 'L', 'R', 'L', 'R', 'R', 'L', 'R']
     # Последовательность для открытия
     # L - влево; R - вправо
-    ACTIVATION_SEQUENCE = ['L', 'L', 'R', 'L']
+    ACTIVATION_SEQUENCE = ['L','L', 'L', 'R', 'L']*2
     # time.sleep(0.6)
-    if state > len(ACTIVATION_SEQUENCE):
-        return True
 
     value = master.getAdc(hallwayPuzzles).get()[LOCK_ID]
     READ_DATA_STACK.append(value)
@@ -474,29 +480,43 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     if len(READ_DATA_STACK) < READ_DATA_STACK_LENGTH:
         return
 
-    # get most freq value 
+
+    if len(PLAYER_SEQUENCE) > len(ACTIVATION_SEQUENCE) * 2:
+        PLAYER_SEQUENCE = copy(PLAYER_SEQUENCE[:len(ACTIVATION_SEQUENCE)])
+    # get most freq value
     value = Counter(READ_DATA_STACK).most_common(1)[0][0]
     READ_DATA_STACK = []
 
     lockPosition = value
-
-    # print("LastValue: {}, newValue: {}, state: {} {}".format(
-    #     lastLockPosition, lockPosition, state, ACTIVATION_SEQUENCE[state - 1]))
-
-    if state == 0:
-        lastLockPosition = lockPosition
-        state = state + 1
+    # print("Lock value: {}".format(value))
+    # if (lockPosition != lastLockPosition):
+        # print("LastValue: {}, newValue: {}, state: {} {}".format(
+        # lastLockPosition, lockPosition, state, ACTIVATION_SEQUENCE[state - 1]))
 
     # Смотрим, менялась ли позиция переключателя.
     lessDefault = lastLockPosition < (lockPosition + ERROR_VALUE)
     largeDefault = lastLockPosition > (lockPosition - ERROR_VALUE)
     if lessDefault and largeDefault:
-        return state
+        lastLockPosition = lockPosition
+        return False
 
-    if turn(lastLockPosition, lockPosition) == ACTIVATION_SEQUENCE[state - 1]:
-        state = state + 1
-    else:
-        state = 0
+    print("Time: {}".format(time.time()))
+
+    print("LastValue: {}, newValue: {}".format(lastLockPosition, lockPosition))
+    turnDirection = turn(lastLockPosition, lockPosition)
+    PLAYER_SEQUENCE.insert(0, turnDirection)
+
+    reversePlayerSequence = copy(PLAYER_SEQUENCE[:len(ACTIVATION_SEQUENCE)])
+
+    reversePlayerSequence.reverse()
+    print("Player sequence: {} \n reverse: {}".format(PLAYER_SEQUENCE, reversePlayerSequence))
+
+    reversePlayerSequence = copy(PLAYER_SEQUENCE[:len(ACTIVATION_SEQUENCE)])
+    reversePlayerSequence.reverse()
+    if ACTIVATION_SEQUENCE == reversePlayerSequence:
+        print("We opened lock box: sleep!!!")
+        PLAYER_SEQUENCE = []
+        return  True 
 
     lastLockPosition = lockPosition
 
@@ -515,6 +535,7 @@ def AC_ENABLE_TUMBLER_PUZZLE(master, task, game_state):
     for index in range(6):
         ledID = ledIdStartPosition - index
         setLedValue(smartLeds, ledID, Colors.RED)
+        setLedValue(smartLeds, index, Colors.RED)
     master.setSmartLeds(hallwayPuzzles, smartLeds)
 
 
