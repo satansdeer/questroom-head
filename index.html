@@ -23,6 +23,10 @@
                         messageContainer.innerHTML = unescape(received_msg.message);
                         console.log("RECEIVED MESSAGE")
                         resetProgress();
+                        if(!countdownActive && received_msg.countdown_active){
+                          setTimeout('progressBarCountDown()', 100)
+                        }
+                        countdownActive = received_msg.countdown_active
                         setProgressVisibility(received_msg.progress_visible);
                         setHearts(received_msg.hearts);
                     };
@@ -44,7 +48,7 @@
               if(progressValue < 0){
                 progressValue = 100;
                 try{
-                  ws.send("Time end")
+                  ws.send('{"message": "Time end"}')
                 }catch(err){}
               }
               if(countdownActive){

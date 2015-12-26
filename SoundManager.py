@@ -11,6 +11,5 @@ class SoundManager(threading.Thread):
         super(SoundManager, self).__init__()
 
     def play_sound(self, sound_name):
-        print(sound_name)
         sound = pygame.mixer.Sound(sound_name)
         sound.play()

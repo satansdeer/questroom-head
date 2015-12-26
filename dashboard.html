@@ -6,7 +6,8 @@
         <script type="text/javascript">
             function initWebSocket() {
                 if ("WebSocket" in window) {
-                    window.ws = new WebSocket("ws://localhost:8888/socket?Id=42");
+					console.log(window.location)
+                    window.ws = new WebSocket("ws://"+window.location.hostname+":8888/socket?Id=42");
                     ws.onopen = function() {
                         console.log("WebSocket connected...")
                     };
@@ -15,8 +16,18 @@
 
             function playSound(event){
                 sound = event.currentTarget.dataset.sound
-                ws.send("play_sound:"+sound)
+                ws.send('{"message": "play_sound", "sound":"'+sound+'"}')
             }
+			
+			function openDoor(event){
+				door = event.currentTarget.dataset.door_id
+				ws.send('{"message": "door", "door_id":"' + door + '", "state": 0}')
+			}
+			
+			function closeDoor(event){
+				door = event.currentTarget.dataset.door_id
+				ws.send('{"message": "door", "door_id":"' + door + '", "state": 1}')
+			}
 
             document.addEventListener("DOMContentLoaded", function(event) {
                 initWebSocket();
@@ -37,16 +48,16 @@
        <table>
          <tr><th>Управление дверями</th></tr>
          <tr>
-           <td><button data-door_id='0' onClick='openDoor(event)'>Открыть вход</button></td>
-           <td><button data-door_id='0' onClick='closeDoor(event)'>Закрыть вход</button></td>
+           <td><button data-door_id='1' onClick='openDoor(event)'>Открыть вход</button></td>
+           <td><button data-door_id='1' onClick='closeDoor(event)'>Закрыть вход</button></td>
          </tr>
          <tr>
-           <td><button data-door_id='1' onClick='openDoor(event)'>Открыть машинное отделение</button></td>
-           <td><button data-door_id='1' onClick='closeDoor(event)'>Закрыть машинное отделение</button></td>
+           <td><button data-door_id='2' onClick='openDoor(event)'>Открыть машинное отделение</button></td>
+           <td><button data-door_id='2' onClick='closeDoor(event)'>Закрыть машинное отделение</button></td>
          </tr>
          <tr>
-           <td><button data-door_id='2' onClick='openDoor(event)'>Открыть капитанский мостик</button></td>
-           <td><button data-door_id='2' onClick='closeDoor(event)'>Закрыть капитанский мостик</button></td>
+           <td><button data-door_id='3' onClick='openDoor(event)'>Открыть капитанский мостик</button></td>
+           <td><button data-door_id='3' onClick='closeDoor(event)'>Закрыть капитанский мостик</button></td>
          </tr>
        </table>
     </body>
