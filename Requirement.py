@@ -4,11 +4,11 @@ class Requirement:
         self.state = 0
         self.validation_function = func
 
-    def satisfied(self, master, state, game_state):
-        value = self.validation_function(master, self.state, game_state)
-
+    def satisfied(self, master, task, game_state):
+        value = self.validation_function(master, task, game_state)
+	value = bool(value)
         if isinstance(value, bool):
             return value
          # print("Reuirement: value:", value)
-        self.state = value
+        task.state = value
         return False

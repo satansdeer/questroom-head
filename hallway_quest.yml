@@ -3,9 +3,9 @@
     -
       id: 0
       success_requirements:
-        [WIRE_CONNECTED]
+        [REQ_WIRE_CONNECTED]
       success_actions:
-        [ENABLE_FUSE_PUZZLE, ADD_FUSE_PUZZLE, ADD_DISCONNECT_WIRE, ADD_SECRET]
+        [AC_ENABLE_FUSE_PUZZLE, AC_ADD_FUSE_PUZZLE, AC_ADD_DISCONNECT_WIRE, AC_ADD_SECRET]
       failure_requirements:
         []
       failure_actions:
@@ -14,9 +14,9 @@
     -
       id: 1
       success_requirements:
-        [WIRE_DISCONNECTED]
+        [REQ_WIRE_DISCONNECTED]
       success_actions:
-        [DISABLE_FUSE_PUZZLE, ADD_CONNECT_WIRE]
+        [AC_DISABLE_FUSE_PUZZLE, AC_ADD_CONNECT_WIRE]
       failure_requirements:
         []
       failure_actions:
@@ -25,9 +25,9 @@
     -
       id: 2
       success_requirements:
-        [FUSE_PUZZLE_SOLVED]
+        [REQ_FUSE_PUZZLE_SOLVED]
       success_actions:
-        [ENABLE_RADIO, ADD_SEQUENCE_PUZZLE, ADD_FUSE_REMOVED]
+        [AC_ENABLE_RADIO, AC_ADD_SEQUENCE_PUZZLE, AC_ADD_FUSE_REMOVED]
       failure_requirements:
         []
       failure_actions:
@@ -36,9 +36,9 @@
     -
       id: 3
       success_requirements:
-        [FUSE_REMOVED]
+        [REQ_FUSE_REMOVED]
       success_actions:
-        [DISABLE_RADIO, ENABLE_FUSE_PUZZLE, ADD_FUSE_PUZZLE]
+        [AC_DISABLE_RADIO, AC_ENABLE_FUSE_PUZZLE, AC_ADD_FUSE_PUZZLE]
       failure_requirements:
         []
       failure_actions:
@@ -47,9 +47,9 @@
     -
       id: 4
       success_requirements:
-        [CORRECT_SEQUENCE_ENTERED]
+        [REQ_CORRECT_SEQUENCE_ENTERED]
       success_actions:
-        [OPEN_FIRST_BOX, ADD_MECHANICS_CARD_PUZZLE]
+        [AC_OPEN_FIRST_BOX, AC_ADD_MECHANICS_CARD_PUZZLE]
       failure_requirements:
         []
       failure_actions:
@@ -58,9 +58,9 @@
     -
       id: 5
       success_requirements:
-        [MECHANICS_CARD_USED]
+        [REQ_MECHANICS_CARD_USED]
       success_actions:
-        [ENABLE_TUMBLER_PUZZLE, ADD_TUMBLER_PUZZLE]
+        [AC_ENABLE_TUMBLER_PUZZLE, AC_ADD_TUMBLER_PUZZLE]
       failure_requirements:
         []
       failure_actions:
@@ -69,9 +69,9 @@
     -
       id: 6
       success_requirements:
-        [TUMBLER_PUZZLE_SOLVED]
+        [REQ_TUMBLER_PUZZLE_SOLVED]
       success_actions:
-        [OPEN_SECOND_BOX, OPEN_THIRD_BOX, ADD_ROBOT_PUZZLE]
+        [AC_OPEN_SECOND_BOX, AC_OPEN_THIRD_BOX, AC_ADD_ROBOT_PUZZLE]
       failure_requirements:
         []
       failure_actions:
@@ -81,25 +81,24 @@
     -
       id: 8
       success_requirements:
-        [COMMUTATOR_PUZZLE_SOLVED]
+        [REQ_COMMUTATOR_PUZZLE_SOLVED]
       success_actions:
           # Need to add BATTARIES on Monitor
           # Need to add Engine on Monitor
           # And task to check all: engine and BATTARIES
           # then start the game
-        [OPEN_FOURTH_BOX, ADD_ENGINE_PUZZLE, ADD_BATTARIES_PUZZLE, ADD_ACTIVATE_CAPTAIN_BRIDGE]
+        [AC_OPEN_FOURTH_BOX, AC_ADD_ENGINE_PUZZLE, AC_ADD_BATTARIES_PUZZLE, AC_ADD_ACTIVATE_CAPTAIN_BRIDGE]
       failure_requirements:
         []
       failure_actions:
         []
       title: 'Правильно расположить патчкорды'
-
     -
       id: 9
       success_requirements:
-        [SECRET_DOORS]
+        [REQ_SECRET_DOORS]
       success_actions:
-        [OPEN_FOURTH_BOX, ADD_COMMUTATOR_PUZZLE]
+        [AC_OPEN_FOURTH_BOX, AC_ADD_COMMUTATOR_PUZZLE]
       failure_requirements:
         []
       failure_actions:
@@ -108,9 +107,9 @@
     -
       id: 10
       success_requirements:
-        [ROBOT_ASSEMBLED]
+        [REQ_ROBOT_ASSEMBLED]
       success_actions:
-        [ROBOT_SAY_RIDDLE, ADD_COMMUTATOR_PUZZLE]
+        [AC_ROBOT_SAY_RIDDLE, AC_ADD_COMMUTATOR_PUZZLE]
       failure_requirements:
         []
       failure_actions:
@@ -119,7 +118,7 @@
     -
       id: 11
       success_requirements:
-        [ENGINE_ASSEMBLED]
+        [REQ_ENGINE_ASSEMBLED]
       success_actions:
         []
       failure_requirements:
@@ -131,7 +130,7 @@
     -
       id: 12
       success_requirements:
-        [RADIO_BROADCAST]
+        [REQ_RADIO_BROADCAST]
       success_actions:
         []
       failure_requirements:

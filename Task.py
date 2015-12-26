@@ -5,16 +5,21 @@ class Task:
         self.failure_requirements = []
         self.success_actions = []
         self.failure_actions = []
+        self.showOnMonitor = False
+        self.state = 0
+        self.type = None
 
 
     def success_requirements_satisfied(self, master, state, game_state):
+        
+        # print("Task in self class Task succ req: {}".format(self)) 
         if not self.success_requirements: return False
-        return all(requirement.satisfied(master, state, game_state) for requirement in self.success_requirements)
+        return all(requirement.satisfied(master, self, game_state) for requirement in self.success_requirements)
 
 
     def failure_requirements_satisfied(self, master, state, game_state):
         if not self.failure_requirements: return False
-        return all(requirement.satisfied(master, state, game_state) for requirement in self.failure_requirements)
+        return all(requirement.satisfied(master, self, game_state) for requirement in self.failure_requirements)
 
 
     def add_success_requirement(self, requirement):

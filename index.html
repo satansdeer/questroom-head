@@ -60,6 +60,12 @@
                 ws.send("Button clicked:"+buttonId)
             }
 
+	    function cretateMessage(messageString, id) {
+	    	
+		var message = {message: messageString, id: id};
+		return message
+	    }
+
             function resetProgress(){
               var progressBar = document.querySelector(".time-left_progress");
               console.log(progressBar)
@@ -82,7 +88,10 @@
                 setTimeout(function(){
                   progressBar.style.width = '0%';
                 }, 1)
-                ws.send("Time end")
+                var id = window.location.search.split("?")[1].split("=")[1]
+		var messageString = "Time end";
+		var message = {message: messageString, id: id};
+                ws.send(JSON.stringify(message));
               }, false)
             })
         </script>
