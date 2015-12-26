@@ -14,6 +14,7 @@ from hallway_function import *
 from cb_functions import *
 
 clients = None
+master = None
 
 class QuestRoom(threading.Thread):
 
@@ -21,6 +22,7 @@ class QuestRoom(threading.Thread):
         global clients
         clients = cli
         game_state = None
+        captainsBridge_2 = None
         super(QuestRoom, self).__init__()
 
     def progress_bar_zero(self, monitorId):
@@ -28,18 +30,21 @@ class QuestRoom(threading.Thread):
 
     def run(self):
         print("quest room thread start")
+        global master
         master = DeviceMaster()
         #hallwayPort = "/dev/tty.usbserial-A4033KK5"
         #hallwayPort = "COM3"
         # "/dev/tty.usbserial-AL0079CW"
-        #captainsBridgePort_1 = "COM5"
-        #captainsBridgePort_2 = "COM4"
+        captainsBridgePort_1 = "COM5"
+        captainsBridgePort_2 = "COM4"
         #hallwayPuzzles = master.addSlave("hallwayPuzzles", hallwayPort, 1, boudrate=5)
-        #captainsBridge_1 = master.addSlave("CB_SLAVE_1", captainsBridgePort_1, 1, boudrate=5)
-        #captainsBridge_2 = master.addSlave("CB_SLAVE_2", captainsBridgePort_2, 1, boudrate=5)
+        captainsBridge_1 = master.addSlave("CB_SLAVE_1", captainsBridgePort_1, 1, boudrate=5)
+        self.captainsBridge_2 = master.addSlave("CB_SLAVE_2", captainsBridgePort_2, 1, boudrate=5)
 
 
         master.start()
+        master.setRelays(self.captainsBridge_2, [1,1,1,1])
+        print('==================================================================================')
 
         # init_leds = [0x000, 0x000, 0x000] * 32
         # master.setSmartLeds(hallwayPuzzles, init_leds)
@@ -62,7 +67,11 @@ class QuestRoom(threading.Thread):
         self.game_state.slave = hallwayPuzzles
         self.game_state.quest_room = self
         self.game_state.start_game_loop(self.on_gameloop)
-
+	
+    def set_door_state(self, door_id, door_state):
+		relays = master.getRelays(self.captainsBridge_2).get()
+		relays[door_id] = door_state
+		master.setRelays(self.captainsBridge_2, relays)
 
     def send_ws_message(self, client_id, message):
         str_id = str(client_id)
