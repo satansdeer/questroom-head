@@ -50,7 +50,6 @@ html, body {
   height: 100%;
   background-color: cadetblue;
   border-radius: 6px;
-  transition: width 10s
 }
 
 .heart:before, .heart:after {
@@ -74,27 +73,6 @@ html, body {
 
 .screen {
   position: relative;
-  height: 50%;
+  height: 100%;
   width: 100%;
-}
-
-.buttons {
-  position: relative;
-  height: 50%;
-  width: 100%;
-  background-color: grey;
-  padding: 20px 20%;
-}
-
-.button {
-  height: 30px;
-  line-height: 30px;
-  font-size: 20px;
-  border-radius: 6px;
-  background-color: white;
-  width: max-content;
-  padding: 0 10px;
-  cursor: pointer;
-  display: inline-block;
-  margin: 5px 10px;
 }
