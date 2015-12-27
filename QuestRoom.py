@@ -47,8 +47,8 @@ class QuestRoom(threading.Thread):
         master.setRelays(self.captainsBridge_2, [1,1,1,1])
 
         init_leds = [0x000, 0x000, 0x000] * 32
-        master.setSmartLeds(hallwayPuzzles, init_leds)
-        leds = master.getSmartLeds(hallwayPuzzles).get()
+        master.setSmartLeds(self.hallwayPuzzles, init_leds)
+        leds = master.getSmartLeds(self.hallwayPuzzles).get()
         setLedValue(leds, 8, [0x888, 0x0, 0x0])
         setLedValue(leds, 9, [0x888, 0x0, 0x0])
         setLedValue(leds, 10, [0x888, 0x0, 0x0])
