@@ -14,6 +14,7 @@
                         //ws.send('{"message": "get_state"}')
                     };
                     ws.onmessage = function (evt) {
+                        return;
                         var received_msg = JSON.parse(evt.data);
                         console.log(received_msg)
                         messageContainer.innerHTML = unescape(received_msg.message);
