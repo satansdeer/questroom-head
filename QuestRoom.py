@@ -74,7 +74,7 @@ class QuestRoom(threading.Thread):
         master.setRelays(self.captainsBridge_2, relays)
 
     def set_box_state(self, box_id, box_state):
-        leds = master.getSmartLeds(sefl.hallwayPuzzles).get()
+        leds = master.getSmartLeds(self.hallwayPuzzles).get()
         setLedValue(leds, box_id + 8, [0x0, 0x0, 0x888])
         relays = master.getRelays(self.hallwayPuzzles).get()
         relays[box_state] = box_state
