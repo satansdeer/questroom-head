@@ -23,6 +23,7 @@ class QuestRoom(threading.Thread):
         clients = cli
         game_state = None
         captainsBridge_2 = None
+        hallwayPuzzles = None
         super(QuestRoom, self).__init__()
 
     def progress_bar_zero(self, monitorId):
@@ -37,8 +38,8 @@ class QuestRoom(threading.Thread):
         # "/dev/tty.usbserial-AL0079CW"
         captainsBridgePort_1 = "COM5"
         captainsBridgePort_2 = "COM4"
-        hallwayPuzzles = master.addSlave("hallwayPuzzles", hallwayPort, 1, boudrate=5)
-        captainsBridge_1 = master.addSlave("CB_SLAVE_1", captainsBridgePort_1, 1, boudrate=5)
+        self.hallwayPuzzles = master.addSlave("hallwayPuzzles", hallwayPort, 1, boudrate=5)
+        self.captainsBridge_1 = master.addSlave("CB_SLAVE_1", captainsBridgePort_1, 1, boudrate=5)
         self.captainsBridge_2 = master.addSlave("CB_SLAVE_2", captainsBridgePort_2, 1, boudrate=5)
 
 
@@ -73,7 +74,7 @@ class QuestRoom(threading.Thread):
         master.setRelays(self.captainsBridge_2, relays)
 
     def set_box_state(self, box_id, box_state):
-        leds = master.getSmartLeds(hallwayPuzzles).get()
+        leds = master.getSmartLeds(sefl.hallwayPuzzles).get()
         setLedValue(leds, box_id + 8, [0x0, 0x0, 0x888])
         relays = master.getRelays(self.hallwayPuzzles).get()
         relays[box_state] = box_state
