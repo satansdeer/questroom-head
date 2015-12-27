@@ -90,6 +90,10 @@ app = tornado.web.Application([
     autoreload=True,
 )
 
+def keyboard_callback(char):
+    print(char)
+    sound_manager.play_sound('coin.wav')
+
 if __name__ == '__main__':
     parse_command_line()
     app.listen(options.port)
