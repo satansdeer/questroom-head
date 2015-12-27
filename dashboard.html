@@ -11,7 +11,8 @@
                 if ("WebSocket" in window) {
                     window.ws = new WebSocket("ws://"+window.location.hostname+":8888/socket?Id=42");
                     ws.onopen = function() {
-                        console.log("WebSocket connected...")
+                        messageContainer.innerHTML = "Connected";
+                        ws.send('{"message": "get_state"}')
                     };
                     ws.onmessage = function (evt) {
                         var received_msg = JSON.parse(evt.data);

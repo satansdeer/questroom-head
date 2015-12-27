@@ -71,6 +71,8 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             box_id = int(message['box_id'])
             box_state = message['state']
             quest_room.set_box_state(box_id, box_state)
+        if "get_state" == message['message']:
+            quest_room.send_state()
 
     def on_close(self):
         if self.id not in clients: return

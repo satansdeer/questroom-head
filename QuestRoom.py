@@ -93,6 +93,11 @@ class QuestRoom(threading.Thread):
         clients[str_id]['object'].write_message(message)
 
 
+    def send_state(self):
+        message = {'message': self.game_state.active_tasks}
+        clients['42']['object'].write_message(message)
+
+
     def on_gameloop(self, message):
         #map(lambda client: clients[client]['object'].write_message(message), clients)
         clients['42']['object'].write_message(message)
