@@ -26,8 +26,8 @@ def parse(file_name):
 
 def fillTask(task_source):
     task = Task()
-    print("{}".format(task_source["success_requirements"]))
-    print("=========================================\n{}".format(task_source))
+    # print("{}".format(task_source["success_requirements"]))
+    # print("=========================================\n{}".format(task_source))
     map(lambda req:    task.add_success_requirement(
             Requirement(eval(req))), task_source["success_requirements"])
     map(lambda req:    task.add_failure_requirement(
@@ -42,5 +42,5 @@ def fillTask(task_source):
         task.showOnMonitor = task_source["showOnMonitor"]
     if "type" in task_source:
         task.type = task_source["type"]
-    print("task id: {}".format(task.id))
+    # print("task id: {}".format(task.id))
     return task

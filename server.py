@@ -61,7 +61,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         print(message['message'])
         if "Time end" in message['message']:
             pass
-            #quest_room.progress_bar_zero(message['id'])
+            quest_room.progress_bar_zero(message['id'])
         if "play_sound" == message['message']:
             sound_id = message['sound']
             sound_manager.play_sound(sound_id)
@@ -99,6 +99,7 @@ if __name__ == '__main__':
     sound_manager.start()
     quest_room = QuestRoom(clients)
     quest_room.start()
-    #keyboard_listener = KeyboardListener()
-    #keyboard_listener.start()
+    keyboard_listener = KeyboardListener(False)
+    keyboard_listener.daemon = True
+    keyboard_listener.start()
     tornado.ioloop.IOLoop.instance().start()

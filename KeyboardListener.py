@@ -8,10 +8,12 @@ class KeyboardListener(threading.Thread):
         self.last_keys_pressed = []
         self.callback = callback
         super(KeyboardListener, self).__init__()
+        # self.run()
 
     def run(self):
         while True:
             char = getch()
+            print("Keyboard char: {}".format(char))
             if self.callback:
                 self.callback(char)
             self.last_keys_pressed.insert(0, char)

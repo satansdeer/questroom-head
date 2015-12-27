@@ -354,7 +354,7 @@ hiddenPanelSwitchers = []
 oldHiddenPanelSwitchers = [None] * 6
 
 def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
-    return True
+    # return True
     global hiddenPanelColors
     global visiblePanelColors
 

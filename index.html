@@ -23,7 +23,6 @@
                         messageContainer.innerHTML = unescape(received_msg.message);
                         console.log("RECEIVED MESSAGE")
                         resetProgress();
-                        received_msg.countdown_active = false;
                         if(!countdownActive && received_msg.countdown_active){
                           countdownActive = received_msg.countdown_active
                           requestAnimationFrame(progressBarCountDown)
