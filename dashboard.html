@@ -32,12 +32,12 @@
 
             function openBox(event){
               box = event.currentTarget.dataset.box_id
-              ws.send('{"message": "box", "box_id":"' + box + '", "state": 0}')
+              ws.send('{"message": "box", "box_id":"' + box + '", "state": 1}')
             }
 
             function closeBox(event){
               box = event.currentTarget.dataset.box_id
-              ws.send('{"message": "box", "box_id":"' + box + '", "state": 1}')
+              ws.send('{"message": "box", "box_id":"' + box + '", "state": 0}')
             }
 
             document.addEventListener("DOMContentLoaded", function(event) {
