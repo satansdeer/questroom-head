@@ -8,7 +8,7 @@
             <script type="text/javascript">
             countdownActive = true;
             progressValue = 100;
-            setTimeout('progressBarCountDown()', 1000)
+            requestAnimationFrame(progressBarCountDown)
             function WebSocketTest() {
                 var messageContainer = document.getElementById("message");
                 var progressBar = document.querySelector(".time-left_progress");
@@ -24,7 +24,8 @@
                         console.log("RECEIVED MESSAGE")
                         resetProgress();
                         if(!countdownActive && received_msg.countdown_active){
-                          setTimeout('progressBarCountDown()', 100)
+                          countdownActive = received_msg.countdown_active
+                          requestAnimationFrame(progressBarCountDown)
                         }
                         countdownActive = received_msg.countdown_active
                         setProgressVisibility(received_msg.progress_visible);
@@ -53,7 +54,7 @@
               }
               if(countdownActive){
                 progressBar.style.width = progressValue + '%'
-                setTimeout('progressBarCountDown()', 10)
+                requestAnimationFrame(progressBarCountDown)
               }
             }
 
