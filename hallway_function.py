@@ -337,8 +337,8 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
     hiddenPanelSwitchers = buttons[HIDDEN_SWITCHERS_START_NUM:
             HIDDEN_SWITCHERS_END_NUM + 1]
 
-    print("Visible values: {}".format(visiblePanelSwitchers))
-    print("Hidden values: {}".format(hiddenPanelSwitchers))
+    # print("Visible values: {}".format(visiblePanelSwitchers))
+    # print("Hidden values: {}".format(hiddenPanelSwitchers))
 
     # checked Visible Panel
     for index in range(ELEMENTS_NUMBER):
@@ -471,7 +471,7 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     # ACTIVATION_SEQUENCE = ['L', 'L', 'R', 'L', 'R', 'R', 'L', 'R']
     # Последовательность для открытия
     # L - влево; R - вправо
-    ACTIVATION_SEQUENCE = ['L','L', 'L', 'R', 'L']*2
+    ACTIVATION_SEQUENCE = ['L','L', 'L', 'R', 'L']
     # time.sleep(0.6)
 
     value = master.getAdc(hallwayPuzzles).get()[LOCK_ID]

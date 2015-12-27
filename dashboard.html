@@ -7,12 +7,12 @@
         <script type="text/javascript">
             function initWebSocket() {
                 console.log(window.location)
-                var messageContainer = document.getElementById("message");
+                var messageContainer = document.getElementById("current_tasks");
                 if ("WebSocket" in window) {
                     window.ws = new WebSocket("ws://"+window.location.hostname+":8888/socket?Id=42");
                     ws.onopen = function() {
                         messageContainer.innerHTML = "Connected";
-                        ws.send('{"message": "get_state"}')
+                        //ws.send('{"message": "get_state"}')
                     };
                     ws.onmessage = function (evt) {
                         var received_msg = JSON.parse(evt.data);
