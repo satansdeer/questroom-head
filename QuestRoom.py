@@ -33,26 +33,25 @@ class QuestRoom(threading.Thread):
         global master
         master = DeviceMaster()
         #hallwayPort = "/dev/tty.usbserial-A4033KK5"
-        #hallwayPort = "COM3"
+        hallwayPort = "COM3"
         # "/dev/tty.usbserial-AL0079CW"
         captainsBridgePort_1 = "COM5"
         captainsBridgePort_2 = "COM4"
-        #hallwayPuzzles = master.addSlave("hallwayPuzzles", hallwayPort, 1, boudrate=5)
+        hallwayPuzzles = master.addSlave("hallwayPuzzles", hallwayPort, 1, boudrate=5)
         captainsBridge_1 = master.addSlave("CB_SLAVE_1", captainsBridgePort_1, 1, boudrate=5)
         self.captainsBridge_2 = master.addSlave("CB_SLAVE_2", captainsBridgePort_2, 1, boudrate=5)
 
 
         master.start()
         master.setRelays(self.captainsBridge_2, [1,1,1,1])
-        print('==================================================================================')
 
-        # init_leds = [0x000, 0x000, 0x000] * 32
-        # master.setSmartLeds(hallwayPuzzles, init_leds)
-        # leds = master.getSmartLeds(hallwayPuzzles).get()
-        #setLedValue(leds, 8, [0xfff, 0x0, 0x0])
-        #setLedValue(leds, 9, [0xfff, 0x0, 0x0])
-        #setLedValue(leds, 10, [0xfff, 0x0, 0x0])
-        #setLedValue(leds, 11, [0xfff, 0x0, 0x0])
+        init_leds = [0x000, 0x000, 0x000] * 32
+        master.setSmartLeds(hallwayPuzzles, init_leds)
+        leds = master.getSmartLeds(hallwayPuzzles).get()
+        setLedValue(leds, 8, [0x888, 0x0, 0x0])
+        setLedValue(leds, 9, [0x888, 0x0, 0x0])
+        setLedValue(leds, 10, [0x888, 0x0, 0x0])
+        setLedValue(leds, 11, [0x888, 0x0, 0x0])
 
         # relays = [1,1,1,0]
         # master.setRelays(captainsBridge, relays)
@@ -67,11 +66,18 @@ class QuestRoom(threading.Thread):
         self.game_state.slave = hallwayPuzzles
         self.game_state.quest_room = self
         self.game_state.start_game_loop(self.on_gameloop)
-	
+
     def set_door_state(self, door_id, door_state):
-		relays = master.getRelays(self.captainsBridge_2).get()
-		relays[door_id] = door_state
-		master.setRelays(self.captainsBridge_2, relays)
+        relays = master.getRelays(self.captainsBridge_2).get()
+        relays[door_id] = door_state
+        master.setRelays(self.captainsBridge_2, relays)
+
+    def set_box_state(self, box_id, box_state):
+        leds = master.getSmartLeds(hallwayPuzzles).get()
+        setLedValue(leds, box_id + 8, [0x0, 0x0, 0x888])
+        relays = master.getRelays(self.hallwayPuzzles).get()
+        relays[box_state] = box_state
+        master.setRelays(self.hallwayPuzzles, relays)
 
     def send_ws_message(self, client_id, message):
         str_id = str(client_id)

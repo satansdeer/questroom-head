@@ -3,10 +3,11 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="{{ static_url("dashboard.css") }}">
+        <link rel="stylesheet" href="static/dashboard.css">
         <script type="text/javascript">
             function initWebSocket() {
+                console.log(window.location)
                 if ("WebSocket" in window) {
-					console.log(window.location)
                     window.ws = new WebSocket("ws://"+window.location.hostname+":8888/socket?Id=42");
                     ws.onopen = function() {
                         console.log("WebSocket connected...")
@@ -18,16 +19,26 @@
                 sound = event.currentTarget.dataset.sound
                 ws.send('{"message": "play_sound", "sound":"'+sound+'"}')
             }
-			
-			function openDoor(event){
-				door = event.currentTarget.dataset.door_id
-				ws.send('{"message": "door", "door_id":"' + door + '", "state": 0}')
-			}
-			
-			function closeDoor(event){
-				door = event.currentTarget.dataset.door_id
-				ws.send('{"message": "door", "door_id":"' + door + '", "state": 1}')
-			}
+
+            function openDoor(event){
+              door = event.currentTarget.dataset.door_id
+              ws.send('{"message": "door", "door_id":"' + door + '", "state": 0}')
+            }
+
+            function closeDoor(event){
+              door = event.currentTarget.dataset.door_id
+              ws.send('{"message": "door", "door_id":"' + door + '", "state": 1}')
+            }
+
+            function openBox(event){
+              box = event.currentTarget.dataset.box_id
+              ws.send('{"message": "box", "box_id":"' + box + '", "state": 0}')
+            }
+
+            function closeBox(event){
+              box = event.currentTarget.dataset.box_id
+              ws.send('{"message": "box", "box_id":"' + box + '", "state": 1}')
+            }
 
             document.addEventListener("DOMContentLoaded", function(event) {
                 initWebSocket();
@@ -46,7 +57,7 @@
          <tr><td><button data-sound='coin.wav' onClick='playSound(event)'>Coin</button></td></tr>
        </table>
        <table>
-         <tr><th>Управление дверями</th></tr>
+         <th>Управление дверями</th>
          <tr>
            <td><button data-door_id='1' onClick='openDoor(event)'>Открыть вход</button></td>
            <td><button data-door_id='1' onClick='closeDoor(event)'>Закрыть вход</button></td>
@@ -58,6 +69,25 @@
          <tr>
            <td><button data-door_id='3' onClick='openDoor(event)'>Открыть капитанский мостик</button></td>
            <td><button data-door_id='3' onClick='closeDoor(event)'>Закрыть капитанский мостик</button></td>
+         </tr>
+       </table>
+       <table>
+         <th>Управление ящиками</th>
+         <tr>
+           <td><button data-box_id='0' onClick='openBox(event)'>Открыть первый ящик</button></td>
+           <td><button data-box_id='0' onClick='closeBox(event)'>Закрыть первый ящик</button></td>
+         </tr>
+         <tr>
+           <td><button data-box_id='1' onClick='openBox(event)'>Открыть второй ящик</button></td>
+           <td><button data-box_id='1' onClick='closeBox(event)'>Закрыть второй ящик</button></td>
+         </tr>
+         <tr>
+           <td><button data-box_id='2' onClick='openBox(event)'>Открыть третий ящик</button></td>
+           <td><button data-box_id='2' onClick='closeBox(event)'>Закрыть третий ящик</button></td>
+         </tr>
+         <tr>
+           <td><button data-box_id='3' onClick='openBox(event)'>Открыть четвертый ящик</button></td>
+           <td><button data-box_id='3' onClick='closeBox(event)'>Закрыть четвертый ящик</button></td>
          </tr>
        </table>
     </body>

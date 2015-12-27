@@ -57,7 +57,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         print(message)
         print(message['message'])
         if "Time end" in message['message']:
-			pass
+            pass
             #quest_room.progress_bar_zero(message['id'])
         if "play_sound" == message['message']:
             sound_id = message['sound']
@@ -66,6 +66,10 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             door_id = int(message['door_id'])
             door_state = message['state']
             quest_room.set_door_state(door_id, door_state)
+        if "box" == message['message']:
+            box_id = int(message['box_id'])
+            box_state = message['state']
+            quest_room.set_box_state(box_id, box_state)
 
     def on_close(self):
         if self.id not in clients: return
