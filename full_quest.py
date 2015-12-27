@@ -118,7 +118,7 @@ def AC_ENABLE_FUSE_PUZZLE(master, task, game_state):
 
 def AC_DISABLE_FUSE_PUZZLE(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
-    smartLeds.setOneLed(LedsIdTable.FUSE, Colors.NONE)
+    smartLeds.setOneLed(LedsIdTable.FUSE, Colors.RED)
 
 
 def REQ_FUSE_PUZZLE_SOLVED(master, task, game_state):
@@ -146,23 +146,23 @@ def AC_ENABLE_RADIO(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.RED)
     # add radio broadcast
-    radio = Radio(0.5, 0.001)
-
-    sounds = [('harp.wav',40.0,80.0), ('island_music_x.wav',120.0,160.0), ('1.wav',200.0,240.0)]
-
-    radio.init_sounds(sounds, 'noize.wav')
-
-    radio.start()
-
-    radio.set_target_value(15)
+    # radio = Radio(0.5, 0.001)
+    #
+    # sounds = [('harp.wav',40.0,80.0), ('island_music_x.wav',120.0,160.0), ('1.wav',200.0,240.0)]
+    #
+    # radio.init_sounds(sounds, 'noize.wav')
+    #
+    # radio.start()
+    #
+    # radio.set_target_value(15)
     game_state.add_active_task_with_id(12)
 
 
 def REQ_RADIO_BROADCAST(master, task, game_state):
     pass
-    radioValue = master.getAdc(hallwayPuzzles).get()[AdcIdTable.RADIO]
-    #print("Radio value: {}".format(radioValue))
-    radio.set_target_value(radioValue)
+    # radioValue = master.getAdc(hallwayPuzzles).get()[AdcIdTable.RADIO]
+    # #print("Radio value: {}".format(radioValue))
+    # radio.set_target_value(radioValue)
 
 
 
@@ -284,12 +284,14 @@ def AC_OPEN_SECOND_BOX(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.BOX_2, Colors.BLUE)
 
+    
     relays = master.getRelays(hallwayPuzzles).get()
     relays[1] = 1
     master.setRelays(hallwayPuzzles, relays)
 
 
 def AC_OPEN_THIRD_BOX(master, task, game_state):
+    time.sleep(3)
     print("Third box was open!")
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.BOX_3, Colors.BLUE)
@@ -472,7 +474,7 @@ state = 0
 # массив значений
 READ_DATA_STACK = []
 # максимальная длина массива, после достижение которой массив сброситься
-READ_DATA_STACK_LENGTH = 180*3
+READ_DATA_STACK_LENGTH = 180*4
 
 
 def turnLeft(lastValue, newValue):
@@ -774,7 +776,9 @@ def AC_ENTERED_DOOR_OPEN(master, task, game_state):
 
 def AC_SHOW_SUCCESS_MESSAGE(master, task, game_state):
     print("You are WINNER!")
-    game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.WINNER})
+
+    for monitorId in range(1,5):
+        game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.WINNER})
 
 def REQ_AMOUNT_OF_TASK_FAILURE(master, task, game_state):
     if game_state.failureTasksForLose == game_state.failureTasksCounter:
@@ -782,7 +786,10 @@ def REQ_AMOUNT_OF_TASK_FAILURE(master, task, game_state):
     return False
 
 def AC_SHOW_FAILURE_MESSAGE(master, task, game_state):
-    game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.FAIL})
+
+    for monitorId in range(1,5):
+        game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.FAIL})
+
     print("You lose")
 
 

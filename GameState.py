@@ -96,7 +96,7 @@ class GameState:
         self.tasks.append(task)
 
     def remove_active_task(self, task):
-        print("Remove task with id: {}".format(task.id))
+        # print("Remove task with id: {}".format(task.id))
         if task.showOnMonitor:
                 self.freeMonitor(task)
                 print("Free monitor with id {}".format(task.id))
@@ -104,20 +104,20 @@ class GameState:
             self.active_tasks.remove(task)
 
     def add_active_task_with_id(self, id):
-        print("Task id for add: {}".format(id))
+        # print("Task id for add: {}".format(id))
         task = self.find_task_with_id(id)
         if task.showOnMonitor:
                 monitorId = self.fillMonitor(task)
-                print("Add active Task id: {taskId} | monitorId: {monitorId}\n".format(taskId=id, monitorId=monitorId))
+                # print("Add active Task id: {taskId} | monitorId: {monitorId}\n".format(taskId=id, monitorId=monitorId))
                 self.quest_room.send_ws_message(str(monitorId), {'message':task.title})
-        print("self.active_tasks.append task: {}".format(task.id))
+        # print("self.active_tasks.append task: {}".format(task.id))
         self.active_tasks.append(task)
-        print("ADD: active_tasks: {}".format([task_.id for task_ in self.active_tasks]))
+        # print("ADD: active_tasks: {}".format([task_.id for task_ in self.active_tasks]))
 
     def update_used_task_ids_list(self, taskId):
         self.usedTasksIds.insert(0, taskId) 
         if len(self.usedTasksIds) > self.numUsedTasks:
-            self.usedTask.pop()
+            self.usedTasksIds.pop()
 
     # def cbTaskType(self, task):
     #     # if self.startCBTaskId <= int(task.id) <= (self.startCBTaskId + self.numCBTasks):
@@ -172,10 +172,10 @@ class GameState:
     def getAvaliableCBTaskIds(self):
         # get  only CaptainBridge Tasks
         allCBTasksIds = [task.id for task in self.tasks if self.cbTaskType(task)]
-        print("AllCBTask: {}".format(allCBTasksIds))
+        # print("AllCBTask: {}".format(allCBTasksIds))
         # get id not active tasks and not used recently
         avaliableTasksIds = [taskId for taskId in allCBTasksIds if taskId not in self.usedTasksIds]
-        print('Avaliable task Ids: {}'.format(avaliableTasksIds))
+        # print('Avaliable task Ids: {}'.format(avaliableTasksIds))
 
         return avaliableTasksIds
 

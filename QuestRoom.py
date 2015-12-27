@@ -46,7 +46,7 @@ class QuestRoom(threading.Thread):
 
 
         master.start()
-        master.setRelays(self.captainsBridge_2, [1,1,1,1])
+        # master.setRelays(self.captainsBridge_2, [1,1,1,1])
 
         init_leds = [0x000, 0x000, 0x000] * 32
         master.setSmartLeds(self.hallwayPuzzles, init_leds)
@@ -91,8 +91,8 @@ class QuestRoom(threading.Thread):
     def send_ws_message(self, client_id, message):
         str_id = str(client_id)
         if str_id not in clients: return
-        if 'progress_visible' not in message: message['progress_visible'] = true
-        if 'countdown_active' not in message: message['countdown_active'] = true
+        if 'progress_visible' not in message: message['progress_visible'] = True
+        if 'countdown_active' not in message: message['countdown_active'] = True
         clients[str_id]['object'].write_message(message)
 
 
