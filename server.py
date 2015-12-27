@@ -19,6 +19,7 @@ define("port", default=8888, help="run on the given port", type=int)
 clients = dict()
 quest_room = None
 sound_manager = None
+keyboard_listener = None
 
 all_buttons = [
         {'title': 'Глюкало',  'id': 0},
@@ -94,5 +95,6 @@ if __name__ == '__main__':
     sound_manager.start()
     quest_room = QuestRoom(clients)
     quest_room.start()
-    #KeyboardListener().start()
+    keyboard_listener = KeyboardListener()
+    keyboard_listener.start()
     tornado.ioloop.IOLoop.instance().start()
