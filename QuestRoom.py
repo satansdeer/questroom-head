@@ -100,7 +100,7 @@ class QuestRoom(threading.Thread):
 
     def on_gameloop(self, message):
         #map(lambda client: clients[client]['object'].write_message(message), clients)
-        clients[42]['object'].write_message(message)
+        clients['42']['object'].write_message(message)
 
 
     def button_pressed(self, button_id):
