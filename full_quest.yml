@@ -1,0 +1,1184 @@
+---
+  tasks:
+    -
+      id: 0
+      success_requirements:
+        [REQ_WIRE_CONNECTED]
+      success_actions:
+        [AC_ENABLE_FUSE_PUZZLE, AC_ADD_FUSE_PUZZLE, AC_ADD_DISCONNECT_WIRE, AC_ADD_SECRET]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Соединить провод'
+    -
+      id: 1
+      success_requirements:
+        [REQ_WIRE_DISCONNECTED]
+      success_actions:
+        [AC_DISABLE_FUSE_PUZZLE, AC_ADD_CONNECT_WIRE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Разъединить провод'
+    -
+      id: 2
+      success_requirements:
+        [REQ_FUSE_PUZZLE_SOLVED]
+      success_actions:
+        [AC_ENABLE_RADIO, AC_ADD_SEQUENCE_PUZZLE, AC_ADD_FUSE_REMOVED]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Заменить предохранитель'
+    -
+      id: 3
+      success_requirements:
+        [REQ_FUSE_REMOVED]
+      success_actions:
+        [AC_DISABLE_RADIO, AC_ENABLE_FUSE_PUZZLE, AC_ADD_FUSE_PUZZLE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Убрать предохранитель'
+    -
+      id: 4
+      success_requirements:
+        [REQ_CORRECT_SEQUENCE_ENTERED]
+      success_actions:
+        [AC_OPEN_FIRST_BOX, AC_ADD_MECHANICS_CARD_PUZZLE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Ввести последовательность'
+    -
+      id: 5
+      success_requirements:
+        [REQ_MECHANICS_CARD_USED]
+      success_actions:
+        [AC_ENABLE_TUMBLER_PUZZLE, AC_ADD_TUMBLER_PUZZLE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Приложить карточку механика'
+    -
+      id: 6
+      success_requirements:
+        [REQ_TUMBLER_PUZZLE_SOLVED]
+      success_actions:
+        [AC_OPEN_SECOND_BOX, AC_OPEN_THIRD_BOX, AC_ADD_ROBOT_PUZZLE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Решить загадку с переключателями'
+
+    -
+      id: 8
+      success_requirements:
+        [REQ_COMMUTATOR_PUZZLE_SOLVED]
+      success_actions:
+          # Need to add BATTARIES on Monitor
+          # Need to add Engine on Monitor
+          # And task to check all: engine and BATTARIES
+          # then start the game
+        [AC_OPEN_FOURTH_BOX, AC_ADD_ENGINE_PUZZLE, AC_ADD_BATTARIES_PUZZLE, AC_ADD_ACTIVATE_CAPTAIN_BRIDGE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Правильно расположить патчкорды'
+    -
+      id: 9
+      success_requirements:
+        [REQ_SECRET_DOORS]
+      success_actions:
+        [AC_OPEN_FOURTH_BOX, AC_ADD_COMMUTATOR_PUZZLE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Открыть секретную дверь'
+    -
+      id: 10
+      success_requirements:
+        [REQ_ROBOT_ASSEMBLED]
+      success_actions:
+        [AC_ROBOT_SAY_RIDDLE, AC_ADD_COMMUTATOR_PUZZLE,AC_INIT]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Собрать робота'
+    -
+      id: 11
+      success_requirements:
+        [REQ_ENGINE_ASSEMBLED]
+      success_actions:
+        []
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Собрать двигатель'
+
+    -
+      id: 12
+      success_requirements:
+        [REQ_RADIO_BROADCAST]
+      success_actions:
+        []
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Трансляция радио'
+
+    -
+      id: 13
+      success_requirements:
+        [REQ_TRUE]
+      success_actions:
+        []
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'RETURN ALWAYS TRUE'
+
+    -
+      id: 101
+      success_requirements:
+        [REQ_CHECK_BATTERIES, REQ_ENGINE_ASSEMBLED]
+      success_actions:
+        [AC_PRESS_HERABORA]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Insert bataries'
+
+    -
+      id: 102
+      success_requirements:
+        [REQ_CHECK_BATTERIES]
+      success_actions:
+        [AC_SHOW_ENGINE_MESSAGE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: ''
+
+    -
+      id: 151
+      success_requirements:
+        [REQ_CHECK_BATTERY_1]
+      success_actions:
+        []
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: ''
+      showOnMonitor: True
+
+    -
+      id: 152
+      success_requirements:
+        [REQ_CHECK_BATTERY_2]
+      success_actions:
+        []
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: ''
+      showOnMonitor: True
+
+    -
+      id: 153
+      success_requirements:
+        [REQ_CHECK_BATTERY_3]
+      success_actions:
+        []
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: ''
+      showOnMonitor: True
+
+    -
+      id: 154
+      success_requirements:
+        [REQ_CHECK_BATTERY_4]
+      success_actions:
+        []
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: ''
+      showOnMonitor: True
+
+    -
+      id: 201
+      success_requirements:
+        [REQ_CHECK_HERABORA]
+      success_actions:
+        [AC_ADD_END_GAME_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Press Herabora'
+
+    -
+      id: 203 
+      success_requirements:
+        [REQ_AMOUNT_OF_TASK_SUCCESSED]
+      success_actions:
+        [AC_ENTERED_DOOR_OPEN, AC_SHOW_SUCCESS_MESSAGE]
+      failure_requirements:
+        [REQ_AMOUNT_OF_TASK_FAILURE]
+      failure_actions:
+        [AC_SHOW_FAILURE_MESSAGE]
+      title: 'AMOUNT_OF_TASK_SUCCESSED'
+
+    -
+      id: 220
+      success_requirements:
+        [REQ_SERVO_COOLING_SYSTEM_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Включить систему охлаждения сервопривода'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 221
+      success_requirements:
+        [REQ_SERVO_COOLING_SYSTEM_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Выключить Систему Охлаждения Сервопривода'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 222
+      success_requirements:
+        [REQ_DEFLECTOR_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Включить Дефлектор'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 223
+      success_requirements:
+        [REQ_DEFLECTOR_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Выключить Дефлектор'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 224
+      success_requirements:
+        [REQ_LEVITRON_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Включить Левитрон'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 225
+      success_requirements:
+        [REQ_LEVITRON_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Выключить Левитрон'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 226
+      success_requirements:
+        [REQ_KRIVOSHUP_PLUS_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Включить Кривощуп +'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 227
+      success_requirements:
+        [REQ_KRIVOSHUP_PLUS_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Выключить Кривощуп +'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 228
+      success_requirements:
+        [REQ_KRIVOSHUP_MINUS_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Включить Кривощуп -'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 229
+      success_requirements:
+        [REQ_KRIVOSHUP_MINUS_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Выключить Кривощуп -'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 230
+      success_requirements:
+        [REQ_REPULSIVE_DESYCHRONISER_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Включить Репульсивный Десинхронизатор'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 231
+      success_requirements:
+        [REQ_REPULSIVE_DESYCHRONISER_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Выключить Репульсивный Десинхронизатор'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 232
+      success_requirements:
+        [REQ_BIG_RED_BUTTON_PRESSED]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Нажать Биг рэд баттон'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+
+
+
+
+
+
+
+
+
+
+    -
+      id: 243 
+      success_requirements:
+        [REQ_TETRAGEKS_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Включить Тетрагекс'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 244
+      success_requirements:
+        [REQ_TETRAGEKS_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Выключить Тетрагекс'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 245 
+      success_requirements:
+        [REQ_C3PO_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Включить C3PO'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 246
+      success_requirements:
+        [REQ_C3PO_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Выключить C3PO'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 247 
+      success_requirements:
+        [REQ_REPAIR_NANOROBOTS_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Активировать ромонтных нанороботов'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 248
+      success_requirements:
+        [REQ_REPAIR_NANOROBOTS_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Деактивировать ремонтных нанороботов'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 249 
+      success_requirements:
+        [REQ_ULTRAFOTON_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Активировать Ультрафотон'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 250
+      success_requirements:
+        [REQ_ULTRAFOTON_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Деактивировать Ультрафотон'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 251
+      success_requirements:
+        [REQ_TPBACH_1_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Активировать ъРВАЩ-1'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 252
+      success_requirements:
+        [REQ_TPBACH_1_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Деактивировать ъРВАЩ-1'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 253
+      success_requirements:
+        [REQ_TPBACH_2_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Активировать ъРВАЩ-2'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 254
+      success_requirements:
+        [REQ_TPBACH_2_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Деактивировать ъРВАЩ-2'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 255
+      success_requirements:
+        [REQ_ECO_LAZER_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Активировать ECO-лазер'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 256
+      success_requirements:
+        [REQ_ECO_LAZER_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Деактивировать ECO-лазер'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 257
+      success_requirements:
+        [REQ_DARK_MATTER_STABILIZER_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Активировать Стабилизатор Тёмной Материи'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 258
+      success_requirements:
+        [REQ_DARK_MATTER_STABILIZER_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Деактивировать Стабилизатор Тёмной Материи'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 259
+      success_requirements:
+        [REQ_DVORNIKI_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Активировать Дворники'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 260
+      success_requirements:
+        [REQ_DVORNIKI_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Деактивировать Дворники'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 261
+      success_requirements:
+        [REQ_PROTON_LAUNCHERS_BATTERY_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Активировать Пусковые протонные батареи'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+
+
+
+    -
+      id: 265
+      success_requirements:
+        [REQ_HERABORA_PRESSED]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Нажать Herabora'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 266
+      success_requirements:
+        [REQ_R2D2_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Включить R2D2'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 267
+      success_requirements:
+        [REQ_R2D2_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Выключить R2D2'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # -
+    #   id: 6
+    #   success_requirements:
+    #     [PRESLO_PRESSED]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions: [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Нажмите пресло'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 7
+    #   success_requirements:
+    #     [KOKOVNIK_PRESSED]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Нажмите коковник'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 8
+    #   success_requirements:
+    #     [TRUNDEL_PRESSED]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Нажмите трундель'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    # -
+    #   id: 9
+    #   success_requirements:
+    #     [GLUKALO_PRESSED]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     []
+    #   failure_actions:
+    #     []
+    #   title: 'Нажмите глюкало'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    # -
+    #   id: 10
+    #   success_requirements:
+    #     [HERABORA_PRESSED]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     []
+    #   failure_actions:
+    #     []
+    #   title: 'PRESS HERABORA!'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+
+    # -
+    #   id: 233
+    #   success_requirements:
+    #     [REQ_CLUTCH_REVERSE_SYCLE_TO_0]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Переключить Муфту обратного цикла на 0'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 234
+    #   success_requirements:
+    #     [REQ_CLUTCH_REVERSE_SYCLE_TO_255]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Переключить Муфту обратного цикла на MAX'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 235
+    #   success_requirements:
+    #     [REQ_CLUTCH_REVERSE_SYCLE_TO_77]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Переключить Муфту обратного цикла на 77'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 236
+    #   success_requirements:
+    #     [REQ_CLUTCH_REVERSE_SYCLE_TO_150]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Переключить Муфту обратного цикла на 150'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 237
+    #   success_requirements:
+    #     [REQ_SUPER_BRAIN_TO_0]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Переключить Супер мозг на 0'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 238
+    #   success_requirements:
+    #     [REQ_SUPER_BRAIN_TO_255]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Переключить Супер мозг на 255'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 239
+    #   success_requirements:
+    #     [REQ_SUPER_BRAIN_TO_182]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Переключить Супер мозг на 182'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 240
+    #   success_requirements:
+    #     [REQ_SUPER_BRAIN_TO_129]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Переключить Супер мозг на 129'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 241
+    #   success_requirements:
+    #     [REQ_SUPER_BRAIN_TO_86]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Переключить Супер мозг на 86'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 242
+    #   success_requirements:
+    #     [REQ_SUPER_BRAIN_TO_45]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Переключить Супер мозг на 45'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 262
+    #   success_requirements:
+    #     [REQ_HYPER_DRIVE_GENERATOR_TO_MAX]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Деактивировать Пусковые протонные батареи'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 263
+    #   success_requirements:
+    #     [REQ_HYPER_DRIVE_GENERATOR_TO_MAX]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Выкрутить Генератор гипер драйва на максимум'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 264
+    #   success_requirements:
+    #     [REQ_HYPER_DRIVE_GENERATOR_TO_MIN]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Выкрутить Генератор гипер драйва на минимум'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 268
+    #   success_requirements:
+    #     [REQ_DIPSOMANIA_SUPERCHARGER_TO_0]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Нагнетатель Дипсомании на 0'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 269
+    #   success_requirements:
+    #     [REQ_DIPSOMANIA_SUPERCHARGER_TO_1]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Нагнетатель Дипсомании на 1'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 270
+    #   success_requirements:
+    #     [REQ_DIPSOMANIA_SUPERCHARGER_TO_2]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Нагнетатель Дипсомании на 2'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 271
+    #   success_requirements:
+    #     [REQ_DIPSOMANIA_SUPERCHARGER_TO_3]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Нагнетатель Дипсомании на 3'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 272
+    #   success_requirements:
+    #     [REQ_CHAMAEMELUM_NOBILE_TO_0]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Chamaemelum nobile вывести на 0'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 273
+    #   success_requirements:
+    #     [REQ_CHAMAEMELUM_NOBILE_TO_1]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Chamaemelum nobile вывести на 1'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 274
+    #   success_requirements:
+    #     [REQ_CHAMAEMELUM_NOBILE_TO_2]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Chamaemelum nobile вывести на 2'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 275
+    #   success_requirements:
+    #     [REQ_CHAMAEMELUM_NOBILE_TO_3]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Chamaemelum nobile вывести на 3'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 276
+    #   success_requirements:
+    #     [REQ_CONDENSER_TO_0]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Переключить Конденсатор на 0'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 277
+    #   success_requirements:
+    #     [REQ_CONDENSER_TO_1]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Переключить Конденсатор на 1'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 278
+    #   success_requirements:
+    #     [REQ_CONDENSER_TO_2]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Переключить Конденсатор на 2'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'
+    #
+    # -
+    #   id: 279
+    #   success_requirements:
+    #     [REQ_CONDENSER_TO_3]
+    #   success_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   failure_requirements:
+    #     [REQ_CB_TASK_FAILURE]
+    #   failure_actions:
+    #     [AC_CB_ADD_RANDOM_TASK]
+    #   title: 'Переключить Конденсатор на 3'
+    #   showOnMonitor: True
+    #   type: 'CB_TASK'

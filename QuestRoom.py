@@ -11,7 +11,9 @@ import threading
 from KeyboardListener import KeyboardListener
 #from NewFunctions_map import *
 from hallway_function import *
-from cb_functions import *
+#from cb_functions import *
+
+from full_quest import *
 
 clients = None
 master = None
@@ -62,7 +64,8 @@ class QuestRoom(threading.Thread):
         # keyboardListener.start()
 
         #self.game_state = parse("cb_quest.yml")
-        self.game_state = parse("hallway_quest.yml")
+        # self.game_state = parse("hallway_quest.yml")
+        self.game_state = parse("full_quest.yml")
 
         #self.game_state = parse("quest_script.yml")
         self.game_state.device_master = master

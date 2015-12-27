@@ -1,18 +1,18 @@
 # vim:ft=ansible:
 ---
     tasks:
-      -
-        id: 0
-        success_requirements:
-          [REQ_TRUE]
-        success_actions:
-          [AC_INIT]
-        failure_requirements:
-          []
-        failure_actions:
-          []
-        title: ''
-
+      # -
+      #   id: 0
+      #   success_requirements:
+      #     [REQ_TRUE]
+      #   success_actions:
+      #     [AC_INIT]
+      #   failure_requirements:
+      #     []
+      #   failure_actions:
+      #     []
+      #   title: ''
+      #
       -
         id: 101
         success_requirements:
