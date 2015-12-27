@@ -54,6 +54,7 @@ class QuestRoom(threading.Thread):
         setLedValue(leds, 10, [0x888, 0x0, 0x0])
         setLedValue(leds, 11, [0x888, 0x0, 0x0])
         master.setSmartLeds(self.hallwayPuzzles, leds)
+        master.setRelays(self.hallwayPuzzles, [0,0,0,0])
 
         # relays = [1,1,1,0]
         # master.setRelays(captainsBridge, relays)
@@ -75,11 +76,13 @@ class QuestRoom(threading.Thread):
         master.setRelays(self.captainsBridge_2, relays)
 
     def set_box_state(self, box_id, box_state):
-        leds = master.getSmartLeds(self.hallwayPuzzles).get()
-        setLedValue(leds, box_id + 8, [0x0, 0x0, 0x888])
-        master.setSmartLeds(self.hallwayPuzzles, leds)
+        smartLeds = master.getSmartLeds(self.hallwayPuzzles)
+        if(box_state == 1):
+            smartLeds.setOneLed(box_id + 8, Colors.BLUE)
+        else:
+            smartLeds.setOneLed(box_id + 8, Colors.RED)
         relays = master.getRelays(self.hallwayPuzzles).get()
-        relays[box_state] = box_state
+        relays[box_id] = box_state
         master.setRelays(self.hallwayPuzzles, relays)
 
     def send_ws_message(self, client_id, message):
