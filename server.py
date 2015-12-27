@@ -88,6 +88,10 @@ app = tornado.web.Application([
     autoreload=True,
 )
 
+def keyboard_callback(char):
+    print(char)
+    sound_manager.play_sound('coin.wav')
+
 if __name__ == '__main__':
     parse_command_line()
     app.listen(options.port)
@@ -95,6 +99,7 @@ if __name__ == '__main__':
     sound_manager.start()
     quest_room = QuestRoom(clients)
     quest_room.start()
-    keyboard_listener = KeyboardListener()
+    keyboard_listener = KeyboardListener(keyboard_callback)
     keyboard_listener.start()
+    keyboard_listener.run()
     tornado.ioloop.IOLoop.instance().start()
