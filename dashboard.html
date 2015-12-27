@@ -7,11 +7,16 @@
         <script type="text/javascript">
             function initWebSocket() {
                 console.log(window.location)
+                var messageContainer = document.getElementById("message");
                 if ("WebSocket" in window) {
                     window.ws = new WebSocket("ws://"+window.location.hostname+":8888/socket?Id=42");
                     ws.onopen = function() {
                         console.log("WebSocket connected...")
                     };
+                    ws.onmessage = function (evt) {
+                        var received_msg = JSON.parse(evt.data);
+                        messageContainer.innerHTML = unescape(received_msg.message);
+                    }
                 }
             }
 
@@ -47,6 +52,8 @@
     </head>
     <body>
        <h1>Панель управления</h1>
+       <hr/>
+       <div class='current-tasks' id='current_tasks'></div>
        <hr/>
        <table>
          <tr><th>Фразы робота</th></tr>
