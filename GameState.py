@@ -53,7 +53,7 @@ class GameState:
             # print("Active Tasks:{}".format([tas__k.id for tas__k in self.active_tasks]))
             # print("TAsi to perform satisfies: {id}, {obj}".format(id=task.id, obj=task))
             self.perform_task_if_satisfies(task)
-        message = {'message': self.active_tasks}
+        message = {'message': [x.title for x in self.active_tasks]}
         callback(message) if callback else None
        # os.system('cls' if os.name=='nt' else 'clear')
        # print("CB_SLAVE_1")
