@@ -95,14 +95,20 @@ class QuestRoom(threading.Thread):
 
     def send_state(self):
         message = {'message': [x.title for x in self.game_state.active_tasks]}
-        if '42' in clients:
-            clients['42']['object'].write_message(message)
+        try:
+            if '42' in clients:
+                clients['42']['object'].write_message(message)
+        except:
+            pass
 
 
     def on_gameloop(self, message):
         #map(lambda client: clients[client]['object'].write_message(message), clients)
-        if '42' in clients:
-            clients['42']['object'].write_message(message)
+        try:
+            if '42' in clients:
+                clients['42']['object'].write_message(message)
+        except:
+            pass
 
 
     def button_pressed(self, button_id):

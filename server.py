@@ -49,6 +49,8 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
     def open(self, *args):
         self.id = self.get_argument("Id")
         self.stream.set_nodelay(True)
+        if self.id in clients:
+            del clients[self.id]
         clients[self.id] = { "id": self.id, "object": self }
         data = {'msg_type': 'init', 'buttons': self.get_buttons(int(self.id)), 'hearts': 3}
         self.write_message(data)
@@ -89,10 +91,6 @@ app = tornado.web.Application([
     static_path=os.path.join(os.path.dirname(__file__), "static"),
     autoreload=True,
 )
-
-def keyboard_callback(char):
-    print(char)
-    sound_manager.play_sound('coin.wav')
 
 if __name__ == '__main__':
     parse_command_line()
