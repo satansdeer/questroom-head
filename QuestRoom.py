@@ -71,7 +71,7 @@ class QuestRoom(threading.Thread):
         self.game_state.device_master = master
         self.game_state.slave = hallwayPuzzles
         self.game_state.quest_room = self
-        self.game_state.start_game_loop(self.on_gameloop)
+        self.game_state.start_game_loop(self.send_state)
 
     def set_door_state(self, door_id, door_state):
         relays = master.getRelays(self.captainsBridge_2).get()
@@ -96,17 +96,9 @@ class QuestRoom(threading.Thread):
         clients[str_id]['object'].write_message(message)
 
 
-    def send_state(self):
+    def send_state(self, message):
         message = {'message': [x.title for x in self.game_state.active_tasks]}
-        try:
-            if '42' in clients:
-                clients['42']['object'].write_message(message)
-        except:
-            pass
-
-
-    def on_gameloop(self, message):
-        #map(lambda client: clients[client]['object'].write_message(message), clients)
+        message = tornado.escape.json_encode(message)
         try:
             if '42' in clients:
                 clients['42']['object'].write_message(message)
