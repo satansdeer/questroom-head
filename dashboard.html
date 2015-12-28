@@ -13,6 +13,10 @@
                         messageContainer.innerHTML = "Connected";
                         //ws.send('{"message": "get_state"}')
                     };
+                    ws.onmessage = function (evt) {
+                      var received_msg = JSON.parse(evt.data);
+                      messageContainer.innerHTML = unescape(received_msg.message);
+                    }
                 }
             }
 
