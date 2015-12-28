@@ -96,6 +96,7 @@ if __name__ == '__main__':
     parse_command_line()
     app.listen(options.port)
     sound_manager = SoundManager()
+    sound_manager.daemon = True
     sound_manager.start()
     quest_room = QuestRoom(clients)
     quest_room.start()
