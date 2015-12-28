@@ -75,11 +75,13 @@ class CB_CTRL:
     HYPER_DRIVE_GENERATOR = 2
     CONDENSER = 7
 
-
+    DOOR_ENTER = 1
+    DOOR_ENGINE = 2
+    DOOR_CAPTAIN = 3
 
 class Colors:
     WHITE = [0xff, 0xff, 0xff]
-    RED = [0xff, 0x0, 0x0]
+    RED = [0xfff, 0x0, 0x0]
     LIGHT_RED = [0xff, 0x33, 0x33]
     GREEN = [0x0, 0xff, 0x0]
     LIGHT_GREEN = [0x33, 0xff, 0x33]
@@ -115,9 +117,14 @@ def REQ_WIRE_DISCONNECTED(master, task, game_state):
 
 def AC_ENABLE_FUSE_PUZZLE(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
-    smartLeds.setOneLed(LedsIdTable.FUSE, Colors.RED)
+    # smartLeds.setOneLed(LedsIdTable.FUSE, Colors.RED)
 
-
+    fuseConnection = master.getButtons(hallwayPuzzles).get()[
+        ButtonsIdTable.FUSE]
+    if fuseConnection:
+        smartLeds.setOneLed(LedsIdTable.FUSE, Colors.GREEN)
+    else:
+        smartLeds.setOneLed(LedsIdTable.FUSE, Colors.RED)
 def AC_DISABLE_FUSE_PUZZLE(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.FUSE, [0x0, 0x0, 0x0])
@@ -224,6 +231,10 @@ def AC_ADD_SECRET(master, task, game_state):
 
 
 def AC_ADD_ROBOT_PUZZLE(master, task, game_state):
+    smartLeds = master.getSmartLeds(hallwayPuzzles)
+    smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_LEFT, Colors.RED)
+    smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, Colors.RED)
+    smartLeds.setOneLed(LedsIdTable.ROBOT_HEAD, Colors.WHITE)
     game_state.add_active_task_with_id(10)
 
 
@@ -591,8 +602,8 @@ def REQ_ROBOT_ASSEMBLED(master, task, game_state):
     robbotAssembled = buttons.get()[ButtonsIdTable.ROBOT_HEAD]
     if robbotAssembled:
         smartLeds = master.getSmartLeds(hallwayPuzzles)
-        smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_LEFT, Colors.RED)
-        smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, Colors.BLUE)
+        smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_LEFT, Colors.GREEN)
+        smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, Colors.RED)
         smartLeds.setOneLed(LedsIdTable.ROBOT_HEAD, Colors.WHITE)
         return True
     return False
@@ -601,7 +612,7 @@ def REQ_ROBOT_ASSEMBLED(master, task, game_state):
 def AC_ROBOT_SAY_RIDDLE(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_LEFT, Colors.GREEN)
-    smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, Colors.GREEN)
+    smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, Colors.RED)
     smartLeds.setOneLed(LedsIdTable.ROBOT_HEAD, Colors.WHITE)
     print("Robot say RIDDLE!")
 
@@ -639,10 +650,10 @@ def AC_INIT(master, task, game_state):
     for taskId in taskList:
         game_state.add_active_task_with_id(taskId)
 
-def REQ_ENGINE_ASSEMBLED(master, task, game_state):
-    buttons = master.getButtons(hallwayPuzzles).get()
-    engine = buttons[ButtonsIdTable.ENGINE]
-    return engine
+# def REQ_ENGINE_ASSEMBLED(master, task, game_state):
+#     buttons = master.getButtons(hallwayPuzzles).get()
+#     engine = buttons[ButtonsIdTable.ENGINE]
+#     return engine
 
 def AC_SHOW_ENGINE_MESSAGE(master, task, game_state):
     if REQ_ENGINE_ASSEMBLED(master, None, game_state):
@@ -783,6 +794,11 @@ def AC_SHOW_SUCCESS_MESSAGE(master, task, game_state):
     for monitorId in range(1,5):
         game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.WINNER})
 
+    time.sleep(3)
+    relays = master.getRelays(CB_SLAVE_2).get()
+    relays[CB_CTRL.DOOR_ENTER] = 0
+    master.setRelays(CB_SLAVE_2, relays)
+
 def REQ_AMOUNT_OF_TASK_FAILURE(master, task, game_state):
     if game_state.failureTasksForLose == game_state.failureTasksCounter:
             return True
@@ -794,7 +810,10 @@ def AC_SHOW_FAILURE_MESSAGE(master, task, game_state):
         game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.FAIL})
 
     print("You lose")
-
+    time.sleep(3)
+    relays = master.getRelays(CB_SLAVE_2).get()
+    relays[CB_CTRL.DOOR_ENTER] = 0
+    master.setRelays(CB_SLAVE_2, relays)
 
 # Tasks
 

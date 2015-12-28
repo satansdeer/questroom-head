@@ -2,9 +2,9 @@ from __future__ import print_function
 import threading
 import pygame
 from Getch import getch
+# from copy import copy
 
-
-hallwayPuzzles = "hallwayPuzzles"
+hallwayPuzzles = "CB_SLAVE_2"
 class KeyboardListener(threading.Thread):
     PASS_1 = [1,1,1,1]
     TOGGLE_ENTER_DOOR=[7,7,7,7]
@@ -24,17 +24,19 @@ class KeyboardListener(threading.Thread):
         while True:
             char = getch()
             print("Keyboard char: {}".format(char))
+            if not char.isdigit():
+                continue
             self.beep.play()
-            if self.callback:
-                self.callback(char)
-            self.last_keys_pressed.insert(0, char)
+            # if self.callback:
+            #     self.callback(char)
+            self.last_keys_pressed.insert(0, int(char))
 
-            self.toggleDoor(TOGGLE_ENTER_DOOR,1)
-            self.toggleDoor(TOGGLE_ENGINE_DOOR, 2)
-            self.toggleDoor(TOGGLE_CAPTAIN_DOOR, 3)
+            self.toggleDoor(self.TOGGLE_ENTER_DOOR,1)
+            self.toggleDoor(self.TOGGLE_ENGINE_DOOR, 2)
+            self.toggleDoor(self.TOGGLE_CAPTAIN_DOOR, 3)
 
-            self.openDoor(OPEN_ENGINE_DOOR, 2)
-            self.openDoor(OPEN_CAPTAIN_DOOR, 3)
+            self.openDoor(self.OPEN_ENGINE_DOOR, 2)
+            self.openDoor(self.OPEN_CAPTAIN_DOOR, 3)
 
     def get_last_keys_pressed():
         retval = self.last_keys_pressed
@@ -42,9 +44,10 @@ class KeyboardListener(threading.Thread):
         return retval
 
     def check(self, password):
-        passwordReverse = copy(password)
+        passwordReverse = password[:]
         passwordReverse.reverse()
         if passwordReverse == self.last_keys_pressed[:len(passwordReverse)]:
+            self.last_keys_pressed.insert(0, 'a')
             return True
         return False
 
@@ -57,6 +60,6 @@ class KeyboardListener(threading.Thread):
     def openDoor(self, password, doorId):
         if self.check(password):
             doors = self.questMaster.getRelays(hallwayPuzzles).get()
-            if doors[doorId] == 0:
-                doors[doorId] = 1
+            if doors[doorId] == 1:
+                doors[doorId] = 0
                 self.questMaster.setRelays(hallwayPuzzles, doors)
