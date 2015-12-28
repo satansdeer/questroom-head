@@ -80,7 +80,9 @@ class CB_CTRL:
 class Colors:
     WHITE = [0xff, 0xff, 0xff]
     RED = [0xff, 0x0, 0x0]
+    LIGHT_RED = [0xff, 0x33, 0x33]
     GREEN = [0x0, 0xff, 0x0]
+    LIGHT_GREEN = [0x33, 0xff, 0x33]
     BLUE = [0x0, 0x0, 0xff]
     NONE = [0x0, 0x0, 0x0]
 
@@ -118,7 +120,7 @@ def AC_ENABLE_FUSE_PUZZLE(master, task, game_state):
 
 def AC_DISABLE_FUSE_PUZZLE(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
-    smartLeds.setOneLed(LedsIdTable.FUSE, Colors.RED)
+    smartLeds.setOneLed(LedsIdTable.FUSE, [0x0, 0x0, 0x0])
 
 
 def REQ_FUSE_PUZZLE_SOLVED(master, task, game_state):
@@ -126,7 +128,7 @@ def REQ_FUSE_PUZZLE_SOLVED(master, task, game_state):
     fuseSolved = buttons.get()[ButtonsIdTable.FUSE]
     if fuseSolved:
         smartLeds = master.getSmartLeds(hallwayPuzzles)
-        smartLeds.setOneLed(LedsIdTable.FUSE, Colors.GREEN)
+        smartLeds.setOneLed(LedsIdTable.FUSE, Colors.LIGHT_GREEN)
         return True
     return False
 
@@ -146,23 +148,22 @@ def AC_ENABLE_RADIO(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.RED)
     # add radio broadcast
-    # radio = Radio(0.5, 0.001)
+    radio = Radio(0.5, 0.001)
     #
-    # sounds = [('harp.wav',40.0,80.0), ('island_music_x.wav',120.0,160.0), ('1.wav',200.0,240.0)]
+    sounds = [('harp.wav',40.0,80.0), ('island_music_x.wav',120.0,160.0), ('1.wav',200.0,240.0)]
     #
-    # radio.init_sounds(sounds, 'noize.wav')
+    radio.init_sounds(sounds, 'noize.wav')
     #
-    # radio.start()
+    radio.start()
     #
     # radio.set_target_value(15)
     game_state.add_active_task_with_id(12)
 
 
 def REQ_RADIO_BROADCAST(master, task, game_state):
-    pass
-    # radioValue = master.getAdc(hallwayPuzzles).get()[AdcIdTable.RADIO]
-    # #print("Radio value: {}".format(radioValue))
-    # radio.set_target_value(radioValue)
+    radioValue = master.getAdc(hallwayPuzzles).get()[AdcIdTable.RADIO]
+    #print("Radio value: {}".format(radioValue))
+    radio.set_target_value(radioValue)
 
 
 
@@ -239,6 +240,7 @@ def AC_ADD_ACTIVATE_CAPTAIN_BRIDGE(mastre, task, game_state):
 
 def REQ_SECRET_DOORS(master, task, game_state):
     # buttonStartPosition = 17
+    return False
     buttons = master.getButtons(hallwayPuzzles).get()[12:18]
     if buttons[3:6] == [0, 1, 0]:
         relays = buttons[0:3]
@@ -329,7 +331,7 @@ class pColors:
 
 def toggleHiddenColor(color):
     if pColors.RED == color:
-        color = pColors.GREEN
+        color = pColors.BLUE
     else:
         color = pColors.RED
     return color
@@ -397,8 +399,7 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
             colorId = index + 1
             # if element before inc was been the last on the line
             # next element been first on the same line
-            if colorId % 3 == 0:
-                colorId = colorId - 3
+            colorId = colorId % 3
             hiddenPanelColors[colorId] = toggleHiddenColor(
                     hiddenPanelColors[colorId])
     # checked Hidden Panel
@@ -407,8 +408,7 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
            hiddenPanelColors[index] = toggleHiddenColor(hiddenPanelColors[index])
 
            colorId = index + 1
-           if colorId % 3 == 0:
-               colorId = colorId - 3
+           colorId = colorId % 3
            visiblePanelColors[colorId] = toggleVisibleColor(
                    visiblePanelColors[colorId])
 
@@ -426,7 +426,7 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
         visibleIndex = smartLedsObj.NUM_LEDS - 1 - index
         smartLedsObj.setOneLed(visibleIndex, visiblePanelColors[index])
 
-    WINNER_COLOR_LIST= [pColors.GREEN] * 6
+    WINNER_COLOR_LIST= [pColors.BLUE] * 6
     visiblePanelState = (WINNER_COLOR_LIST == visiblePanelColors)
     hiddenPanelState = (WINNER_COLOR_LIST == hiddenPanelColors)
 
@@ -454,9 +454,7 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
 
 
 def AC_DISABLE_RADIO(master, task, game_state):
-    smartLeds = master.getSmartLeds(hallwayPuzzles)
-    smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.NONE)
-
+    radio.stop()
 # Пока будут глобальными, потом перенесём в стек
 # Проблема в следующем. При повороте тумблера возникают шумы, которые
 # мы успеваем считывать на нашей скорости. Шумы надо убрать и оставить
@@ -474,7 +472,7 @@ state = 0
 # массив значений
 READ_DATA_STACK = []
 # максимальная длина массива, после достижение которой массив сброситься
-READ_DATA_STACK_LENGTH = 180*4
+READ_DATA_STACK_LENGTH = 180*5
 
 
 def turnLeft(lastValue, newValue):
@@ -526,8 +524,15 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
         return
 
 
-    if len(PLAYER_SEQUENCE) > len(ACTIVATION_SEQUENCE) * 2:
-        PLAYER_SEQUENCE = copy(PLAYER_SEQUENCE[:len(ACTIVATION_SEQUENCE)])
+    result = READ_DATA_STACK[0]
+    for val in READ_DATA_STACK[1:]:
+        if abs(val - result) > 5:
+            READ_DATA_STACK = []
+            return
+        result = val
+
+
+    PLAYER_SEQUENCE = PLAYER_SEQUENCE[:len(ACTIVATION_SEQUENCE)]
     # get most freq value
     value = Counter(READ_DATA_STACK).most_common(1)[0][0]
     READ_DATA_STACK = []
@@ -545,9 +550,7 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
         lastLockPosition = lockPosition
         return False
 
-    print("Time: {}".format(time.time()))
 
-    print("LastValue: {}, newValue: {}".format(lastLockPosition, lockPosition))
     turnDirection = turn(lastLockPosition, lockPosition)
     PLAYER_SEQUENCE.insert(0, turnDirection)
 

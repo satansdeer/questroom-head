@@ -180,7 +180,7 @@ class GameState:
         return avaliableTasksIds
 
     def cbTaskType(self, task):
-        print("Task id {}, task type: {}".format(task.id, task.type))
+        #print("Task id {}, task type: {}".format(task.id, task.type))
         return str(task.type) == "CB_TASK"
 
     def apply_state(self, state):
