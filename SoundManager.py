@@ -10,6 +10,7 @@ class SoundManager(threading.Thread):
         pygame.mixer.init()
         beep = pygame.mixer.Sound('sounds/keyboard_1.wav')
         time = 0
+        self.callbacks = {}
         super(SoundManager, self).__init__()
 
     def run(self):
