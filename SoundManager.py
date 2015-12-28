@@ -17,7 +17,7 @@ class SoundManager(threading.Thread):
             for time_key in self.callbacks:
                 if time.clock() >= time_key:
                     self.callbacks[time_key]()
-                    del self.callbacks[time_key]
+            self.callbacks = filter(lambda key: key < time.clock(), self.callbacks)
 
     def play_sound(self, sound_name, callback = None):
         sound = pygame.mixer.Sound(sound_name)
