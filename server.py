@@ -100,7 +100,7 @@ if __name__ == '__main__':
     sound_manager.start()
     quest_room = QuestRoom(clients)
     quest_room.start()
-    keyboard_listener = KeyboardListener(False)
-    keyboard_listener.daemon = True
-    keyboard_listener.start()
+    # keyboard_listener = KeyboardListener(False)
+    # keyboard_listener.daemon = True
+    # keyboard_listener.start()
     tornado.ioloop.IOLoop.instance().start()

@@ -60,8 +60,9 @@ class QuestRoom(threading.Thread):
 
         # relays = [1,1,1,0]
         # master.setRelays(captainsBridge, relays)
-        # keyboardListener = KeyboardListener(master)
-        # keyboardListener.start()
+        keyboardListener = KeyboardListener(master)
+        keyboardListener.daemon = True
+        keyboardListener.start()
 
         #self.game_state = parse("cb_quest.yml")
         # self.game_state = parse("hallway_quest.yml")
