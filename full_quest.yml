@@ -87,7 +87,7 @@
           # Need to add Engine on Monitor
           # And task to check all: engine and BATTARIES
           # then start the game
-        [AC_OPEN_FOURTH_BOX]
+        [AC_OPEN_FOURTH_BOX, AC_INIT]
       failure_requirements:
         []
       failure_actions:
@@ -109,7 +109,7 @@
       success_requirements:
         [REQ_ROBOT_ASSEMBLED]
       success_actions:
-        [AC_ROBOT_SAY_RIDDLE, AC_ADD_COMMUTATOR_PUZZLE, AC_INIT]
+        [AC_ROBOT_SAY_RIDDLE, AC_ADD_COMMUTATOR_PUZZLE]
       failure_requirements:
         []
       failure_actions:

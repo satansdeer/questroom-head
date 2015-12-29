@@ -324,6 +324,7 @@ def AC_OPEN_FOURTH_BOX(master, task, game_state):
 
 
 def REQ_COMMUTATOR_PUZZLE_SOLVED(master, task, game_state):
+    return True
     buttons = master.getButtons(hallwayPuzzles).get()
     commutatorSolved = buttons[ButtonsIdTable.COMMUTATOR]
     if commutatorSolved:
