@@ -1,8 +1,10 @@
-from SoundManager import SoundManager
+import pygame
 
-sm = SoundManager()
-sm.daemon = True
-sm.start()
+pygame.mixer.init()
 
-sm.play_sound('coin.wav', lambda: sm.play_sound('coin.wav'))
+sd = pygame.mixer.Sound('leftright_final.wav')
 
+sd.play()
+
+while True:
+    pass
