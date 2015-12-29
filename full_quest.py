@@ -287,13 +287,14 @@ def AC_OPEN_FIRST_BOX(master, task, game_state):
     relays = master.getRelays(hallwayPuzzles).get()
     relays[0] = 1
     master.setRelays(hallwayPuzzles, relays)
+    master.setRelays(hallwayPuzzles, relays)
 
 def AC_OPEN_SECOND_BOX(master, task, game_state):
     print("Second box was open!")
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.BOX_2, Colors.BLUE)
 
-    
+
     relays = master.getRelays(hallwayPuzzles).get()
     relays[1] = 1
     master.setRelays(hallwayPuzzles, relays)
@@ -596,12 +597,12 @@ def AC_ENABLE_TUMBLER_PUZZLE(master, task, game_state):
 def REQ_ROBOT_ASSEMBLED(master, task, game_state):
     buttons = master.getButtons(hallwayPuzzles)
     robbotAssembled = buttons.get()[ButtonsIdTable.ROBOT_HEAD]
-    game_state.quest_room.play_robot()
     if robbotAssembled:
         smartLeds = master.getSmartLeds(hallwayPuzzles)
         smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_LEFT, Colors.GREEN)
         smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, Colors.RED)
         smartLeds.setOneLed(LedsIdTable.ROBOT_HEAD, Colors.WHITE)
+        game_state.quest_room.play_robot()
         return True
     return False
 
