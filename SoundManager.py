@@ -10,22 +10,30 @@ class SoundManager(threading.Thread):
         pygame.mixer.init()
         beep = pygame.mixer.Sound('sounds/keyboard_1.wav')
         time = 0
-        self.callbacks = {}
+        self.callbacks = dict()
+        self.callbacks_to_add = dict()
         super(SoundManager, self).__init__()
 
     def run(self):
         while True:
+            timestamp = time.clock()
+            callbacks_for_change = self.callbacks.copy()
             for time_key in self.callbacks:
-                if time.clock() >= time_key:
-                    self.callbacks[time_key]()
-            self.callbacks = filter(lambda key: key < time.clock(), self.callbacks)
-
+                time_key = float(time_key)
+                if timestamp >= time_key:
+                    self.callbacks[str(time_key)]()
+                    del callbacks_for_change[str(time_key)]
+            self.callbacks = callbacks_for_change
+            self.callbacks.update(self.callbacks_to_add)
+            self.callbacks_to_add = dict()
+            
     def play_sound(self, sound_name, callback = None):
         sound = pygame.mixer.Sound(sound_name)
         sound.play()
         self.time = time.clock()
         if callback:
-            self.callbacks[time.clock() + sound.get_length()] = callback
+            self.callbacks_to_add[str(time.clock() + sound.get_length())] = callback
+            print(self.callbacks)
 
     def play_keyboard_beep(self):
         self.beep.play()
