@@ -99,6 +99,7 @@ if __name__ == '__main__':
     sound_manager.daemon = True
     sound_manager.start()
     quest_room = QuestRoom(clients)
+    quest_room.sound_manager = sound_manager
     quest_room.start()
     # keyboard_listener = KeyboardListener(False)
     # keyboard_listener.daemon = True

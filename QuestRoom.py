@@ -23,6 +23,7 @@ class QuestRoom(threading.Thread):
         global clients
         clients = cli
         game_state = None
+        sound_manager = None
         captainsBridge_2 = None
         hallwayPuzzles = None
         super(QuestRoom, self).__init__()
@@ -109,5 +110,8 @@ class QuestRoom(threading.Thread):
     def button_pressed(self, button_id):
         self.game_state.state['pressed_buttons'].append(button_id)
         print(self.game_state.state)
+
+    def play_robot(self):
+        self.sound_manager.play_sound('full_robot.wav')
 
 

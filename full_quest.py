@@ -154,16 +154,12 @@ def AC_ENABLE_RADIO(master, task, game_state):
     print("Radio puzzle solved")
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.RED)
-    # add radio broadcast
+
     radio = Radio(0.5, 0.001)
-    #
-    sounds = [('harp.wav',40.0,80.0), ('island_music_x.wav',120.0,160.0), ('1.wav',200.0,240.0)]
-    #
+    sounds = [('harp.wav',40.0,80.0), ('island_music_x.wav',120.0,160.0), ('leftright_final.wav',200.0,240.0)]
     radio.init_sounds(sounds, 'noize.wav')
-    #
     radio.start()
-    #
-    # radio.set_target_value(15)
+
     game_state.add_active_task_with_id(12)
 
 
@@ -600,6 +596,7 @@ def AC_ENABLE_TUMBLER_PUZZLE(master, task, game_state):
 def REQ_ROBOT_ASSEMBLED(master, task, game_state):
     buttons = master.getButtons(hallwayPuzzles)
     robbotAssembled = buttons.get()[ButtonsIdTable.ROBOT_HEAD]
+    game_state.quest_room.play_robot()
     if robbotAssembled:
         smartLeds = master.getSmartLeds(hallwayPuzzles)
         smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_LEFT, Colors.GREEN)
