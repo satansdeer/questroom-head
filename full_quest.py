@@ -147,28 +147,41 @@ def REQ_FUSE_REMOVED(master, task, game_state):
         return True
     return False
 
-radio = 0
-
+radio = None 
+radioDisabled = False
 def AC_ENABLE_RADIO(master, task, game_state):
+    global radioDisabled
     global radio
     print("Radio puzzle solved")
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.RED)
 
-    radio = Radio(0.5, 0.001)
-    sounds = [('harp.wav',40.0,80.0), ('island_music_x.wav',120.0,160.0), ('leftright_final.wav',200.0,240.0)]
-    radio.init_sounds(sounds, 'noize.wav')
-    radio.start()
+    if radio is None:
+        # print("========================Radio start!=======================")
+        radio = Radio(0.5, 0.001)
+        sounds = [('harp.wav',40.0,80.0), ('island_music_x.wav',120.0,160.0), ('leftright_final.wav',200.0,240.0)]
+        radio.init_sounds(sounds, 'noize.wav')
+        radio.start()
+    
+    radioDisabled = False
 
     game_state.add_active_task_with_id(12)
 
 
 def REQ_RADIO_BROADCAST(master, task, game_state):
+    global radioDisabled
+    if radioDisabled:
+        return True
     radioValue = master.getAdc(hallwayPuzzles).get()[AdcIdTable.RADIO]
     #print("Radio value: {}".format(radioValue))
     radio.set_target_value(radioValue)
 
 
+def AC_DISABLE_RADIO(master, task, game_state):
+    global radioDisabled
+    # radio.stop()
+    radioDisabled = True
+    radio.set_target_value(0)
 
 
 #=============== ADDING TASKS =================================================
@@ -462,8 +475,10 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
 #     return False
 
 
-def AC_DISABLE_RADIO(master, task, game_state):
-    radio.stop()
+
+
+
+
 # Пока будут глобальными, потом перенесём в стек
 # Проблема в следующем. При повороте тумблера возникают шумы, которые
 # мы успеваем считывать на нашей скорости. Шумы надо убрать и оставить
