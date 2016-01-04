@@ -24,7 +24,7 @@ class GameState:
         # whis list used by failure requarements of CB tasks
         self.monitorsWithProgressBarZero = []
         # successfull and failure taks counters
-        self.successfullTasksForWin = 10
+        self.successfullTasksForWin = 30
         self.failureTasksForLose = 10
         self.successfullTasksCounter = 0
         self.failureTasksCounter = 0
