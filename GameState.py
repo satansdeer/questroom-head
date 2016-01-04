@@ -6,9 +6,80 @@ CB_SLAVE_2="CB_SLAVE_2"
 hallwayPuzzles = "hallwayPuzzles"
 def clear():
     os.system('cls' if os.name=='nt' else 'clear')
+class CaptainsBridgeController:
+    NUM_LEVELS = 5
+    NUM_STAGES = 5
+    NUM_STAGE_TASKS = 4
+
+    STAGE_DELAY = 2
+    LEVEL_DELAY = 2
+
+    MESSAGE_LEVEL = "Уровень: {level}"
+
+    def __init__(self, game_state):
+        self.game_state = game_state
+        self.current_level = 0
+        self.current_stage = 0
+        self.completed_tasks_num = 0
+
+    def task_success(self, task):
+        if task.type == 'CB_TASK':
+            self.completed_tasks_num = self.completed_tasks_num + 1
+
+    def task_failure(self, task):
+        if task.type == 'CB_TASK':
+            self.completed_tasks_num = 0
+            for activeTask in self.game_state.active_tasks:
+                if activeTask.type == 'CB_TASK':
+                    self.game_state.remove_active_task(activeTask)
+
+            for index in range(4):
+                self.game_state.add_cb_random_task()
+
+    def check(self):
+        # Begin
+        if self.current_level == 0:
+            self.current_level = 1
+            self.current_stage = 1
+            self.showLevelMessage()
+            time.sleep(self.LEVEL_DELAY)
+            for index in range(4):
+                self.game_state.add_cb_random_task()
+
+
+        stage_up = False
+        level_up = False
+        # stage increment
+        if self.completed_tasks_num >= self.NUM_STAGE_TASKS:
+           self.completed_tasks_num = 0
+           self.current_stage = self.current_stage + 1
+           stage_up = True
+           time.sleep(self.STAGE_DELAY)
+
+        # level increment
+        if self.current_stage == self.NUM_STAGES:
+            self.current_level = self.current_level + 1
+            if self.current_level >= self.NUM_LEVELS:
+                #game end
+                return True
+
+            level_up = True
+            self.showLevelMessage()
+            time.sleep(self.LEVEL_DELAY)
+
+        # add tasks
+        if stage_up or level_up:
+            for index in range(4):
+                self.game_state.add_cb_random_task()
+
+        return
+
+    def showLevelMessage(self):
+        message = MESSAGE_LEVEL.format(level=self.current_level)
+        for monitorId in range(1,5):
+            self.game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE})
+
 class GameState:
-    startCBTaskId = 6
-    numCBTasks = 6
     def __init__(self):
         self.device_master = None
         self.tasks = []
@@ -29,6 +100,8 @@ class GameState:
         self.successfullTasksCounter = 0
         self.failureTasksCounter = 0
 
+        self.cb_controller = CaptainsBridgeController(self)
+
         # tasks whom been active on previously steps
         # it's fill in add_random_tasks
         self.usedTasksIds = []
@@ -47,47 +120,32 @@ class GameState:
 
     def game_loop(self, callback):
         if not self.state: return
-        # print("active tasks list:{}".format(self.active_tasks))
-        # print("Active Tasks:{}".format([tas__k.id for tas__k in self.active_tasks]))
+
         for task in self.active_tasks:
-            # print("Active Tasks:{}".format([tas__k.id for tas__k in self.active_tasks]))
-            # print("TAsi to perform satisfies: {id}, {obj}".format(id=task.id, obj=task))
             self.perform_task_if_satisfies(task)
         message = {'message': [x.title for x in self.active_tasks]}
         callback(message) if callback else None
-       # os.system('cls' if os.name=='nt' else 'clear')
-       # print("CB_SLAVE_1")
-       # self.device_master.getButtons(CB_SLAVE_1).printResource()
-       # self.device_master.getAdc(CB_SLAVE_1).printResource()
-       # print("CB_SLAVE_2")
-       # self.device_master.getButtons(CB_SLAVE_2).printResource()
-       # self.device_master.getAdc(CB_SLAVE_2).printResource()
 
 
     def perform_task_if_satisfies(self, task):
-        # print("TAsk in perform satisfies: {id}, {obj}".format(id=task.id, obj=task))
         if task.success_requirements_satisfied(self.device_master, self.state, self):
             self.remove_active_task(task)
             # counter inc only if task is Captain's Bridge type
             self.incSuccessfullTaskCounter(task)
-
-            # print("After remove action")
-            # print("Active task name: {}".format([taskm.title for taskm in  self.active_tasks]))
-            # print("Active task id: {}".format([taskm.id for taskm in  self.active_tasks]))
-            # print("All task id: {}".format([taskm.id for taskm in  self.tasks]))
+            self.cb_controller.task_success(task)
 
             task.perform_success_actions(self.device_master, self.state, self)
-            # print("---- %s" % task.title)
 
         elif task.failure_requirements_satisfied(self.device_master, self.state, self):
             # remove task from active list
             # remove task from monitor list
             # remove monitor from Progress bar zero list
-            # monitor removed in cbTaskFailure 
+            # monitor removed in cbTaskFailure
             self.remove_active_task(task)
             # Increment failure tasks counter
             # if task is Captian's bridge
             self.incFailureTaskCounter(task)
+            cb_controller.task_failure(task)
             task.perform_failure_actions(self.device_master, self.state, self)
 
 
@@ -114,18 +172,30 @@ class GameState:
         self.active_tasks.append(task)
         # print("ADD: active_tasks: {}".format([task_.id for task_ in self.active_tasks]))
 
+    def add_cb_random_task(self):
+
+        avaliableTaskIds = self.getAvaliableCBTaskIds()
+        print("len avaliableTasksid = {}".format(len(avaliableTaskIds)))
+        if len(avaliableTaskIds) == 0:
+                return
+
+        # check if task already true - than we don't need execute
+        randomTaskRequirement = True
+        while randomTaskRequirement:
+            randomId = random.randint(0, len(avaliableTaskIds) -1)
+            # print("avaliable task with random id {}".format(avaliableTaskIds[randomId]))
+
+            randomTaskId = avaliableTaskIds[randomId]
+            randomTask = self.find_task_with_id(randomTaskId)
+            randomTaskRequirement = randomTask.success_requirements_satisfied(master, randomTask, game_state)
+
+        self.add_active_task_with_id(randomTaskId)
+        self.update_used_task_ids_list(randomTaskId)
+
     def update_used_task_ids_list(self, taskId):
-        self.usedTasksIds.insert(0, taskId) 
+        self.usedTasksIds.insert(0, taskId)
         if len(self.usedTasksIds) > self.numUsedTasks:
             self.usedTasksIds.pop()
-
-    # def cbTaskType(self, task):
-    #     # if self.startCBTaskId <= int(task.id) <= (self.startCBTaskId + self.numCBTasks):
-    #     print("Task id {}, task type: {}".format(task.id, task.type))
-    #     if task.type == 'CB_TASK':
-    #             print("It's CB task!!!")
-    #             return True
-    #     return False
 
     def freeMonitor(self, task):
         for monitor in self.monitors:

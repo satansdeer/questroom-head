@@ -228,7 +228,7 @@
       success_requirements:
         [REQ_CHECK_HERABORA]
       success_actions:
-        [AC_ADD_END_GAME_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK, AC_CB_ADD_RANDOM_TASK]
+        [AC_ADD_END_GAME_TASK]
       failure_requirements:
         []
       failure_actions:
@@ -236,9 +236,9 @@
       title: 'Press Herabora'
 
     -
-      id: 203 
+      id: 203
       success_requirements:
-        [REQ_AMOUNT_OF_TASK_SUCCESSED]
+        [REQ_CAPTAINS_BRIDGE_GAME_SUCCESS]
       success_actions:
         [AC_ENTERED_DOOR_OPEN, AC_SHOW_SUCCESS_MESSAGE]
       failure_requirements:

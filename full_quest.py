@@ -148,7 +148,7 @@ def REQ_FUSE_REMOVED(master, task, game_state):
         return True
     return False
 
-radio = None 
+radio = None
 radioDisabled = False
 def AC_ENABLE_RADIO(master, task, game_state):
     global radioDisabled
@@ -163,7 +163,7 @@ def AC_ENABLE_RADIO(master, task, game_state):
         sounds = [('harp.wav',40.0,80.0), ('island_music_x.wav',120.0,160.0), ('leftright_final.wav',200.0,240.0)]
         radio.init_sounds(sounds, 'noize.wav')
         radio.start()
-    
+
     radioDisabled = False
 
     game_state.add_active_task_with_id(12)
@@ -269,28 +269,6 @@ def REQ_SECRET_DOORS(master, task, game_state):
     # master.sendGetButtons(slavePuzzle)
     return False
 
-
-# def HIDDEN_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
-#     smartLeds = master.getSmartLeds(hallwayPuzzles).get()
-#
-#     ledIdStartPosition = 0
-#     buttonStartPosition = 0
-#     buttons = master.getButtons(hallwayPuzzles).get()
-#     # print("---Time before true {:.3} seconds ---".format(time.time() - start_time))
-#
-#     for index in range(6):
-#         buttonIndex = buttonStartPosition + index
-#         ledID = ledIdStartPosition + index
-#         if buttons[buttonIndex]:
-#             setLedValue(smartLeds, ledID, Colors.BLUE)
-#         else:
-#             setLedValue(smartLeds, ledID, Colors.RED)
-#
-#     master.setSmartLeds(hallwayPuzzles, smartLeds)
-#
-#     if buttons[0:6] == [1] * 6:
-#         return True
-#     return False
 
 def AC_OPEN_FIRST_BOX(master, task, game_state):
     print("First box was open!")
@@ -452,51 +430,14 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
     hiddenPanelState = (WINNER_COLOR_LIST == hiddenPanelColors)
 
     return visiblePanelState and hiddenPanelState
-# def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
-#
-#     smartLeds = master.getSmartLeds(hallwayPuzzles).get()
-#     ledIdStartPosition = 31
-#     buttonStartPosition = 17
-#     buttons = master.getButtons(hallwayPuzzles).get()
-#
-#     for index in range(6):
-#         buttonIndex = buttonStartPosition - index
-#         ledID = ledIdStartPosition - index
-#         if buttons[buttonIndex]:
-#             setLedValue(smartLeds, ledID, Colors.BLUE)
-#         else:
-#             setLedValue(smartLeds, ledID, Colors.RED)
-#
-#     master.setSmartLeds(hallwayPuzzles, smartLeds)
-#
-#     if buttons[12:18] == [1] * 6:
-#         return True
-#     return False
 
 
-
-
-
-
-# Пока будут глобальными, потом перенесём в стек
-# Проблема в следующем. При повороте тумблера возникают шумы, которые
-# мы успеваем считывать на нашей скорости. Шумы надо убрать и оставить
-# только устоявшиеся значения.
-# Чтение с задержкой не подходит - влияет на остальные функции
-# Проверим идею.
-# На каждом вхождении в функцию будем считывать значение с АЦП
-# и складывать в массив. Через определённое количество входений
-# выберем то число, которое чаще всех встречается в массиве.
-# Проверку можно делать с определённого считывания,
-# и продолжать пока какое-нибудь число не повторить больше N раз.
-
-lastLockPosition = None 
+lastLockPosition = None
 state = 0
 # массив значений
 READ_DATA_STACK = []
 # максимальная длина массива, после достижение которой массив сброситься
-READ_DATA_STACK_LENGTH = 200 
-
+READ_DATA_STACK_LENGTH = 200
 
 def turnLeft(lastValue, newValue):
     if lastValue == 255 and newValue == 0:
@@ -528,13 +469,13 @@ lockRead = True
 def readLockTimeout():
     global lockRead
     # print("ReadLockTimeout")
-    # if lockRead: 
+    # if lockRead:
     #     lockRead = False
-    # else: 
+    # else:
     #     lockRead = True
     lockRead = True
 
-CORRECT_LED = False 
+CORRECT_LED = False
 correctLedTimerDescriptor = None
 def enableCorrectLedTimeout(master):
     global CORRECT_LED
@@ -542,7 +483,7 @@ def enableCorrectLedTimeout(master):
     global correctLedTimerDescriptor
     correctLedTimerDescriptor = None
     print("CORRECT_LED_DISABLE")
-    CORRECT_LED = False 
+    CORRECT_LED = False
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     if OPEN_FLAG:
         # smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.BLUE)
@@ -559,7 +500,7 @@ def AC_ADD_SEQUENCE_PUZZLE(master, task, game_state):
     game_state.add_active_task_with_id(4)
 
 # def findValue(stack):
-OPEN_FLAG = False 
+OPEN_FLAG = False
 PLAYER_SEQUENCE=[]
 READ_SEQUENCE_DELAY = 0.05
 CORRECT_LED_TIMEOUT = 0.05
@@ -570,8 +511,8 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     global PLAYER_SEQUENCE
     global READ_DATA_STACK, READ_DATA_STACK_LENGTH
     global lockRead
-    global sequencePeriodicRead 
-    global READ_SEQUENCE_DELAY 
+    global sequencePeriodicRead
+    global READ_SEQUENCE_DELAY
     global OPEN_FLAG
     global CORRECT_LED, CORRECT_LED_TIMEOUT, correctLedTimerDescriptor
     # Позиция в массиве ADC
@@ -584,7 +525,7 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     # L - влево; R - вправо
     ACTIVATION_SEQUENCE = ['L', 'L', 'R', 'L']
     # time.sleep(0.6)
-    if lockRead: 
+    if lockRead:
         value = master.getAdc(hallwayPuzzles).get()[LOCK_ID]
         READ_DATA_STACK.append(value)
 
@@ -631,7 +572,7 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
         if correctLedTimerDescriptor is None:
             correctLedTimerDescriptor = Timer(CORRECT_LED_TIMEOUT, enableCorrectLedTimeout, [master])
             correctLedTimerDescriptor.start()
-            CORRECT_LED = True 
+            CORRECT_LED = True
             smartLeds = master.getSmartLeds(hallwayPuzzles)
             smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.GREEN)
 
@@ -650,8 +591,8 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
         else:
             OPEN_FLAG = True
             # smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.RED)
-        # return  False 
-        return  True 
+        # return  False
+        return  True
 
     lastLockPosition = lockPosition
 
@@ -741,7 +682,7 @@ def AC_SHOW_ENGINE_MESSAGE(master, task, game_state):
         game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.ENGINE_BROKEN})
 
 def AC_ADD_4_BATTERIES_TASKS(master, task, game_state):
-    # One by one 
+    # One by one
     game_state.add_active_task_with_id(151)
     game_state.add_active_task_with_id(152)
     game_state.add_active_task_with_id(153)
@@ -763,8 +704,8 @@ def REQ_CHECK_BATTERIES(master, task, game_state):
     taskList = [151, 152, 153, 154]
     for taskId in taskList:
         task = game_state.find_task_with_id(taskId)
-        print("Task for delete from check_battaries: {}".format(task)) 
-        print("Task for delete from check_battaries: {}".format(task.id)) 
+        print("Task for delete from check_battaries: {}".format(task))
+        print("Task for delete from check_battaries: {}".format(task.id))
         game_state.remove_active_task(task)
     return True
 
@@ -832,34 +773,20 @@ def REQ_CHECK_HERABORA(master, task, game_state):
         return heraboraPressed
 
 def AC_CB_ADD_RANDOM_TASK(master, task, game_state):
-
-        avaliableTaskIds = game_state.getAvaliableCBTaskIds()
-        print("len avaliableTasksid = {}".format(len(avaliableTaskIds)))
-        if len(avaliableTaskIds) == 0:
-                return
-
-
-        # check if task already true - than we don't need execute
-        randomTaskRequirement = True
-        while randomTaskRequirement:
-            randomId = random.randint(0, len(avaliableTaskIds) -1)
-            # print("avaliable task with random id {}".format(avaliableTaskIds[randomId]))
-
-            randomTaskId = avaliableTaskIds[randomId]
-            randomTask = game_state.find_task_with_id(randomTaskId)
-            randomTaskRequirement = randomTask.success_requirements_satisfied(master, randomTask, game_state)
-
-        game_state.add_active_task_with_id(randomTaskId)
-
-        game_state.update_used_task_ids_list(randomTaskId)
+    game_state.add_cb_random_task()
 
 def AC_ADD_END_GAME_TASK(master, task, game_state):
         game_state.add_active_task_with_id(203)
 
-def REQ_AMOUNT_OF_TASK_SUCCESSED(master, task, game_state):
-    if game_state.successfullTasksForWin == game_state.successfullTasksCounter:
-            return True
-    return False
+def REQ_CAPTAINS_BRIDGE_GAME_SUCCESS(master, task, game_state):
+
+    cb_controller = game_state.cb_controller
+    return cb_controller.check()
+
+# def REQ_AMOUNT_OF_TASK_SUCCESSED(master, task, game_state):
+#     if game_state.successfullTasksForWin == game_state.successfullTasksCounter:
+#             return True
+#     return False
 
 def AC_ENTERED_DOOR_OPEN(master, task, game_state):
 
