@@ -71,7 +71,7 @@
       success_requirements:
         [REQ_TUMBLER_PUZZLE_SOLVED]
       success_actions:
-        [AC_OPEN_SECOND_BOX, AC_OPEN_THIRD_BOX, AC_ADD_ROBOT_PUZZLE]
+        [AC_OPEN_SECOND_BOX, AC_OPEN_THIRD_BOX, AC_ADD_ROBOT_PUZZLE, AC_ADD_ENGINE_PUZZLE]
       failure_requirements:
         []
       failure_actions:

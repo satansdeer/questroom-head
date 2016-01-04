@@ -7,6 +7,7 @@ from Radio import Radio
 from collections import Counter
 from copy import copy
 start_time = time.time()
+from threading import Timer
 
 class LedsIdTable:
     FUSE = 23
@@ -81,7 +82,7 @@ class CB_CTRL:
 
 class Colors:
     WHITE = [0xff, 0xff, 0xff]
-    RED = [0xfff, 0x0, 0x0]
+    RED = [0xff, 0x0, 0x0]
     LIGHT_RED = [0xff, 0x33, 0x33]
     GREEN = [0x0, 0xff, 0x0]
     LIGHT_GREEN = [0x33, 0xff, 0x33]
@@ -214,11 +215,6 @@ def AC_ADD_FUSE_REMOVED(master, task, game_state):
 # def ADD_DISABLE_RADIO(master, task, game_state):
 #     game_state.add_active_task_with_id(3)
 
-
-def AC_ADD_SEQUENCE_PUZZLE(master, task, game_state):
-    game_state.add_active_task_with_id(4)
-
-
 def AC_ADD_MECHANICS_CARD_PUZZLE(master, task, game_state):
     game_state.add_active_task_with_id(5)
 
@@ -248,6 +244,10 @@ def AC_ADD_ROBOT_PUZZLE(master, task, game_state):
 
 
 def AC_ADD_ENGINE_PUZZLE(master, task, game_state):
+    smartLeds = master.getSmartLeds(hallwayPuzzles)
+    smartLeds.setOneLed(LedsIdTable.ENGINE_RIGTH, Colors.BLUE)
+    smartLeds.setOneLed(LedsIdTable.ENGINE_LEFT, Colors.RED)
+
     game_state.add_active_task_with_id(11)
 
 def AC_ADD_BATTARIES_PUZZLE(master, task, game_state):
@@ -300,7 +300,6 @@ def AC_OPEN_FIRST_BOX(master, task, game_state):
     relays = master.getRelays(hallwayPuzzles).get()
     relays[0] = 1
     master.setRelays(hallwayPuzzles, relays)
-    master.setRelays(hallwayPuzzles, relays)
 
 def AC_OPEN_SECOND_BOX(master, task, game_state):
     print("Second box was open!")
@@ -337,7 +336,7 @@ def AC_OPEN_FOURTH_BOX(master, task, game_state):
 
 
 def REQ_COMMUTATOR_PUZZLE_SOLVED(master, task, game_state):
-    return True
+    # return True
     buttons = master.getButtons(hallwayPuzzles).get()
     commutatorSolved = buttons[ButtonsIdTable.COMMUTATOR]
     if commutatorSolved:
@@ -491,18 +490,20 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
 # Проверку можно делать с определённого считывания,
 # и продолжать пока какое-нибудь число не повторить больше N раз.
 
-lastLockPosition = 0
+lastLockPosition = None 
 state = 0
 # массив значений
 READ_DATA_STACK = []
 # максимальная длина массива, после достижение которой массив сброситься
-READ_DATA_STACK_LENGTH = 180*5
+READ_DATA_STACK_LENGTH = 200 
 
 
 def turnLeft(lastValue, newValue):
     if lastValue == 255 and newValue == 0:
         return True
-    if newValue > lastValue:
+    elif lastValue == 0 and newValue == 255:
+        return False
+    elif newValue > lastValue:
         return True
     return False
 
@@ -510,7 +511,9 @@ def turnLeft(lastValue, newValue):
 def turnRigth(lastValue, newValue):
     if lastValue == 0 and newValue == 255:
         return True
-    if newValue < lastValue:
+    elif lastValue == 255 and newValue == 0:
+        return False
+    elif newValue < lastValue:
         return True
     return False
 
@@ -521,15 +524,56 @@ def turn(lastValue, newValue):
     if turnRigth(lastValue, newValue):
         return "R"
 
-# def findValue(stack):
-PLAYER_SEQUENCE=[]
+lockRead = True
+def readLockTimeout():
+    global lockRead
+    # print("ReadLockTimeout")
+    # if lockRead: 
+    #     lockRead = False
+    # else: 
+    #     lockRead = True
+    lockRead = True
 
+CORRECT_LED = False 
+correctLedTimerDescriptor = None
+def enableCorrectLedTimeout(master):
+    global CORRECT_LED
+    global OPEN_FLAG
+    global correctLedTimerDescriptor
+    correctLedTimerDescriptor = None
+    print("CORRECT_LED_DISABLE")
+    CORRECT_LED = False 
+    smartLeds = master.getSmartLeds(hallwayPuzzles)
+    if OPEN_FLAG:
+        # smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.BLUE)
+        pass
+    else:
+        smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.RED)
+
+sequencePeriodicRead = None
+def AC_ADD_SEQUENCE_PUZZLE(master, task, game_state):
+    global sequencePeriodicRead
+    global READ_SEQUENCE_DELAY
+    sequencePeriodicRead = Timer(READ_SEQUENCE_DELAY, readLockTimeout)
+    sequencePeriodicRead.start()
+    game_state.add_active_task_with_id(4)
+
+# def findValue(stack):
+OPEN_FLAG = False 
+PLAYER_SEQUENCE=[]
+READ_SEQUENCE_DELAY = 0.05
+CORRECT_LED_TIMEOUT = 0.05
 def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     # return True
     # Сохраняем последнее выбранное значение
     global lastLockPosition, state
     global PLAYER_SEQUENCE
     global READ_DATA_STACK, READ_DATA_STACK_LENGTH
+    global lockRead
+    global sequencePeriodicRead 
+    global READ_SEQUENCE_DELAY 
+    global OPEN_FLAG
+    global CORRECT_LED, CORRECT_LED_TIMEOUT, correctLedTimerDescriptor
     # Позиция в массиве ADC
     LOCK_ID = 1
     # погрешность
@@ -538,15 +582,19 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     # ACTIVATION_SEQUENCE = ['L', 'L', 'R', 'L', 'R', 'R', 'L', 'R']
     # Последовательность для открытия
     # L - влево; R - вправо
-    ACTIVATION_SEQUENCE = ['L','L', 'L', 'R', 'L']
+    ACTIVATION_SEQUENCE = ['L', 'L', 'R', 'L']
     # time.sleep(0.6)
-
-    value = master.getAdc(hallwayPuzzles).get()[LOCK_ID]
-    READ_DATA_STACK.append(value)
+    if lockRead: 
+        value = master.getAdc(hallwayPuzzles).get()[LOCK_ID]
+        READ_DATA_STACK.append(value)
 
     if len(READ_DATA_STACK) < READ_DATA_STACK_LENGTH:
+    # if len(READ_DATA_STACK) != READ_DATA_STACK_LENGTH:
         return
 
+    lockRead = False
+    sequencePeriodicRead = Timer(READ_SEQUENCE_DELAY, readLockTimeout)
+    sequencePeriodicRead.start()
 
     result = READ_DATA_STACK[0]
     for val in READ_DATA_STACK[1:]:
@@ -559,13 +607,13 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     PLAYER_SEQUENCE = PLAYER_SEQUENCE[:len(ACTIVATION_SEQUENCE)]
     # get most freq value
     value = Counter(READ_DATA_STACK).most_common(1)[0][0]
+    savedStack = READ_DATA_STACK[:]
     READ_DATA_STACK = []
 
+
     lockPosition = value
-    # print("Lock value: {}".format(value))
-    # if (lockPosition != lastLockPosition):
-        # print("LastValue: {}, newValue: {}, state: {} {}".format(
-        # lastLockPosition, lockPosition, state, ACTIVATION_SEQUENCE[state - 1]))
+    if lastLockPosition is None:
+        lastLockPosition = lockPosition
 
     # Смотрим, менялась ли позиция переключателя.
     lessDefault = lastLockPosition < (lockPosition + ERROR_VALUE)
@@ -573,12 +621,19 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     if lessDefault and largeDefault:
         lastLockPosition = lockPosition
         return False
-
-
+    print("="*80 + "\n==")
+    print("lastLockPosition: {}, lockPosition: {}".format(lastLockPosition, lockPosition))
     turnDirection = turn(lastLockPosition, lockPosition)
+    print("We turn to the: {}".format(turnDirection))
+    print("==\n ={}\n".format(savedStack))
     PLAYER_SEQUENCE.insert(0, turnDirection)
-
-
+    if not CORRECT_LED:
+        if correctLedTimerDescriptor is None:
+            correctLedTimerDescriptor = Timer(CORRECT_LED_TIMEOUT, enableCorrectLedTimeout, [master])
+            correctLedTimerDescriptor.start()
+            CORRECT_LED = True 
+            smartLeds = master.getSmartLeds(hallwayPuzzles)
+            smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.GREEN)
 
     reversePlayerSequence = copy(PLAYER_SEQUENCE[:len(ACTIVATION_SEQUENCE)])
     reversePlayerSequence.reverse()
@@ -587,6 +642,15 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     if ACTIVATION_SEQUENCE == reversePlayerSequence:
         print("We opened lock box: sleep!!!")
         PLAYER_SEQUENCE = []
+        smartLeds = master.getSmartLeds(hallwayPuzzles)
+        if OPEN_FLAG:
+        # blue, because blue and green are switched
+            OPEN_FLAG = False
+            # smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.BLUE)
+        else:
+            OPEN_FLAG = True
+            # smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.RED)
+        # return  False 
         return  True 
 
     lastLockPosition = lockPosition
@@ -632,12 +696,10 @@ def AC_ROBOT_SAY_RIDDLE(master, task, game_state):
 
 
 def REQ_ENGINE_ASSEMBLED(master, task, game_state):
-    smartLeds = master.getSmartLeds(hallwayPuzzles)
-    smartLeds.setOneLed(LedsIdTable.ENGINE_RIGTH, Colors.BLUE)
-    smartLeds.setOneLed(LedsIdTable.ENGINE_LEFT, Colors.RED)
-
     buttons = master.getButtons(hallwayPuzzles)
     engineAssembled = buttons.get()[ButtonsIdTable.ENGINE]
+    smartLeds = master.getSmartLeds(hallwayPuzzles)
+
     if engineAssembled:
         smartLeds.setOneLed(LedsIdTable.ENGINE_RIGTH, Colors.GREEN)
         smartLeds.setOneLed(LedsIdTable.ENGINE_LEFT, Colors.GREEN)
