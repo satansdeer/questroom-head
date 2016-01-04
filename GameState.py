@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import random
 import os
+import time
 CB_SLAVE_1="CB_SLAVE_1"
 CB_SLAVE_2="CB_SLAVE_2"
 hallwayPuzzles = "hallwayPuzzles"
@@ -25,6 +26,8 @@ class CaptainsBridgeController:
     def task_success(self, task):
         if task.type == 'CB_TASK':
             self.completed_tasks_num = self.completed_tasks_num + 1
+            self.showOkMessage(task)
+            print("Free monitor with id {}".format(task.id))
 
     def task_failure(self, task):
         if task.type == 'CB_TASK':
@@ -38,6 +41,7 @@ class CaptainsBridgeController:
 
     def check(self):
         # Begin
+        # print("Complete task num: {}".format(self.completed_tasks_num))
         if self.current_level == 0:
             self.current_level = 1
             self.current_stage = 1
@@ -58,6 +62,7 @@ class CaptainsBridgeController:
 
         # level increment
         if self.current_stage == self.NUM_STAGES:
+            self.current_stage = 0
             self.current_level = self.current_level + 1
             if self.current_level >= self.NUM_LEVELS:
                 #game end
@@ -74,10 +79,16 @@ class CaptainsBridgeController:
 
         return
 
+    def showOkMessage(self, task):
+
+        monitorId = self.game_state.getMonitorIdByTask(task)
+        message = "OK"
+        self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message})
+
     def showLevelMessage(self):
-        message = MESSAGE_LEVEL.format(level=self.current_level)
+        message = self.MESSAGE_LEVEL.format(level=self.current_level)
         for monitorId in range(1,5):
-            self.game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE})
+            self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message})
 
 class GameState:
     def __init__(self):
@@ -128,25 +139,26 @@ class GameState:
 
 
     def perform_task_if_satisfies(self, task):
-        if task.success_requirements_satisfied(self.device_master, self.state, self):
-            self.remove_active_task(task)
+        # if task.success_requirements_satisfied(self.device_master, task, self):
+        if task.success_requirements_satisfied(self.device_master, task, self):
             # counter inc only if task is Captain's Bridge type
             self.incSuccessfullTaskCounter(task)
             self.cb_controller.task_success(task)
 
-            task.perform_success_actions(self.device_master, self.state, self)
+            self.remove_active_task(task)
+            task.perform_success_actions(self.device_master, task, self)
 
-        elif task.failure_requirements_satisfied(self.device_master, self.state, self):
+        elif task.failure_requirements_satisfied(self.device_master, task, self):
             # remove task from active list
             # remove task from monitor list
             # remove monitor from Progress bar zero list
             # monitor removed in cbTaskFailure
+            self.incFailureTaskCounter(task)
+            cb_controller.task_failure(task)
             self.remove_active_task(task)
             # Increment failure tasks counter
             # if task is Captian's bridge
-            self.incFailureTaskCounter(task)
-            cb_controller.task_failure(task)
-            task.perform_failure_actions(self.device_master, self.state, self)
+            task.perform_failure_actions(self.device_master, task, self)
 
 
 
@@ -156,8 +168,7 @@ class GameState:
     def remove_active_task(self, task):
         # print("Remove task with id: {}".format(task.id))
         if task.showOnMonitor:
-                self.freeMonitor(task)
-                print("Free monitor with id {}".format(task.id))
+            self.freeMonitor(task)
         if task in self.active_tasks:
             self.active_tasks.remove(task)
 
@@ -187,7 +198,7 @@ class GameState:
 
             randomTaskId = avaliableTaskIds[randomId]
             randomTask = self.find_task_with_id(randomTaskId)
-            randomTaskRequirement = randomTask.success_requirements_satisfied(master, randomTask, game_state)
+            randomTaskRequirement = randomTask.success_requirements_satisfied(self.device_master, randomTask, self)
 
         self.add_active_task_with_id(randomTaskId)
         self.update_used_task_ids_list(randomTaskId)

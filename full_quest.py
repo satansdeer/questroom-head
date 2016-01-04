@@ -132,6 +132,7 @@ def AC_DISABLE_FUSE_PUZZLE(master, task, game_state):
 
 
 def REQ_FUSE_PUZZLE_SOLVED(master, task, game_state):
+    return True
     buttons = master.getButtons(hallwayPuzzles)
     fuseSolved = buttons.get()[ButtonsIdTable.FUSE]
     if fuseSolved:
@@ -314,7 +315,7 @@ def AC_OPEN_FOURTH_BOX(master, task, game_state):
 
 
 def REQ_COMMUTATOR_PUZZLE_SOLVED(master, task, game_state):
-    # return True
+    return True
     buttons = master.getButtons(hallwayPuzzles).get()
     commutatorSolved = buttons[ButtonsIdTable.COMMUTATOR]
     if commutatorSolved:
@@ -355,7 +356,7 @@ hiddenPanelSwitchers = []
 oldHiddenPanelSwitchers = [None] * 6
 
 def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
-    # return True
+    return True
     global hiddenPanelColors
     global visiblePanelColors
 
@@ -505,7 +506,7 @@ PLAYER_SEQUENCE=[]
 READ_SEQUENCE_DELAY = 0.05
 CORRECT_LED_TIMEOUT = 0.05
 def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
-    # return True
+    return True
     # Сохраняем последнее выбранное значение
     global lastLockPosition, state
     global PLAYER_SEQUENCE
@@ -598,6 +599,7 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
 
 
 def REQ_MECHANICS_CARD_USED(master, task, game_state):
+    return True
     buttons = master.getButtons(hallwayPuzzles).get()
     cardUsed = buttons[ButtonsIdTable.MECHANICS_CARD]
     if cardUsed:
@@ -616,6 +618,7 @@ def AC_ENABLE_TUMBLER_PUZZLE(master, task, game_state):
 
 
 def REQ_ROBOT_ASSEMBLED(master, task, game_state):
+    return True
     buttons = master.getButtons(hallwayPuzzles)
     robbotAssembled = buttons.get()[ButtonsIdTable.ROBOT_HEAD]
     if robbotAssembled:
@@ -637,6 +640,7 @@ def AC_ROBOT_SAY_RIDDLE(master, task, game_state):
 
 
 def REQ_ENGINE_ASSEMBLED(master, task, game_state):
+    return True
     buttons = master.getButtons(hallwayPuzzles)
     engineAssembled = buttons.get()[ButtonsIdTable.ENGINE]
     smartLeds = master.getSmartLeds(hallwayPuzzles)
@@ -698,14 +702,13 @@ def REQ_CHECK_BATTERIES(master, task, game_state):
     # print("REQ_CHECK_BATTARIES")
     batteryState = (battery_1 and battery_2 and battery_3 and battery_4)
 
+    batteryState = True
     if not batteryState:
         return batteryState
 
     taskList = [151, 152, 153, 154]
     for taskId in taskList:
         task = game_state.find_task_with_id(taskId)
-        print("Task for delete from check_battaries: {}".format(task))
-        print("Task for delete from check_battaries: {}".format(task.id))
         game_state.remove_active_task(task)
     return True
 
@@ -729,8 +732,6 @@ def REQ_CHECK_BATTERY_1(master, task, game_state):
 def REQ_CHECK_BATTERY_2(master, task, game_state):
     buttons = master.getButtons(CB_SLAVE_2).get()
     battery = buttons[CB_CTRL.BATTERY_2]
-    print("Task Battery_2: {}".format(task))
-    print("Task Battery_2: {}".format(task.title))
 
     monitorId = game_state.getMonitorIdByTask(task)
 
@@ -773,7 +774,16 @@ def REQ_CHECK_HERABORA(master, task, game_state):
         return heraboraPressed
 
 def AC_CB_ADD_RANDOM_TASK(master, task, game_state):
-    game_state.add_cb_random_task()
+
+
+    print("RANDOM TASK. task done: {}".format(task))
+    print("RANDOM TASK. task done: {}".format(task.id))
+    
+    # monitorId = game_state.getMonitorIdByTask(task)
+    
+    # print("RANDOM TASK. task done:monitorID {}".format(monitorId))
+    # game_state.quest_room.send_ws_message(str(monitorId), {'message': "OK"})
+    # game_state.add_cb_random_task()
 
 def AC_ADD_END_GAME_TASK(master, task, game_state):
         game_state.add_active_task_with_id(203)
