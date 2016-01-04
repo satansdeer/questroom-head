@@ -721,15 +721,17 @@ class MESSAGE:
 
 def REQ_TRUE(master, task, game_state):
     return True
+
+def AC_ADD_CHECK_BATTERIES(master, task, game_state):
+    game_state.add_active_task_with_id(101)
+
+def AC_ADD_ENGINE_MESSAGE(master, task, game_state):
+    game_state.add_active_task_with_id(102)
+
 def AC_INIT(master, task, game_state):
     taskList = [151, 152, 153, 154, 102, 101]
     for taskId in taskList:
         game_state.add_active_task_with_id(taskId)
-
-# def REQ_ENGINE_ASSEMBLED(master, task, game_state):
-#     buttons = master.getButtons(hallwayPuzzles).get()
-#     engine = buttons[ButtonsIdTable.ENGINE]
-#     return engine
 
 def AC_SHOW_ENGINE_MESSAGE(master, task, game_state):
     if REQ_ENGINE_ASSEMBLED(master, None, game_state):
@@ -738,9 +740,7 @@ def AC_SHOW_ENGINE_MESSAGE(master, task, game_state):
     for monitorId in range(1,5):
         game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.ENGINE_BROKEN})
 
-def AC_ADD_4_BATTARIES_TASKS(master, task, game_state):
-    # Add req all batteries
-    game_state.add_active_task_with_id(101)
+def AC_ADD_4_BATTERIES_TASKS(master, task, game_state):
     # One by one 
     game_state.add_active_task_with_id(151)
     game_state.add_active_task_with_id(152)
@@ -862,6 +862,11 @@ def REQ_AMOUNT_OF_TASK_SUCCESSED(master, task, game_state):
     return False
 
 def AC_ENTERED_DOOR_OPEN(master, task, game_state):
+
+    relays = master.getRelays(CB_SLAVE_2).get()
+    relays[CB_CTRL.DOOR_ENTER] = 0
+    master.setRelays(CB_SLAVE_2, relays)
+
     print("Entered door opened")
 
 def AC_SHOW_SUCCESS_MESSAGE(master, task, game_state):
@@ -870,10 +875,6 @@ def AC_SHOW_SUCCESS_MESSAGE(master, task, game_state):
     for monitorId in range(1,5):
         game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.WINNER})
 
-    time.sleep(3)
-    relays = master.getRelays(CB_SLAVE_2).get()
-    relays[CB_CTRL.DOOR_ENTER] = 0
-    master.setRelays(CB_SLAVE_2, relays)
 
 def REQ_AMOUNT_OF_TASK_FAILURE(master, task, game_state):
     if game_state.failureTasksForLose == game_state.failureTasksCounter:
@@ -886,10 +887,6 @@ def AC_SHOW_FAILURE_MESSAGE(master, task, game_state):
         game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.FAIL})
 
     print("You lose")
-    time.sleep(3)
-    relays = master.getRelays(CB_SLAVE_2).get()
-    relays[CB_CTRL.DOOR_ENTER] = 0
-    master.setRelays(CB_SLAVE_2, relays)
 
 # Tasks
 

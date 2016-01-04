@@ -71,7 +71,7 @@
       success_requirements:
         [REQ_TUMBLER_PUZZLE_SOLVED]
       success_actions:
-        [AC_OPEN_SECOND_BOX, AC_OPEN_THIRD_BOX, AC_ADD_ROBOT_PUZZLE, AC_ADD_ENGINE_PUZZLE]
+        [AC_OPEN_SECOND_BOX, AC_OPEN_THIRD_BOX, AC_ADD_ROBOT_PUZZLE, AC_ADD_ENGINE_PUZZLE, AC_ADD_ENGINE_MESSAGE, AC_ADD_CHECK_BATTERIES, AC_ADD_4_BATTERIES_TASKS]
       failure_requirements:
         []
       failure_actions:
@@ -83,11 +83,7 @@
       success_requirements:
         [REQ_COMMUTATOR_PUZZLE_SOLVED]
       success_actions:
-          # Need to add BATTARIES on Monitor
-          # Need to add Engine on Monitor
-          # And task to check all: engine and BATTARIES
-          # then start the game
-        [AC_OPEN_FOURTH_BOX, AC_INIT]
+        [AC_OPEN_FOURTH_BOX]
       failure_requirements:
         []
       failure_actions:
@@ -98,7 +94,7 @@
       success_requirements:
         [REQ_SECRET_DOORS]
       success_actions:
-        [AC_OPEN_FOURTH_BOX, AC_ADD_COMMUTATOR_PUZZLE]
+        []
       failure_requirements:
         []
       failure_actions:

@@ -9,10 +9,8 @@ boxes_slave = "CB_SLAVE_1"
 class KeyboardListener(threading.Thread):
     PASS_1 = [1,1,1,1]
     TOGGLE_ENTER_DOOR=[7,7,7,7]
-    TOGGLE_ENGINE_DOOR=[8,8,8,8]
-    TOGGLE_CAPTAIN_DOOR=[9,9,9,9]
-    OPEN_ENGINE_DOOR=[1,2,3,4]
-    OPEN_CAPTAIN_DOOR=[4,3,2,1]
+    TOGGLE_ENGINE_DOOR=[5,7,8,3]
+    TOGGLE_CAPTAIN_DOOR=[7,6,9,8]
 
     TOGGLE_FIRST_BOX=[1,1,1,1]
     TOGGLE_SECOND_BOX=[2,2,2,2]
@@ -47,9 +45,6 @@ class KeyboardListener(threading.Thread):
             self.toggleBox(self.TOGGLE_FIRST_BOX, 2)
             self.toggleBox(self.TOGGLE_FIRST_BOX, 3)
             self.toggleBox(self.TOGGLE_FIRST_BOX, 4)
-
-            self.openDoor(self.OPEN_ENGINE_DOOR, 2)
-            self.openDoor(self.OPEN_CAPTAIN_DOOR, 3)
 
     def get_last_keys_pressed():
         retval = self.last_keys_pressed
