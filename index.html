@@ -8,6 +8,7 @@
             <script type="text/javascript">
             countdownActive = true;
             progressValue = 100;
+            progressStep = .1;
             requestAnimationFrame(progressBarCountDown)
             function WebSocketTest() {
                 var messageContainer = document.getElementById("message");
@@ -27,6 +28,12 @@
                           countdownActive = received_msg.countdown_active
                           requestAnimationFrame(progressBarCountDown)
                         }
+                        if (received_msg.progress_bar_time) {
+                            progressStep = received_msg.progress_bar_time * 32/1000
+                        } else {
+                            progressStep = .1
+                        }
+
                         countdownActive = received_msg.countdown_active
                         setProgressVisibility(received_msg.progress_visible);
                         setHearts(received_msg.hearts);
@@ -45,7 +52,7 @@
 
             function progressBarCountDown(){
               var progressBar = document.querySelector(".time-left_progress");
-              progressValue -= .1;
+              progressValue -= progressStep;
               if(progressValue < 0){
                 progressValue = 100;
                 try{

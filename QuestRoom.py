@@ -54,10 +54,14 @@ class QuestRoom(threading.Thread):
         setLedValue(leds, 10, [0x888, 0x0, 0x0])
         setLedValue(leds, 11, [0x888, 0x0, 0x0])
         master.setSmartLeds(self.hallwayPuzzles, leds)
+
         master.setRelays(self.hallwayPuzzles, [0,0,0,0])
         time.sleep(1)
+
         master.setRelays(self.hallwayPuzzles, [1,1,1,1])
+
         master.setRelays(self.captainsBridge_2, [1,1,1,0])
+
         keyboardListener = KeyboardListener(master)
         keyboardListener.daemon = True
         keyboardListener.start()
