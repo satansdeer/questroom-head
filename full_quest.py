@@ -132,7 +132,6 @@ def AC_DISABLE_FUSE_PUZZLE(master, task, game_state):
 
 
 def REQ_FUSE_PUZZLE_SOLVED(master, task, game_state):
-    return True
     buttons = master.getButtons(hallwayPuzzles)
     fuseSolved = buttons.get()[ButtonsIdTable.FUSE]
     if fuseSolved:
@@ -260,14 +259,11 @@ def AC_ADD_ACTIVATE_CAPTAIN_BRIDGE(mastre, task, game_state):
 
 
 def REQ_SECRET_DOORS(master, task, game_state):
-    # buttonStartPosition = 17
-    return False
     buttons = master.getButtons(hallwayPuzzles).get()[12:18]
     if buttons[3:6] == [0, 1, 0]:
         relays = buttons[0:3]
         relays.insert(0, 0)
         master.setRelays(captainsBridge, relays)
-    # master.sendGetButtons(slavePuzzle)
     return False
 
 
@@ -277,7 +273,7 @@ def AC_OPEN_FIRST_BOX(master, task, game_state):
     # blue, because blue and green are switched
     smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.BLUE)
     relays = master.getRelays(hallwayPuzzles).get()
-    relays[0] = 1
+    relays[0] = 0
     master.setRelays(hallwayPuzzles, relays)
 
 def AC_OPEN_SECOND_BOX(master, task, game_state):
@@ -287,18 +283,17 @@ def AC_OPEN_SECOND_BOX(master, task, game_state):
 
 
     relays = master.getRelays(hallwayPuzzles).get()
-    relays[1] = 1
+    relays[1] = 0
     master.setRelays(hallwayPuzzles, relays)
 
 
 def AC_OPEN_THIRD_BOX(master, task, game_state):
-    time.sleep(3)
     print("Third box was open!")
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.BOX_3, Colors.BLUE)
 
     relays = master.getRelays(hallwayPuzzles).get()
-    relays[2] = 1
+    relays[2] = 0
     master.setRelays(hallwayPuzzles, relays)
 
 
@@ -308,14 +303,13 @@ def AC_OPEN_FOURTH_BOX(master, task, game_state):
     smartLeds.setOneLed(LedsIdTable.BOX_4, Colors.BLUE)
 
     relays = master.getRelays(hallwayPuzzles).get()
-    relays[3] = 1
+    relays[3] = 0
     master.setRelays(hallwayPuzzles, relays)
 
 
 
 
 def REQ_COMMUTATOR_PUZZLE_SOLVED(master, task, game_state):
-    return True
     buttons = master.getButtons(hallwayPuzzles).get()
     commutatorSolved = buttons[ButtonsIdTable.COMMUTATOR]
     if commutatorSolved:
@@ -356,7 +350,6 @@ hiddenPanelSwitchers = []
 oldHiddenPanelSwitchers = [None] * 6
 
 def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
-    return True
     global hiddenPanelColors
     global visiblePanelColors
 
@@ -506,7 +499,6 @@ PLAYER_SEQUENCE=[]
 READ_SEQUENCE_DELAY = 0.05
 CORRECT_LED_TIMEOUT = 0.05
 def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
-    return True
     # Сохраняем последнее выбранное значение
     global lastLockPosition, state
     global PLAYER_SEQUENCE
@@ -599,7 +591,6 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
 
 
 def REQ_MECHANICS_CARD_USED(master, task, game_state):
-    return True
     buttons = master.getButtons(hallwayPuzzles).get()
     cardUsed = buttons[ButtonsIdTable.MECHANICS_CARD]
     if cardUsed:
@@ -618,7 +609,6 @@ def AC_ENABLE_TUMBLER_PUZZLE(master, task, game_state):
 
 
 def REQ_ROBOT_ASSEMBLED(master, task, game_state):
-    return True
     buttons = master.getButtons(hallwayPuzzles)
     robbotAssembled = buttons.get()[ButtonsIdTable.ROBOT_HEAD]
     if robbotAssembled:
@@ -640,7 +630,6 @@ def AC_ROBOT_SAY_RIDDLE(master, task, game_state):
 
 
 def REQ_ENGINE_ASSEMBLED(master, task, game_state):
-    return True
     buttons = master.getButtons(hallwayPuzzles)
     engineAssembled = buttons.get()[ButtonsIdTable.ENGINE]
     smartLeds = master.getSmartLeds(hallwayPuzzles)
@@ -786,7 +775,7 @@ def AC_CB_ADD_RANDOM_TASK(master, task, game_state):
     # game_state.add_cb_random_task()
 
 def AC_ADD_END_GAME_TASK(master, task, game_state):
-        game_state.add_active_task_with_id(203)
+    game_state.add_active_task_with_id(203)
 
 def REQ_CAPTAINS_BRIDGE_GAME_SUCCESS(master, task, game_state):
 
@@ -799,7 +788,6 @@ def REQ_CAPTAINS_BRIDGE_GAME_SUCCESS(master, task, game_state):
 #     return False
 
 def AC_ENTERED_DOOR_OPEN(master, task, game_state):
-
     relays = master.getRelays(CB_SLAVE_2).get()
     relays[CB_CTRL.DOOR_ENTER] = 0
     master.setRelays(CB_SLAVE_2, relays)
@@ -819,7 +807,6 @@ def REQ_AMOUNT_OF_TASK_FAILURE(master, task, game_state):
     return False
 
 def AC_SHOW_FAILURE_MESSAGE(master, task, game_state):
-
     game_state.cb_controller.remove_random_tasks()
 
     for monitorId in range(1,5):
