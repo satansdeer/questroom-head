@@ -49,7 +49,10 @@
               if(progressValue < 0){
                 progressValue = 100;
                 try{
-                  ws.send('{"message": "Time end"}')
+                  var id = window.location.search.split("?")[1].split("=")[1]
+                  var messageString = "Time end";
+                  var message = {message: messageString, id: id};
+                  ws.send(JSON.stringify(message));
                 }catch(err){}
               }
               if(countdownActive){
@@ -104,8 +107,8 @@
                   progressBar.style.width = '0%';
                 }, 1)
                 var id = window.location.search.split("?")[1].split("=")[1]
-		var messageString = "Time end";
-		var message = {message: messageString, id: id};
+                var messageString = "Time end; at end of index";
+                var message = {message: messageString, id: id};
                 ws.send(JSON.stringify(message));
               }, false)
             })

@@ -60,8 +60,9 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         print(message)
         print(message['message'])
         if "Time end" in message['message']:
-            pass
-            #quest_room.progress_bar_zero(message['id'])
+            # pass
+            print("We receive: {} and {}".format(message['message'], message['id']))
+            quest_room.progress_bar_zero(message['id'])
         if "play_sound" == message['message']:
             sound_id = message['sound']
             sound_manager.play_sound(sound_id)

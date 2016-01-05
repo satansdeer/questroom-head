@@ -657,12 +657,12 @@ def AC_ACTIVATE_CAPTAIN_BRIDGE(master, state):
 
 
 class MESSAGE:
-    BATTERY_AVALIABLE = "Battery {id} is inserted"
-    BATTERY_ABSENT = "ERROR: Battery {id} missing!"
-    ENGINE_BROKEN = "Repair engine"
-    PRESS_HERABORA = "When you're ready press HERABORA"
-    WINNER = "You're winner! Entered door are open"
-    FAIL = "You're fail! Entered door are open"
+    BATTERY_AVALIABLE = "Батарея {id} вставлена"
+    BATTERY_ABSENT = "ОШИБКА: Батарея {id} отсутствует!"
+    ENGINE_BROKEN = "Почините двигатель"
+    PRESS_HERABORA = "Когда будете готовы - жмите H.E.R.A.B.O.R.A."
+    WINNER = "Вы выжили! \nВходная двень открыта"
+    FAIL = "Ваша команда погибла! \nВходная дверь открыта"
 
 def REQ_TRUE(master, task, game_state):
     return True
@@ -683,7 +683,7 @@ def AC_SHOW_ENGINE_MESSAGE(master, task, game_state):
         return
 
     for monitorId in range(1,5):
-        game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.ENGINE_BROKEN})
+        sendMessageToMonitor(game_state, monitorId, MESSAGE.ENGINE_BROKEN, False)
 
 def AC_ADD_4_BATTERIES_TASKS(master, task, game_state):
     # One by one
@@ -714,9 +714,12 @@ def REQ_CHECK_BATTERIES(master, task, game_state):
 
 def sendBatteryMessage(game_state, monitorId, battery, batteryId):
     if battery:
-        game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.BATTERY_AVALIABLE.format(id=batteryId)})
+        sendMessageToMonitor(game_state, monitorId, MESSAGE.BATTERY_AVALIABLE.format(id=batteryId), False)
     else:
-        game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.BATTERY_ABSENT.format(id=batteryId)})
+        sendMessageToMonitor(game_state, monitorId, MESSAGE.BATTERY_ABSENT.format(id=batteryId), False)
+
+def sendMessageToMonitor(game_state, monitorId, message, progress_bar_visible):
+    game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'progress_visible': progress_bar_visible})
 
 def REQ_CHECK_BATTERY_1(master, task, game_state):
     buttons = master.getButtons(CB_SLAVE_2).get()
@@ -764,7 +767,8 @@ def REQ_CHECK_BATTERY_4(master, task, game_state):
 
 def AC_PRESS_HERABORA(master, task, game_state):
     for monitorId in range(1,5):
-        game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.PRESS_HERABORA})
+        sendMessageToMonitor(game_state, monitorId, MESSAGE.PRESS_HERABORA, False)
+        # game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.PRESS_HERABORA})
     # added REQ_CHECK_HERABORA task
     game_state.add_active_task_with_id(201)
 
@@ -774,14 +778,10 @@ def REQ_CHECK_HERABORA(master, task, game_state):
         return heraboraPressed
 
 def AC_CB_ADD_RANDOM_TASK(master, task, game_state):
-
-
-    print("RANDOM TASK. task done: {}".format(task))
-    print("RANDOM TASK. task done: {}".format(task.id))
-    
+    pass
     # monitorId = game_state.getMonitorIdByTask(task)
     
-    # print("RANDOM TASK. task done:monitorID {}".format(monitorId))
+    # print("RANDOM TASK: {} done:monitorID {}".format(task.id, monitorId))
     # game_state.quest_room.send_ws_message(str(monitorId), {'message': "OK"})
     # game_state.add_cb_random_task()
 
@@ -810,7 +810,7 @@ def AC_SHOW_SUCCESS_MESSAGE(master, task, game_state):
     print("You are WINNER!")
 
     for monitorId in range(1,5):
-        game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.WINNER})
+        sendMessageToMonitor(game_state, monitorId, MESSAGE.WINNER, False)
 
 
 def REQ_AMOUNT_OF_TASK_FAILURE(master, task, game_state):
@@ -820,10 +820,12 @@ def REQ_AMOUNT_OF_TASK_FAILURE(master, task, game_state):
 
 def AC_SHOW_FAILURE_MESSAGE(master, task, game_state):
 
-    for monitorId in range(1,5):
-        game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.FAIL})
+    game_state.cb_controller.remove_random_tasks()
 
-    print("You lose")
+    for monitorId in range(1,5):
+        sendMessageToMonitor(game_state, monitorId, MESSAGE.FAIL, False)
+
+    print("+"*80+"You lose" + "+" * 80)
 
 # Tasks
 

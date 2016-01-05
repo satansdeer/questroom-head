@@ -8,8 +8,8 @@ hallwayPuzzles = "hallwayPuzzles"
 def clear():
     os.system('cls' if os.name=='nt' else 'clear')
 class CaptainsBridgeController:
-    NUM_LEVELS = 5
-    NUM_STAGES = 5
+    NUM_LEVELS = 1
+    NUM_STAGES = 2
     NUM_STAGE_TASKS = 4
 
     STAGE_DELAY = 2
@@ -22,34 +22,58 @@ class CaptainsBridgeController:
         self.current_level = 0
         self.current_stage = 0
         self.completed_tasks_num = 0
+        self.progress_bar_delay = 1
+        self.progress_bar_read_time_start = time.time()
+
+    def progress_bar_read_state(self):
+        current_time = time.time()
+        if (current_time - self.progress_bar_read_time_start) > self.progress_bar_delay:
+            return True
+        return False
+    
+    def progress_bar_delay_restart(self):
+        self.progress_bar_read_time_start = time.time()
 
     def task_success(self, task):
         if task.type == 'CB_TASK':
             self.completed_tasks_num = self.completed_tasks_num + 1
             self.showOkMessage(task)
-            print("Free monitor with id {}".format(task.id))
+            monitorId = self.game_state.getMonitorIdByTask(task)
 
     def task_failure(self, task):
-        if task.type == 'CB_TASK':
+        if unicode(task.type) == u'CB_TASK':
+            monitorId = self.game_state.getMonitorIdByTask(task)
             self.completed_tasks_num = 0
-            for activeTask in self.game_state.active_tasks:
-                if activeTask.type == 'CB_TASK':
-                    self.game_state.remove_active_task(activeTask)
+            self.progressBarReset()
+            self.game_state.monitorsWithProgressBarZero = []
 
-            for index in range(4):
-                self.game_state.add_cb_random_task()
+            self.remove_random_tasks()
+
+            # print("active tasks after remove: {}".format([atask.id for atask in self.game_state.active_tasks]))
+            # print("="*80)
+
+            self.add_random_tasks()
+
+            # print("active tasks after add: {}".format([atask.id for atask in self.game_state.active_tasks]))
+
+    def remove_random_tasks(self):
+        active_cb_task_list = [atask for atask in self.game_state.active_tasks if unicode(atask.type) == u'CB_TASK']
+        for someActiveTask in active_cb_task_list:
+            self.game_state.remove_active_task(someActiveTask)
+
+    def add_random_tasks(self):
+        for index in range(4):
+            self.game_state.add_cb_random_task()
 
     def check(self):
         # Begin
-        # print("Complete task num: {}".format(self.completed_tasks_num))
         if self.current_level == 0:
             self.current_level = 1
             self.current_stage = 1
             self.showLevelMessage()
             time.sleep(self.LEVEL_DELAY)
-            for index in range(4):
-                self.game_state.add_cb_random_task()
 
+            self.add_random_tasks()
 
         stage_up = False
         level_up = False
@@ -61,11 +85,12 @@ class CaptainsBridgeController:
            time.sleep(self.STAGE_DELAY)
 
         # level increment
-        if self.current_stage == self.NUM_STAGES:
-            self.current_stage = 0
+        if self.current_stage > self.NUM_STAGES:
+            self.current_stage = 1
             self.current_level = self.current_level + 1
-            if self.current_level >= self.NUM_LEVELS:
+            if self.current_level > self.NUM_LEVELS:
                 #game end
+                self.remove_random_tasks()
                 return True
 
             level_up = True
@@ -74,21 +99,25 @@ class CaptainsBridgeController:
 
         # add tasks
         if stage_up or level_up:
-            for index in range(4):
-                self.game_state.add_cb_random_task()
-
+            self.add_random_tasks()
+            
         return
 
+    def progressBarReset(self):
+        message = "" 
+        for monitorId in range(1,5):
+            self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'progress_visible': False})
+    
     def showOkMessage(self, task):
 
         monitorId = self.game_state.getMonitorIdByTask(task)
         message = "OK"
-        self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message})
+        self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'progress_visible': False})
 
     def showLevelMessage(self):
         message = self.MESSAGE_LEVEL.format(level=self.current_level)
         for monitorId in range(1,5):
-            self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message})
+            self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'progress_visible': False})
 
 class GameState:
     def __init__(self):
@@ -107,7 +136,7 @@ class GameState:
         self.monitorsWithProgressBarZero = []
         # successfull and failure taks counters
         self.successfullTasksForWin = 30
-        self.failureTasksForLose = 10
+        self.failureTasksForLose = 5 
         self.successfullTasksCounter = 0
         self.failureTasksCounter = 0
 
@@ -154,7 +183,7 @@ class GameState:
             # remove monitor from Progress bar zero list
             # monitor removed in cbTaskFailure
             self.incFailureTaskCounter(task)
-            cb_controller.task_failure(task)
+            self.cb_controller.task_failure(task)
             self.remove_active_task(task)
             # Increment failure tasks counter
             # if task is Captian's bridge
@@ -165,8 +194,7 @@ class GameState:
     def add_task(self, task):
         self.tasks.append(task)
 
-    def remove_active_task(self, task):
-        # print("Remove task with id: {}".format(task.id))
+    def remove_active_task(self, task): 
         if task.showOnMonitor:
             self.freeMonitor(task)
         if task in self.active_tasks:
@@ -186,7 +214,6 @@ class GameState:
     def add_cb_random_task(self):
 
         avaliableTaskIds = self.getAvaliableCBTaskIds()
-        print("len avaliableTasksid = {}".format(len(avaliableTaskIds)))
         if len(avaliableTaskIds) == 0:
                 return
 
@@ -228,11 +255,11 @@ class GameState:
         return None
 
     def incFailureTaskCounter(self, task):
-        if task.type == 'CB_TASK':
+        if unicode(task.type) == u'CB_TASK':
             self.failureTasksCounter = self.failureTasksCounter + 1
 
     def incSuccessfullTaskCounter(self, task):
-        if task.type == 'CB_TASK':
+        if unicode(task.type) == u'CB_TASK':
             self.successfullTasksCounter = self.successfullTasksCounter + 1
 
     def cbTaskFailure(self,task):
@@ -240,7 +267,6 @@ class GameState:
             Using only by Captain's bridge tasks"""
         monitorId = self.getMonitorIdByTask(task)
         if monitorId in self.monitorsWithProgressBarZero:
-            self.monitorsWithProgressBarZero.remove(monitorId)
             return True
         return False
 
@@ -262,14 +288,19 @@ class GameState:
 
     def cbTaskType(self, task):
         #print("Task id {}, task type: {}".format(task.id, task.type))
-        return str(task.type) == "CB_TASK"
+        return unicode(task.type) == u'CB_TASK'
 
     def apply_state(self, state):
         pass
 
 
-    def updateMonitorsListWithProgressBarZero(self,monitorId):
+    def updateMonitorsListWithProgressBarZero(self,monitorIdStr):
         """append monitor number in list of monitors with zero ProgressBar """
-        if monitorId in self.monitorsWithProgressBarZero:
-            return
-        self.monitorsWithProgressBarZero.append(monitorId)
+        if self.cb_controller.progress_bar_read_state():
+            self.cb_controller.progress_bar_delay_restart()
+
+            monitorId = int(monitorIdStr)
+            
+            if monitorId in self.monitorsWithProgressBarZero or len(self.monitorsWithProgressBarZero) != 0:
+                return
+            self.monitorsWithProgressBarZero.append(monitorId)
