@@ -263,7 +263,7 @@ def REQ_SECRET_DOORS(master, task, game_state):
     if buttons[3:6] == [0, 1, 0]:
         relays = buttons[0:3]
         relays.insert(0, 0)
-        master.setRelays(captainsBridge, relays)
+        master.setRelays(CB_SLAVE_2, relays)
     return False
 
 
@@ -691,7 +691,6 @@ def REQ_CHECK_BATTERIES(master, task, game_state):
     # print("REQ_CHECK_BATTARIES")
     batteryState = (battery_1 and battery_2 and battery_3 and battery_4)
 
-    batteryState = True
     if not batteryState:
         return batteryState
 

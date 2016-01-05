@@ -44,8 +44,7 @@ class QuestRoom(threading.Thread):
         self.captainsBridge_1 = master.addSlave("CB_SLAVE_1", captainsBridgePort_1, 1, boudrate=5)
         self.captainsBridge_2 = master.addSlave("CB_SLAVE_2", captainsBridgePort_2, 1, boudrate=5)
 
-
-        # master.setRelays(self.captainsBridge_2, [1,1,1,1])
+        master.start()
 
         init_leds = [0x000, 0x000, 0x000] * 32
         master.setSmartLeds(self.hallwayPuzzles, init_leds)
@@ -56,7 +55,9 @@ class QuestRoom(threading.Thread):
         setLedValue(leds, 11, [0x888, 0x0, 0x0])
         master.setSmartLeds(self.hallwayPuzzles, leds)
         master.setRelays(self.hallwayPuzzles, [0,0,0,0])
-
+        time.sleep(1)
+        master.setRelays(self.hallwayPuzzles, [1,1,1,1])
+        master.setRelays(self.captainsBridge_2, [1,1,1,0])
         keyboardListener = KeyboardListener(master)
         keyboardListener.daemon = True
         keyboardListener.start()
