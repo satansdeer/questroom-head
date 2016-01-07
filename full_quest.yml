@@ -3,9 +3,20 @@
     -
       id: 0
       success_requirements:
+        [REQ_QUEST_INIT]
+      success_actions:
+        [AC_ADD_CONNECT_WIRE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Соединить провод'
+    -
+      id: 100 
+      success_requirements:
         [REQ_WIRE_CONNECTED]
       success_actions:
-        [AC_ENABLE_FUSE_PUZZLE, AC_ADD_FUSE_PUZZLE, AC_ADD_DISCONNECT_WIRE, AC_ADD_SECRET]
+        [AC_ENABLE_FUSE_PUZZLE, AC_ADD_FUSE_PUZZLE, AC_ADD_DISCONNECT_WIRE, AC_ADD_SECRET, AC_ENABLE_WIRE_ROOMS_COLORS]
       failure_requirements:
         []
       failure_actions:
@@ -27,7 +38,7 @@
       success_requirements:
         [REQ_FUSE_PUZZLE_SOLVED]
       success_actions:
-        [AC_ENABLE_RADIO, AC_ADD_SEQUENCE_PUZZLE, AC_ADD_FUSE_REMOVED]
+        [AC_ENABLE_RADIO, AC_ADD_SEQUENCE_PUZZLE, AC_ADD_FUSE_REMOVED, AC_ENABLE_FUSE_ROOMS_COLORS]
       failure_requirements:
         []
       failure_actions:
@@ -105,7 +116,7 @@
       success_requirements:
         [REQ_ROBOT_ASSEMBLED]
       success_actions:
-        [AC_ROBOT_SAY_RIDDLE, AC_ADD_COMMUTATOR_PUZZLE]
+        [AC_ROBOT_SAY_RIDDLE, AC_ADD_COMMUTATOR_PUZZLE, AC_ENABLE_ROBOT_HEAD_ROOMS_COLORS]
       failure_requirements:
         []
       failure_actions:
@@ -116,7 +127,7 @@
       success_requirements:
         [REQ_ENGINE_ASSEMBLED]
       success_actions:
-        []
+        [AC_ENABLE_ENGINE_ROOMS_COLORS]
       failure_requirements:
         []
       failure_actions:

@@ -48,15 +48,33 @@ class QuestRoom(threading.Thread):
         master.start()
         # master.setRelays(self.captainsBridge_2, [1,1,1,1])
 
-        init_leds = [0x000, 0x000, 0x000] * 32
+        init_leds = [0xfff, 0xfff, 0xfff] * 32
         master.setSmartLeds(self.hallwayPuzzles, init_leds)
+        master.setSmartLeds(self.captainsBridge_1, init_leds)
         leds = master.getSmartLeds(self.hallwayPuzzles).get()
         setLedValue(leds, 8, [0x888, 0x0, 0x0])
         setLedValue(leds, 9, [0x888, 0x0, 0x0])
         setLedValue(leds, 10, [0x888, 0x0, 0x0])
         setLedValue(leds, 11, [0x888, 0x0, 0x0])
+    
+        setLedValue(leds, 7, [0x0, 0x0, 0x888]) # engine room
+        
+        setLedValue(leds, 14, [0x888, 0x0, 0x0]) # entrance bottom
+        setLedValue(leds, 6, [0x0, 0x0, 0x0]) # entrance top
+		
         master.setSmartLeds(self.hallwayPuzzles, leds)
-        master.setRelays(self.hallwayPuzzles, [0,0,0,0])
+        
+        leds_2 = master.getSmartLeds(self.captainsBridge_1).get()
+        setLedValue(leds_2, 1, [0x888, 0x0, 0x888]) # main room bottom
+        setLedValue(leds_2, 2, [0x888, 0x888, 0x0]) # main room top
+        
+        setLedValue(leds_2, 0, [0x888, 0x888, 0x0]) # captains bridge
+        
+        
+        master.setSmartLeds(self.captainsBridge_1, leds_2)
+        
+        master.setRelays(self.hallwayPuzzles, [0,1,1,0])
+		
 
         # relays = [1,1,1,0]
         # master.setRelays(captainsBridge, relays)

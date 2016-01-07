@@ -10,7 +10,7 @@ class KeyboardListener(threading.Thread):
     PASS_1 = [1,1,1,1]
     TOGGLE_ENTER_DOOR=[7,7,7,7]
     TOGGLE_ENGINE_DOOR=[5,7,8,3]
-    TOGGLE_CAPTAIN_DOOR=[7,6,9,8]
+    TOGGLE_CAPTAIN_DOOR=[7,0,6,2]
 
     TOGGLE_FIRST_BOX=[1,1,1,1]
     TOGGLE_SECOND_BOX=[2,2,2,2]

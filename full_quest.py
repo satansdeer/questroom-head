@@ -81,13 +81,35 @@ class CB_CTRL:
     DOOR_CAPTAIN = 3
 
 class Colors:
-    WHITE = [0xff, 0xff, 0xff]
-    RED = [0xff, 0x0, 0x0]
+    WHITE = [0xfff, 0xfff, 0xfff]
+    RED = [0xfff, 0x0, 0x0]
     LIGHT_RED = [0xff, 0x33, 0x33]
-    GREEN = [0x0, 0xff, 0x0]
+    GREEN = [0x0, 0xffF, 0x0]
     LIGHT_GREEN = [0x33, 0xff, 0x33]
     BLUE = [0x0, 0x0, 0xff]
     NONE = [0x0, 0x0, 0x0]
+
+class ROOM_LEDS:
+    # hallwayPuzzles
+    ENTRANCE_TOP = 6
+    ENTRANCE_BOTTOM = 14
+
+    ENGINE_ROOM = 7
+
+    # captainsBridge_1
+    MAIN_ROOM_TOP = 2
+    MAIN_ROOM_BOTTOM = 1
+    CAPTAINTS_BRIDGE = 0
+
+def setRoomLight(master, roomLed, color):
+    if roomLed in [ROOM_LEDS.ENTRANCE_TOP, ROOM_LEDS.ENTRANCE_BOTTOM, ROOM_LEDS.ENGINE_ROOM]:
+        slave = hallwayPuzzles
+    elif roomLed in [ROOM_LEDS.MAIN_ROOM_TOP, ROOM_LEDS.MAIN_ROOM_BOTTOM, ROOM_LEDS.CAPTAINTS_BRIDGE]:
+        slave = CB_SLAVE_1
+    else: return
+
+    leds = master.getSmartLeds(slave)
+    leds.setOneLed(roomLed, color)
 
 class AdcIdTable:
     RADIO = 0
@@ -99,6 +121,16 @@ def setLedValue(leds, id, color):
     leds[id * 3 + 1] = color[1]
     leds[id * 3 + 2] = color[2]
 
+def REQ_QUEST_INIT(master, task, game_state):
+    master.setSmartLeds(hallwayPuzzles, [0,0,0]*32)
+    # Init Lights
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE) 
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [150, 0, 0])
+    setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, Colors.NONE)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.NONE)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, Colors.NONE)
+    setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, Colors.NONE)
+    return True
 
 def REQ_WIRE_CONNECTED(master, task, game_state):
     wiredConnection = master.getButtons(hallwayPuzzles).get()[
@@ -115,6 +147,76 @@ def REQ_WIRE_DISCONNECTED(master, task, game_state):
         return True
     return False
 
+def AC_ENABLE_WIRE_ROOMS_COLORS(master, task, game_state):
+    RED = 2000
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [RED, 0, 0])
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, [RED, 0, 0])
+
+
+    time.sleep(2)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0]) 
+    time.sleep(.2)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.NONE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE) 
+
+    time.sleep(2)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0]) 
+
+    time.sleep(.2)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.NONE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE) 
+    time.sleep(.1)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0]) 
+    time.sleep(.2)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.NONE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE) 
+    time.sleep(.1)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0]) 
+    time.sleep(.2)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.NONE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE) 
+    time.sleep(.1)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0]) 
+    time.sleep(.2)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.NONE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE) 
+    time.sleep(.1)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0]) 
+    time.sleep(2)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0]) 
+
+
+def AC_ENABLE_FUSE_ROOMS_COLORS(master, task, game_state):
+    time.sleep(2)
+    VIOLENT = [232 * 10, 100 *10, 255 * 10]
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, [2000, 2000, 2000])
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, VIOLENT) 
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [2000, 2000, 2000])
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, VIOLENT) 
+
+
+def AC_ENABLE_ROBOT_HEAD_ROOMS_COLORS(master, task, game_state):
+    VIOLENT = [232 * 10, 100 *10, 255 * 10]
+    time.sleep(2) 
+    setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, [0, 0, 500]) 
+
+    setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, VIOLENT) 
+
+
+def AC_ENABLE_ENGINE_ROOMS_COLORS(master, task, game_state):
+    WHITE = [ 3500, 3500, 3500 ]
+
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, WHITE)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, WHITE) 
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, WHITE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, WHITE) 
 
 def AC_ENABLE_FUSE_PUZZLE(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
@@ -132,7 +234,7 @@ def AC_DISABLE_FUSE_PUZZLE(master, task, game_state):
 
 
 def REQ_FUSE_PUZZLE_SOLVED(master, task, game_state):
-    return True
+    # return True
     buttons = master.getButtons(hallwayPuzzles)
     fuseSolved = buttons.get()[ButtonsIdTable.FUSE]
     if fuseSolved:
@@ -190,7 +292,7 @@ def AC_DISABLE_RADIO(master, task, game_state):
 
 
 class TaskIdTable:
-    WIRE_CONNECTED = 0
+    WIRE_CONNECTED = 100
     WIRE_DISCONNECTED = 1
     FUSE_PUZZLE = 2
     FUSE_REMOVED = 3
@@ -261,7 +363,7 @@ def AC_ADD_ACTIVATE_CAPTAIN_BRIDGE(mastre, task, game_state):
 
 def REQ_SECRET_DOORS(master, task, game_state):
     # buttonStartPosition = 17
-    return False
+    return True 
     buttons = master.getButtons(hallwayPuzzles).get()[12:18]
     if buttons[3:6] == [0, 1, 0]:
         relays = buttons[0:3]
@@ -315,7 +417,7 @@ def AC_OPEN_FOURTH_BOX(master, task, game_state):
 
 
 def REQ_COMMUTATOR_PUZZLE_SOLVED(master, task, game_state):
-    return True
+    # return True
     buttons = master.getButtons(hallwayPuzzles).get()
     commutatorSolved = buttons[ButtonsIdTable.COMMUTATOR]
     if commutatorSolved:
@@ -356,7 +458,7 @@ hiddenPanelSwitchers = []
 oldHiddenPanelSwitchers = [None] * 6
 
 def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
-    return True
+    # return True
     global hiddenPanelColors
     global visiblePanelColors
 
@@ -506,7 +608,7 @@ PLAYER_SEQUENCE=[]
 READ_SEQUENCE_DELAY = 0.05
 CORRECT_LED_TIMEOUT = 0.05
 def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
-    return True
+    # return True
     # Сохраняем последнее выбранное значение
     global lastLockPosition, state
     global PLAYER_SEQUENCE
@@ -599,7 +701,7 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
 
 
 def REQ_MECHANICS_CARD_USED(master, task, game_state):
-    return True
+    # return True
     buttons = master.getButtons(hallwayPuzzles).get()
     cardUsed = buttons[ButtonsIdTable.MECHANICS_CARD]
     if cardUsed:
@@ -618,11 +720,14 @@ def AC_ENABLE_TUMBLER_PUZZLE(master, task, game_state):
 
 
 def REQ_ROBOT_ASSEMBLED(master, task, game_state):
-    return True
+    # return True
     buttons = master.getButtons(hallwayPuzzles)
     robbotAssembled = buttons.get()[ButtonsIdTable.ROBOT_HEAD]
     if robbotAssembled:
         smartLeds = master.getSmartLeds(hallwayPuzzles)
+        # smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_LEFT, [0, 0xfff, 0x0])
+        # smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, [0xfff, 0x0, 0x0])
+
         smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_LEFT, Colors.GREEN)
         smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, Colors.RED)
         smartLeds.setOneLed(LedsIdTable.ROBOT_HEAD, Colors.WHITE)
@@ -633,14 +738,18 @@ def REQ_ROBOT_ASSEMBLED(master, task, game_state):
 
 def AC_ROBOT_SAY_RIDDLE(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
-    smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_LEFT, Colors.GREEN)
-    smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, Colors.RED)
-    smartLeds.setOneLed(LedsIdTable.ROBOT_HEAD, Colors.WHITE)
+
+    smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_LEFT, [0, 0xfff, 750])
+    smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, [0xfff, 0x0, 0x0])
+
+    # smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_LEFT, Colors.GREEN)
+    # smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, Colors.RED)
+    smartLeds.setOneLed(LedsIdTable.ROBOT_HEAD, [0xff, 0xff, 0xff])
     print("Robot say RIDDLE!")
 
 
 def REQ_ENGINE_ASSEMBLED(master, task, game_state):
-    return True
+    # return True
     buttons = master.getButtons(hallwayPuzzles)
     engineAssembled = buttons.get()[ButtonsIdTable.ENGINE]
     smartLeds = master.getSmartLeds(hallwayPuzzles)
@@ -702,7 +811,7 @@ def REQ_CHECK_BATTERIES(master, task, game_state):
     # print("REQ_CHECK_BATTARIES")
     batteryState = (battery_1 and battery_2 and battery_3 and battery_4)
 
-    batteryState = True
+    # batteryState = True
     if not batteryState:
         return batteryState
 
