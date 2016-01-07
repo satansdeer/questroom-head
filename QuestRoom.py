@@ -44,9 +44,7 @@ class QuestRoom(threading.Thread):
         self.captainsBridge_1 = master.addSlave("CB_SLAVE_1", captainsBridgePort_1, 1, boudrate=5)
         self.captainsBridge_2 = master.addSlave("CB_SLAVE_2", captainsBridgePort_2, 1, boudrate=5)
 
-
         master.start()
-        # master.setRelays(self.captainsBridge_2, [1,1,1,1])
 
         init_leds = [0xfff, 0xfff, 0xfff] * 32
         master.setSmartLeds(self.hallwayPuzzles, init_leds)
@@ -63,7 +61,7 @@ class QuestRoom(threading.Thread):
         setLedValue(leds, 6, [0x0, 0x0, 0x0]) # entrance top
 		
         master.setSmartLeds(self.hallwayPuzzles, leds)
-        
+
         leds_2 = master.getSmartLeds(self.captainsBridge_1).get()
         setLedValue(leds_2, 1, [0x888, 0x0, 0x888]) # main room bottom
         setLedValue(leds_2, 2, [0x888, 0x888, 0x0]) # main room top
@@ -76,17 +74,16 @@ class QuestRoom(threading.Thread):
         master.setRelays(self.hallwayPuzzles, [0,1,1,0])
 		
 
-        # relays = [1,1,1,0]
-        # master.setRelays(captainsBridge, relays)
+        master.setRelays(self.hallwayPuzzles, [0,0,0,0])
+        time.sleep(1)
+        master.setRelays(self.hallwayPuzzles, [1,1,1,1])
+        master.setRelays(self.captainsBridge_2, [1,1,1,0])
+
         keyboardListener = KeyboardListener(master)
         keyboardListener.daemon = True
         keyboardListener.start()
 
-        #self.game_state = parse("cb_quest.yml")
-        # self.game_state = parse("hallway_quest.yml")
         self.game_state = parse("full_quest.yml")
-
-        #self.game_state = parse("quest_script.yml")
         self.game_state.device_master = master
         self.game_state.slave = hallwayPuzzles
         self.game_state.quest_room = self
@@ -99,7 +96,7 @@ class QuestRoom(threading.Thread):
 
     def set_box_state(self, box_id, box_state):
         smartLeds = master.getSmartLeds(self.hallwayPuzzles)
-        if(box_state == 1):
+        if(box_state == 0):
             smartLeds.setOneLed(box_id + 8, Colors.BLUE)
         else:
             smartLeds.setOneLed(box_id + 8, Colors.RED)

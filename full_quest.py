@@ -362,14 +362,12 @@ def AC_ADD_ACTIVATE_CAPTAIN_BRIDGE(mastre, task, game_state):
 
 
 def REQ_SECRET_DOORS(master, task, game_state):
-    # buttonStartPosition = 17
     return True 
     buttons = master.getButtons(hallwayPuzzles).get()[12:18]
     if buttons[3:6] == [0, 1, 0]:
         relays = buttons[0:3]
         relays.insert(0, 0)
-        master.setRelays(captainsBridge, relays)
-    # master.sendGetButtons(slavePuzzle)
+        master.setRelays(CB_SLAVE_2, relays)
     return False
 
 
@@ -379,7 +377,7 @@ def AC_OPEN_FIRST_BOX(master, task, game_state):
     # blue, because blue and green are switched
     smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.BLUE)
     relays = master.getRelays(hallwayPuzzles).get()
-    relays[0] = 1
+    relays[0] = 0
     master.setRelays(hallwayPuzzles, relays)
 
 def AC_OPEN_SECOND_BOX(master, task, game_state):
@@ -389,18 +387,17 @@ def AC_OPEN_SECOND_BOX(master, task, game_state):
 
 
     relays = master.getRelays(hallwayPuzzles).get()
-    relays[1] = 1
+    relays[1] = 0
     master.setRelays(hallwayPuzzles, relays)
 
 
 def AC_OPEN_THIRD_BOX(master, task, game_state):
-    time.sleep(3)
     print("Third box was open!")
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.BOX_3, Colors.BLUE)
 
     relays = master.getRelays(hallwayPuzzles).get()
-    relays[2] = 1
+    relays[2] = 0
     master.setRelays(hallwayPuzzles, relays)
 
 
@@ -410,7 +407,7 @@ def AC_OPEN_FOURTH_BOX(master, task, game_state):
     smartLeds.setOneLed(LedsIdTable.BOX_4, Colors.BLUE)
 
     relays = master.getRelays(hallwayPuzzles).get()
-    relays[3] = 1
+    relays[3] = 0
     master.setRelays(hallwayPuzzles, relays)
 
 
@@ -895,7 +892,7 @@ def AC_CB_ADD_RANDOM_TASK(master, task, game_state):
     # game_state.add_cb_random_task()
 
 def AC_ADD_END_GAME_TASK(master, task, game_state):
-        game_state.add_active_task_with_id(203)
+    game_state.add_active_task_with_id(203)
 
 def REQ_CAPTAINS_BRIDGE_GAME_SUCCESS(master, task, game_state):
 
@@ -908,7 +905,6 @@ def REQ_CAPTAINS_BRIDGE_GAME_SUCCESS(master, task, game_state):
 #     return False
 
 def AC_ENTERED_DOOR_OPEN(master, task, game_state):
-
     relays = master.getRelays(CB_SLAVE_2).get()
     relays[CB_CTRL.DOOR_ENTER] = 0
     master.setRelays(CB_SLAVE_2, relays)
@@ -928,7 +924,6 @@ def REQ_AMOUNT_OF_TASK_FAILURE(master, task, game_state):
     return False
 
 def AC_SHOW_FAILURE_MESSAGE(master, task, game_state):
-
     game_state.cb_controller.remove_random_tasks()
 
     for monitorId in range(1,5):

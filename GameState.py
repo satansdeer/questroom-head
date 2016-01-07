@@ -8,11 +8,11 @@ hallwayPuzzles = "hallwayPuzzles"
 def clear():
     os.system('cls' if os.name=='nt' else 'clear')
 class CaptainsBridgeController:
-    NUM_LEVELS = 1
-    NUM_STAGES = 2
+    NUM_LEVELS = 5
+    NUM_STAGES = 3
     NUM_STAGE_TASKS = 4
 
-    STAGE_DELAY = 2
+    STAGE_DELAY = 1
     LEVEL_DELAY = 2
 
     MESSAGE_LEVEL = "Уровень: {level}"
