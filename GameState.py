@@ -11,6 +11,11 @@ class CaptainsBridgeController:
     NUM_LEVELS = 5
     NUM_STAGES = 3
     NUM_STAGE_TASKS = 4
+    # number all lives for game
+    NUM_LIVES = 2
+    
+    # time for done stage on level
+    PROGRESS_BAR_LEVEL_TIME=[6, 10, 20, 30, 7, 6]
 
     STAGE_DELAY = 1
     LEVEL_DELAY = 2
@@ -21,9 +26,13 @@ class CaptainsBridgeController:
         self.game_state = game_state
         self.current_level = 0
         self.current_stage = 0
+        self.current_lives_num = self.NUM_LIVES
         self.completed_tasks_num = 0
         self.progress_bar_delay = 1
         self.progress_bar_read_time_start = time.time()
+
+    def get_progress_bar_time(self):
+        return self.PROGRESS_BAR_LEVEL_TIME[self.current_level]
 
     def progress_bar_read_state(self):
         current_time = time.time()
@@ -42,8 +51,11 @@ class CaptainsBridgeController:
 
     def task_failure(self, task):
         if unicode(task.type) == u'CB_TASK':
-            monitorId = self.game_state.getMonitorIdByTask(task)
+            self.current_lives_num = self.current_lives_num - 1
+
+            self.current_stage = 1
             self.completed_tasks_num = 0
+
             self.progressBarReset()
             self.game_state.monitorsWithProgressBarZero = []
 
@@ -134,8 +146,6 @@ class GameState:
 
         # whis list used by failure requarements of CB tasks
         self.monitorsWithProgressBarZero = []
-        # successfull and failure taks counters
-        self.successfullTasksForWin = 30
         self.failureTasksForLose = 5 
         self.successfullTasksCounter = 0
         self.failureTasksCounter = 0
@@ -200,17 +210,6 @@ class GameState:
         if task in self.active_tasks:
             self.active_tasks.remove(task)
 
-    def add_active_task_with_id(self, id):
-        # print("Task id for add: {}".format(id))
-        task = self.find_task_with_id(id)
-        if task.showOnMonitor:
-                monitorId = self.fillMonitor(task)
-                # print("Add active Task id: {taskId} | monitorId: {monitorId}\n".format(taskId=id, monitorId=monitorId))
-                self.quest_room.send_ws_message(str(monitorId), {'message':task.title})
-        # print("self.active_tasks.append task: {}".format(task.id))
-        self.active_tasks.append(task)
-        # print("ADD: active_tasks: {}".format([task_.id for task_ in self.active_tasks]))
-
     def add_cb_random_task(self):
 
         avaliableTaskIds = self.getAvaliableCBTaskIds()
@@ -229,6 +228,18 @@ class GameState:
 
         self.add_active_task_with_id(randomTaskId)
         self.update_used_task_ids_list(randomTaskId)
+
+    def add_active_task_with_id(self, id):
+        # print("Task id for add: {}".format(id))
+        task = self.find_task_with_id(id)
+        if task.showOnMonitor:
+                monitorId = self.fillMonitor(task)
+                # print("Add active Task id: {taskId} | monitorId: {monitorId}\n".format(taskId=id, monitorId=monitorId))
+                progress_bar_time = self.cb_controller.get_progress_bar_time()
+                self.quest_room.send_ws_message(str(monitorId), {'message':task.title, 'progress_bar_time': progress_bar_time})
+        # print("self.active_tasks.append task: {}".format(task.id))
+        self.active_tasks.append(task)
+        # print("ADD: active_tasks: {}".format([task_.id for task_ in self.active_tasks]))
 
     def update_used_task_ids_list(self, taskId):
         self.usedTasksIds.insert(0, taskId)

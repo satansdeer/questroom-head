@@ -71,12 +71,11 @@ class QuestRoom(threading.Thread):
         
         master.setSmartLeds(self.captainsBridge_1, leds_2)
         
-        master.setRelays(self.hallwayPuzzles, [0,1,1,0])
-		
-
         master.setRelays(self.hallwayPuzzles, [0,0,0,0])
         time.sleep(1)
+
         master.setRelays(self.hallwayPuzzles, [1,1,1,1])
+
         master.setRelays(self.captainsBridge_2, [1,1,1,0])
 
         keyboardListener = KeyboardListener(master)

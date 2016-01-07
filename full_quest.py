@@ -919,7 +919,7 @@ def AC_SHOW_SUCCESS_MESSAGE(master, task, game_state):
 
 
 def REQ_AMOUNT_OF_TASK_FAILURE(master, task, game_state):
-    if game_state.failureTasksForLose == game_state.failureTasksCounter:
+    if 0 == game_state.cb_controller.current_lives_num:
             return True
     return False
 
