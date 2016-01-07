@@ -12,7 +12,7 @@ class CaptainsBridgeController:
     NUM_STAGES = 3
     NUM_STAGE_TASKS = 4
     # number all lives for game
-    NUM_LIVES = 2
+    NUM_LIVES = 5
     
     # time for done stage on level
     PROGRESS_BAR_LEVEL_TIME=[6, 10, 20, 30, 7, 6]

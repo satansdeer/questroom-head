@@ -259,6 +259,9 @@ def AC_ENABLE_RADIO(master, task, game_state):
     print("Radio puzzle solved")
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.RED)
+    smartLeds.setOneLed(LedsIdTable.BOX_2, Colors.RED)
+    smartLeds.setOneLed(LedsIdTable.BOX_3, Colors.RED)
+    smartLeds.setOneLed(LedsIdTable.BOX_4, Colors.RED)
 
     if radio is None:
         # print("========================Radio start!=======================")
