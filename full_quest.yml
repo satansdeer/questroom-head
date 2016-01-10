@@ -251,11 +251,11 @@
       success_requirements:
         [REQ_CAPTAINS_BRIDGE_GAME_SUCCESS]
       success_actions:
-        [AC_ENTERED_DOOR_OPEN, AC_SHOW_SUCCESS_MESSAGE]
+        [AC_ENTERED_DOOR_OPEN, AC_SHOW_SUCCESS_MESSAGE, AC_RANDOM_ROOM_LIGHT]
       failure_requirements:
         [REQ_AMOUNT_OF_TASK_FAILURE]
       failure_actions:
-        [AC_SHOW_FAILURE_MESSAGE]
+        [AC_ENTERED_DOOR_OPEN, AC_SHOW_SUCCESS_MESSAGE, AC_RANDOM_ROOM_LIGHT]
       title: 'AMOUNT_OF_TASK_SUCCESSED'
 
     -

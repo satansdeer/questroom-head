@@ -6,7 +6,6 @@ import random
 from Radio import Radio
 from collections import Counter
 from copy import copy
-start_time = time.time()
 from threading import Timer
 
 class LedsIdTable:
@@ -89,6 +88,41 @@ class Colors:
     BLUE = [0x0, 0x0, 0xff]
     NONE = [0x0, 0x0, 0x0]
 
+class BASIC_COLORS:
+    WHITE = [0xFF, 0xFF, 0xFF]
+    RED = [0xff, 0x0, 0x0]
+    LIGHT_RED = [0xff, 0x33, 0x33]
+    GREEN = [0x0, 0xff, 0x0]
+    LIGHT_GREEN = [0x33, 0xff, 0x33]
+    BLUE = [0x0, 0x0, 0xff]
+    NONE = [0x0, 0x0, 0x0]
+
+    SAND_STORM = [0xff, 0xa8, 0x12]
+    # GREEN
+    MANTIS = [0x3f, 0xff, 0x00]
+    # PURPLE
+    PSYCHEDELIC_PURPLE = [0x94, 0x00, 0xd3]
+    # PINK
+    RASPBERRY_PINK = [0xff, 0x14, 0x93]
+
+
+def colorTo12Bit(color):
+    COLOR_MULT = 16.058
+    to16Bit = lambda byte: int(byte * COLOR_MULT)
+    return map(to16Bit, color) 
+
+class COLORS:
+    WHITE = colorTo12Bit(BASIC_COLORS.WHITE)
+    RED = colorTo12Bit(BASIC_COLORS.RED)
+    LIGHT_RED = colorTo12Bit(BASIC_COLORS.LIGHT_RED)
+    GREEN = colorTo12Bit(BASIC_COLORS.GREEN)
+    LIGHT_GREEN = colorTo12Bit(BASIC_COLORS.LIGHT_GREEN)
+    BLUE = colorTo12Bit(BASIC_COLORS.BLUE)
+    NONE = colorTo12Bit(BASIC_COLORS.NONE)
+    SAND_STORM = colorTo12Bit(BASIC_COLORS.SAND_STORM)
+    PSYCHEDELIC_PURPLE = colorTo12Bit(BASIC_COLORS.PSYCHEDELIC_PURPLE)
+    RASPBERRY_PINK = colorTo12Bit(BASIC_COLORS.RASPBERRY_PINK)
+
 class ROOM_LEDS:
     # hallwayPuzzles
     ENTRANCE_TOP = 6
@@ -110,6 +144,29 @@ def setRoomLight(master, roomLed, color):
 
     leds = master.getSmartLeds(slave)
     leds.setOneLed(roomLed, color)
+
+def RANDOM_ROOM_LIGHT(master):
+    LIGHT_RANDOM = [COLORS.WHITE, COLORS.RED, COLORS.LIGHT_RED, COLORS.GREEN, COLORS.LIGHT_GREEN, COLORS.BLUE, COLORS.NONE, COLORS.SAND_STORM, COLORS.PSYCHEDELIC_PURPLE, COLORS.RASPBERRY_PINK]
+
+    lightRandomLen = len(LIGHT_RANDOM)
+
+    randColorId = random.randint(0, lightRandomLen - 1)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, LIGHT_RANDOM[randColorId])
+
+    randColorId = random.randint(0, lightRandomLen - 1)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, LIGHT_RANDOM[randColorId])
+
+    randColorId = random.randint(0, lightRandomLen - 1)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, LIGHT_RANDOM[randColorId])
+
+    randColorId = random.randint(0, lightRandomLen - 1)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, LIGHT_RANDOM[randColorId])
+
+    randColorId = random.randint(0, lightRandomLen - 1)
+    setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, LIGHT_RANDOM[randColorId])
+
+    randColorId = random.randint(0, lightRandomLen - 1)
+    setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, LIGHT_RANDOM[randColorId])
 
 class AdcIdTable:
     RADIO = 0
@@ -191,6 +248,9 @@ def AC_ENABLE_WIRE_ROOMS_COLORS(master, task, game_state):
     time.sleep(2)
     setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
     setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0])
+
+
+
 
 
 def AC_ENABLE_FUSE_ROOMS_COLORS(master, task, game_state):
@@ -923,6 +983,22 @@ def AC_SHOW_SUCCESS_MESSAGE(master, task, game_state):
     for monitorId in range(1,5):
         sendMessageToMonitor(game_state, monitorId, MESSAGE.WINNER, False)
 
+def AC_RANDOM_ROOM_LIGHT(master, task, game_state):
+    start_time = time.time()
+    ACTION_TIME = 60 * 1
+
+    cur_time = time.time()
+    while abs(cur_time - start_time) < ACTION_TIME:
+        RANDOM_ROOM_LIGHT(master)
+        time.sleep(0.1)
+
+
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, COLORS.GREEN)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, COLORS.RED)
+    setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, COLORS.GREEN)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, COLORS.GREEN)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, COLORS.RED)
+    setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, COLORS.GREEN)
 
 def REQ_AMOUNT_OF_TASK_FAILURE(master, task, game_state):
     if 0 == game_state.cb_controller.current_lives_num:
