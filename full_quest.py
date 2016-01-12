@@ -446,9 +446,9 @@ def AC_OPEN_FIRST_BOX(master, task, game_state):
     relays = master.getRelays(hallwayPuzzles).get()
     relays[0] = 0
     master.setRelays(hallwayPuzzles, relays)
-    self.beep = pygame.mixer.Sound(SOUNDS.BOX_OPEN)
-    self.beep.set_volume(0.3)
-    self.beep.play()
+    beep = pygame.mixer.Sound(SOUNDS.BOX_OPEN)
+    beep.set_volume(0.3)
+    beep.play()
 
 def AC_OPEN_SECOND_BOX(master, task, game_state):
     print("Second box was open!")
@@ -460,9 +460,9 @@ def AC_OPEN_SECOND_BOX(master, task, game_state):
     relays[1] = 0
     master.setRelays(hallwayPuzzles, relays)
 
-    self.beep = pygame.mixer.Sound(SOUNDS.BOX_OPEN)
-    self.beep.set_volume(0.3)
-    self.beep.play()
+    beep = pygame.mixer.Sound(SOUNDS.BOX_OPEN)
+    beep.set_volume(0.3)
+    beep.play()
 
 def AC_OPEN_THIRD_BOX(master, task, game_state):
     print("Third box was open!")
@@ -474,9 +474,9 @@ def AC_OPEN_THIRD_BOX(master, task, game_state):
     master.setRelays(hallwayPuzzles, relays)
 
 
-    self.beep = pygame.mixer.Sound(SOUNDS.BOX_OPEN)
-    self.beep.set_volume(0.3)
-    self.beep.play()
+    beep = pygame.mixer.Sound(SOUNDS.BOX_OPEN)
+    beep.set_volume(0.3)
+    beep.play()
 
 def AC_OPEN_FOURTH_BOX(master, task, game_state):
     print("Fourth box was open!")
@@ -487,9 +487,9 @@ def AC_OPEN_FOURTH_BOX(master, task, game_state):
     relays[3] = 0
     master.setRelays(hallwayPuzzles, relays)
 
-    self.beep = pygame.mixer.Sound(SOUNDS.BOX_OPEN)
-    self.beep.set_volume(0.3)
-    self.beep.play()
+    beep = pygame.mixer.Sound(SOUNDS.BOX_OPEN)
+    beep.set_volume(0.3)
+    beep.play()
 
 
 def REQ_COMMUTATOR_PUZZLE_SOLVED(master, task, game_state):
