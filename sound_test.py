@@ -2,7 +2,7 @@ import pygame
 
 pygame.mixer.init()
 
-sound = pygame.mixer.Sound('full_robot.wav')
+sound = pygame.mixer.Sound('noize.wav')
 sound.play()
 
 while True:
