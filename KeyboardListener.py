@@ -4,6 +4,11 @@ import pygame
 from Getch import getch
 # from copy import copy
 
+# new version 
+import win32api
+import win32console
+import pythoncom,pyHook
+
 hallwayPuzzles = "CB_SLAVE_2"
 boxes_slave = "CB_SLAVE_1"
 class KeyboardListener(threading.Thread):
@@ -26,25 +31,37 @@ class KeyboardListener(threading.Thread):
         super(KeyboardListener, self).__init__()
         # self.run()
 
+    def OnKeyboardEvent(self, event):
+        key = event.Ascii
+        if not ord('0') <= key <= ord('9'):
+            return 0
+
+        keyNumber = int(key - ord('0'))
+        print("Keyboard char: {}".format(keyNumber))
+    
+        self.beep.play()
+
+        self.last_keys_pressed.insert(0, keyNumber)
+
+        self.toggleDoor(self.TOGGLE_ENTER_DOOR,1)
+        self.toggleDoor(self.TOGGLE_ENGINE_DOOR, 2)
+        self.toggleDoor(self.TOGGLE_CAPTAIN_DOOR, 3)
+
+        self.toggleBox(self.TOGGLE_FIRST_BOX, 0)
+        self.toggleBox(self.TOGGLE_FIRST_BOX, 2)
+        self.toggleBox(self.TOGGLE_FIRST_BOX, 3)
+        self.toggleBox(self.TOGGLE_FIRST_BOX, 4)
+        return 0
+
     def run(self):
-        while True:
-            char = getch()
-            print("Keyboard char: {}".format(char))
-            if not char.isdigit():
-                continue
-            self.beep.play()
-            # if self.callback:
-            #     self.callback(char)
-            self.last_keys_pressed.insert(0, int(char))
 
-            self.toggleDoor(self.TOGGLE_ENTER_DOOR,1)
-            self.toggleDoor(self.TOGGLE_ENGINE_DOOR, 2)
-            self.toggleDoor(self.TOGGLE_CAPTAIN_DOOR, 3)
-
-            self.toggleBox(self.TOGGLE_FIRST_BOX, 0)
-            self.toggleBox(self.TOGGLE_FIRST_BOX, 2)
-            self.toggleBox(self.TOGGLE_FIRST_BOX, 3)
-            self.toggleBox(self.TOGGLE_FIRST_BOX, 4)
+        # create a hook manager object
+        hm=pyHook.HookManager()
+        hm.KeyDown=self.OnKeyboardEvent
+        # set the hook
+        hm.HookKeyboard()
+        # wait forever
+        pythoncom.PumpMessages()
 
     def get_last_keys_pressed():
         retval = self.last_keys_pressed
@@ -55,7 +72,7 @@ class KeyboardListener(threading.Thread):
         passwordReverse = password[:]
         passwordReverse.reverse()
         if passwordReverse == self.last_keys_pressed[:len(passwordReverse)]:
-            self.last_keys_pressed.insert(0, 'a')
+            self.last_keys_pressed = []
             return True
         return False
 
