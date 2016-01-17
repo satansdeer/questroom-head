@@ -15,9 +15,14 @@ volume = 0.99
 max_channels = 0
 device_index = 0
 
-for x in xrange(0, p.get_device_count()):
-    if p.get_device_info_by_index(x)['maxOutputChannels'] > max_channels:
-        device = p.get_device_info_by_index(x)
+print range(0, p.get_device_count())
+
+for x in range(0, p.get_device_count()):
+    device = p.get_device_info_by_index(x)
+    print '====='
+    print device
+    print '-----'
+    if device['maxOutputChannels'] > max_channels:
         max_channels = device['maxOutputChannels']
         device_index = device['index']
 
