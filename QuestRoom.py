@@ -36,13 +36,9 @@ class QuestRoom(threading.Thread):
         global master
         master = DeviceMaster()
         #hallwayPort = "/dev/tty.usbserial-A4033KK5"
-        hallwayPort = "COM3"
-        # "/dev/tty.usbserial-AL0079CW"
-        captainsBridgePort_1 = "COM5"
-        captainsBridgePort_2 = "COM4"
-        self.hallwayPuzzles = master.addSlave("hallwayPuzzles", hallwayPort, 1, boudrate=5)
-        self.captainsBridge_1 = master.addSlave("CB_SLAVE_1", captainsBridgePort_1, 1, boudrate=5)
-        self.captainsBridge_2 = master.addSlave("CB_SLAVE_2", captainsBridgePort_2, 1, boudrate=5)
+        self.hallwayPuzzles = master.addSlave("hallwayPuzzles", "COM3", 1, boudrate=5)
+        self.captainsBridge_1 = master.addSlave("CB_SLAVE_1", "COM5", 2, boudrate=5)
+        self.captainsBridge_2 = master.addSlave("CB_SLAVE_2", "COM4", 3, boudrate=5)
 
         master.start()
 
@@ -73,6 +69,7 @@ class QuestRoom(threading.Thread):
         
         master.setRelays(self.hallwayPuzzles, [0,0,0,0])
         time.sleep(1)
+        
 
         master.setRelays(self.hallwayPuzzles, [1,1,1,1])
 
