@@ -13,12 +13,13 @@ p = pyaudio.PyAudio()
 
 volume = 0.99
 max_channels = 0
+device_index = 0
 
 for x in xrange(0, p.get_device_count()):
     if p.get_device_info_by_index(x)['maxOutputChannels'] > max_channels:
-        max_channels = p.get_device_info_by_index(x)['maxOutputChannels']
-
-print "Max channels: %s" % max_channels
+        device = p.get_device_info_by_index(x)
+        max_channels = device['maxOutputChannels']
+        device_index = device['index']
 
 # define callback (2)
 def callback(in_data, frame_count, time_info, status):
@@ -30,8 +31,8 @@ def callback(in_data, frame_count, time_info, status):
 
 # open stream using callback (3)
 stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
-    channels=wf.getnchannels(),
-    output_device_index=3,
+    channels=min(wf.getnchannels(), max_channels),
+    output_device_index=device_index,
     rate=wf.getframerate(),
     output=True,
     stream_callback=callback)
