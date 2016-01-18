@@ -29,15 +29,15 @@ for x in range(0, p.get_device_count()):
 # define callback (2)
 def callback(in_data, frame_count, time_info, status):
         data = wf.readframes(frame_count)
-        numpy_array = numpy.fromstring(data, 'int16')
-        numpy_array = numpy.asarray([numpy.int16(x*volume) for x in numpy_array])
-        new_data = numpy_array.tostring()
-        return (new_data, pyaudio.paContinue)
+        # numpy_array = numpy.fromstring(data, 'int16')
+        # numpy_array = numpy.asarray([numpy.int16(x*volume) for x in numpy_array])
+        # new_data = numpy_array.tostring()
+        return (data, pyaudio.paContinue)
 
 # open stream using callback (3)
 stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
     channels=min(wf.getnchannels(), max_channels),
-    output_device_index=device_index,
+    output_device_index=3,
     rate=wf.getframerate(),
     output=True,
     stream_callback=callback)
