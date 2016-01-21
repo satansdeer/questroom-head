@@ -516,7 +516,7 @@
         [REQ_CB_TASK_FAILURE]
       failure_actions:
         [AC_CB_ADD_RANDOM_TASK]
-      title: 'Активировать ромонтных нанороботов'
+      title: 'Активировать ремонтных нано-роботов'
       showOnMonitor: True
       type: 'CB_TASK'
 
@@ -530,7 +530,7 @@
         [REQ_CB_TASK_FAILURE]
       failure_actions:
         [AC_CB_ADD_RANDOM_TASK]
-      title: 'Деактивировать ремонтных нанороботов'
+      title: 'Деактивировать ремонтных нано-роботов'
       showOnMonitor: True
       type: 'CB_TASK'
 
@@ -544,7 +544,7 @@
         [REQ_CB_TASK_FAILURE]
       failure_actions:
         [AC_CB_ADD_RANDOM_TASK]
-      title: 'Активировать Ультрафотон'
+      title: 'Активировать Ультрафотонный дестабилизатор'
       showOnMonitor: True
       type: 'CB_TASK'
 
@@ -558,7 +558,7 @@
         [REQ_CB_TASK_FAILURE]
       failure_actions:
         [AC_CB_ADD_RANDOM_TASK]
-      title: 'Деактивировать Ультрафотон'
+      title: 'Деактивировать Ультрафотонный дестабилизатор'
       showOnMonitor: True
       type: 'CB_TASK'
 
@@ -572,7 +572,7 @@
         [REQ_CB_TASK_FAILURE]
       failure_actions:
         [AC_CB_ADD_RANDOM_TASK]
-      title: 'Активировать ъРВАЩ-1'
+      title: 'Активировать ЬВРДЩЩ 1'
       showOnMonitor: True
       type: 'CB_TASK'
 
@@ -586,7 +586,7 @@
         [REQ_CB_TASK_FAILURE]
       failure_actions:
         [AC_CB_ADD_RANDOM_TASK]
-      title: 'Деактивировать ъРВАЩ-1'
+      title: 'Деактивировать ЬВРДЩЩ 1'
       showOnMonitor: True
       type: 'CB_TASK'
 
@@ -600,7 +600,7 @@
         [REQ_CB_TASK_FAILURE]
       failure_actions:
         [AC_CB_ADD_RANDOM_TASK]
-      title: 'Активировать ъРВАЩ-2'
+      title: 'Активировать ЬВРДЩЩ 2'
       showOnMonitor: True
       type: 'CB_TASK'
 
@@ -614,7 +614,7 @@
         [REQ_CB_TASK_FAILURE]
       failure_actions:
         [AC_CB_ADD_RANDOM_TASK]
-      title: 'Деактивировать ъРВАЩ-2'
+      title: 'Деактивировать ЬВРДЩЩ 2'
       showOnMonitor: True
       type: 'CB_TASK'
 
@@ -729,7 +729,7 @@
         [REQ_CB_TASK_FAILURE]
       failure_actions:
         [AC_CB_ADD_RANDOM_TASK]
-      title: 'Нажать Herabora'
+      title: 'Нажать H.E.R.A.B.O.R.A.'
       showOnMonitor: True
       type: 'CB_TASK'
 

@@ -9,6 +9,15 @@ from copy import copy
 from threading import Timer
 import pygame
 
+
+class MESSAGE:
+    BATTERY_AVALIABLE = "Батарея {id} вставлена"
+    BATTERY_ABSENT = "ОШИБКА: Батарея {id} отсутствует!"
+    ENGINE_BROKEN = "Почините двигатель"
+    PRESS_HERABORA = "Когда будете готовы - жмите H.E.R.A.B.O.R.A."
+    WINNER = "Вы выжили! \nВходная дверь открыта"
+    FAIL = "Ваша команда погибла! \nВходная дверь открыта"
+
 class LedsIdTable:
     FUSE = 23
     ROBOT_BODY_LEFT = 12
@@ -813,7 +822,11 @@ def REQ_ROBOT_ASSEMBLED(master, task, game_state):
         smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, Colors.RED)
         smartLeds.setOneLed(LedsIdTable.ROBOT_HEAD, Colors.WHITE)
         # stop radio
+        global radioDisabled
+        radioDisabled = True
         radio.set_target_value(0)
+        # radio_task = game_state.find_task_with_id()
+        # game_state.remove_active_task(task)
         # play robot
         game_state.quest_room.play_robot()
         return True
@@ -849,13 +862,6 @@ def AC_ACTIVATE_CAPTAIN_BRIDGE(master, state):
     print("Captain bridge activated")
 
 
-class MESSAGE:
-    BATTERY_AVALIABLE = "Батарея {id} вставлена"
-    BATTERY_ABSENT = "ОШИБКА: Батарея {id} отсутствует!"
-    ENGINE_BROKEN = "Почините двигатель"
-    PRESS_HERABORA = "Когда будете готовы - жмите H.E.R.A.B.O.R.A."
-    WINNER = "Вы выжили! \nВходная двень открыта"
-    FAIL = "Ваша команда погибла! \nВходная дверь открыта"
 
 def REQ_TRUE(master, task, game_state):
     return True

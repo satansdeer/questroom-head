@@ -12,10 +12,10 @@ class CaptainsBridgeController:
     NUM_STAGES = 3
     NUM_STAGE_TASKS = 4
     # number all lives for game
-    NUM_LIVES = 5
+    NUM_LIVES = 10 
     
     # time for done stage on level
-    PROGRESS_BAR_LEVEL_TIME=[6, 10, 20, 30, 7, 6]
+    PROGRESS_BAR_LEVEL_TIME=[34, 20, 18, 15, 13, 11]
 
     STAGE_DELAY = 1
     LEVEL_DELAY = 2
@@ -51,7 +51,7 @@ class CaptainsBridgeController:
 
     def task_failure(self, task):
         if unicode(task.type) == u'CB_TASK':
-            self.current_lives_num = self.current_lives_num - 1
+            # self.current_lives_num = self.current_lives_num - 1
 
             self.current_stage = 1
             self.completed_tasks_num = 0
