@@ -72,6 +72,11 @@ class CB_CTRL:
     PROTON_LAUNCHERS_BATTERY = 4
     DARK_MATTER_STABILIZER = 5
     HERABORA = 12
+    TECHNO = 13
+    UGNETATEL = 14
+    GIPERBOLOID = 15
+    ZOND_JS = 16
+    ZOND_JC = 17
 
     #    # ADC
     CHAMAEMELUM_NOBILE = 0
@@ -1281,3 +1286,45 @@ def REQ_CONDENSER_TO_0(master, task, game_state):
 def REQ_HERABORA_PRESSED(master, task, game_state):
     buttons = master.getButtons(CB_SLAVE_2).get()
     return 1 == buttons[CB_CTRL.HERABORA]
+
+# For 4 Panel
+def REQ_GIPERBOLOID_ON(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 1 == buttons[CB_CTRL.GIPERBOLOID]
+
+def REQ_GIPERBOLOID_OFF(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 0 == buttons[CB_CTRL.GIPERBOLOID]
+
+def REQ_UGNETATEL_ON(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 1 == buttons[CB_CTRL.UGNETATEL]
+
+def REQ_UGNETATEL_OFF(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 0 == buttons[CB_CTRL.UGNETATEL]
+
+def REQ_TECHNO_ON(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 1 == buttons[CB_CTRL.TECHNO]
+
+def REQ_TECHNO_OFF(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 0 == buttons[CB_CTRL.TECHNO]
+
+def REQ_ZOND_JC_ON(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 1 == buttons[CB_CTRL.ZOND_JC]
+
+def REQ_ZOND_JC_OFF(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 0 == buttons[CB_CTRL.ZOND_JC]
+
+def REQ_ZOND_JS_ON(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 1 == buttons[CB_CTRL.ZOND_JS]
+
+def REQ_ZOND_JS_OFF(master, task, game_state):
+    buttons = master.getButtons(CB_SLAVE_2).get()
+    return 0 == buttons[CB_CTRL.ZOND_JS]
+

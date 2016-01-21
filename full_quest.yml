@@ -763,13 +763,149 @@
 
 
 
+# new for 4 Panel:w
+
+    -
+      id: 268
+      success_requirements:
+        [REQ_GIPERBOLOID_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Включить Гиперболоид'
+      showOnMonitor: True
+      type: 'CB_TASK'
 
 
+    -
+      id: 269
+      success_requirements:
+        [REQ_GIPERBOLOID_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Выключить Гиперболоид'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 270
+      success_requirements:
+        [REQ_UGNETATEL_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Включить Угнетатель'
+      showOnMonitor: True
+      type: 'CB_TASK'
 
 
+    -
+      id: 271
+      success_requirements:
+        [REQ_UGNETATEL_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Выключить Угнетатель'
+      showOnMonitor: True
+      type: 'CB_TASK'
 
+    -
+      id: 272
+      success_requirements:
+        [REQ_TECHNO_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Включить TECHNO'
+      showOnMonitor: True
+      type: 'CB_TASK'
 
+    -
+      id: 273
+      success_requirements:
+        [REQ_TECHNO_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Выключить TECHNO'
+      showOnMonitor: True
+      type: 'CB_TASK'
 
+    -
+      id: 274
+      success_requirements:
+        [REQ_ZOND_JC_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Включить Зонд JC'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 275
+      success_requirements:
+        [REQ_ZOND_JC_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Выключить Зонд JC'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 276
+      success_requirements:
+        [REQ_ZOND_JS_ON]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Включить Зонд JS'
+      showOnMonitor: True
+      type: 'CB_TASK'
+
+    -
+      id: 277
+      success_requirements:
+        [REQ_ZOND_JS_OFF]
+      success_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      failure_requirements:
+        [REQ_CB_TASK_FAILURE]
+      failure_actions:
+        [AC_CB_ADD_RANDOM_TASK]
+      title: 'Выключить Зонд JS'
+      showOnMonitor: True
+      type: 'CB_TASK'
 
 
 
