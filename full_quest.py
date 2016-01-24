@@ -38,7 +38,7 @@ hallwayPuzzles = "hallwayPuzzles"
 class SOUNDS:
     BOX_OPEN = 'coin.wav'
     ROBOT_SAY_RIDDLE_FIRST_TIME = 'full_robot.wav'
-    ROBOT_SAY_RIDDLE_SECOND_TIME = BOX_OPEN
+    ROBOT_SAY_RIDDLE_SECOND_TIME = 'robot_second_time.wav'
 
 class ButtonsIdTable:
     WIRE_CONNECTION = 11
@@ -200,6 +200,7 @@ def setLedValue(leds, id, color):
 
 def REQ_QUEST_INIT(master, task, game_state):
     master.setSmartLeds(hallwayPuzzles, [0,0,0]*32)
+    game_state.quest_room.current_music.play(-1)
     # Init Lights
     setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE)
     setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [150, 0, 0])
@@ -987,6 +988,16 @@ def AC_PRESS_HERABORA(master, task, game_state):
     # added REQ_CHECK_HERABORA task
     game_state.add_active_task_with_id(201)
 
+def AC_FINAL_GAME_MUSIC_START(master, task, game_state):
+    game_state.quest_room.current_music.stop()
+    game_state.quest_room.current_music = game_state.quest_room.final_game_music
+    game_state.quest_room.current_music.play(-1)
+
+def AC_WIN_MUSIC_START(master, task, game_state):
+    game_state.quest_room.current_music.stop()
+    game_state.quest_room.current_music = game_state.quest_room.win_music
+    game_state.quest_room.current_music.play(-1)
+
 def REQ_CHECK_HERABORA(master, task, game_state):
         heraboraPressed = master.getButtons(CB_SLAVE_2).get()[12]
         #print("Herabora value: {}\n", heraboraPressed)
@@ -1006,7 +1017,9 @@ def AC_ADD_END_GAME_TASK(master, task, game_state):
 def REQ_CAPTAINS_BRIDGE_GAME_SUCCESS(master, task, game_state):
 
     cb_controller = game_state.cb_controller
-    return cb_controller.check()
+    # return cb_controller.check()
+    time.sleep(5) 
+    return True
 
 # def REQ_AMOUNT_OF_TASK_SUCCESSED(master, task, game_state):
 #     if game_state.successfullTasksForWin == game_state.successfullTasksCounter:

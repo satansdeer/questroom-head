@@ -1,9 +1,7 @@
-import pygame
+from Sound import Sound
 
-pygame.mixer.init()
-
-sound = pygame.mixer.Sound('full_robot.wav')
-sound.play()
+s = Sound('final_game.wav')
+s.play()
 
 while True:
     pass

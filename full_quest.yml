@@ -261,7 +261,7 @@
       success_requirements:
         [REQ_CHECK_HERABORA]
       success_actions:
-        [AC_ADD_END_GAME_TASK]
+        [AC_ADD_END_GAME_TASK, AC_FINAL_GAME_MUSIC_START]
       failure_requirements:
         []
       failure_actions:
@@ -273,7 +273,7 @@
       success_requirements:
         [REQ_CAPTAINS_BRIDGE_GAME_SUCCESS]
       success_actions:
-        [AC_ENTERED_DOOR_OPEN, AC_SHOW_SUCCESS_MESSAGE, AC_RANDOM_ROOM_LIGHT]
+        [AC_ENTERED_DOOR_OPEN, AC_SHOW_SUCCESS_MESSAGE, AC_WIN_MUSIC_START, AC_RANDOM_ROOM_LIGHT]
       failure_requirements:
         [REQ_AMOUNT_OF_TASK_FAILURE]
       failure_actions:

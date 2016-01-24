@@ -15,6 +15,8 @@ from hallway_function import *
 import tornado
 from full_quest import *
 
+import pygame
+
 clients = None
 master = None
 class QuestRoom(threading.Thread):
@@ -25,6 +27,12 @@ class QuestRoom(threading.Thread):
         game_state = None
         sound_manager = None
         captainsBridge_2 = None
+        pygame.mixer.init()
+        self.ambient_music = pygame.mixer.Sound("game_ambient.wav")
+        self.final_game_music = pygame.mixer.Sound("final_game.wav")
+        self.win_music = pygame.mixer.Sound("you_win.wav")
+        self.current_music = self.ambient_music
+
         hallwayPuzzles = None
         super(QuestRoom, self).__init__()
 
