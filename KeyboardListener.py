@@ -38,7 +38,7 @@ class KeyboardListener(threading.Thread):
 
         keyNumber = int(key - ord('0'))
         print("Keyboard char: {}".format(keyNumber))
-    
+
         self.beep.play()
 
         self.last_keys_pressed.insert(0, keyNumber)
