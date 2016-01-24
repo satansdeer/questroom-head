@@ -1,7 +1,7 @@
 from Sound import Sound
 
-s = Sound('coin.wav')
-s.play(2)
+s = Sound('final_game.wav')
+s.play()
 
 while True:
     pass
