@@ -1017,7 +1017,7 @@ def AC_ADD_END_GAME_TASK(master, task, game_state):
 def REQ_CAPTAINS_BRIDGE_GAME_SUCCESS(master, task, game_state):
 
     cb_controller = game_state.cb_controller
-    # return cb_controller.check()
+    return cb_controller.check()
     time.sleep(5) 
     return True
 
