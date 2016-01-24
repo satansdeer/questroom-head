@@ -200,7 +200,7 @@ def setLedValue(leds, id, color):
 
 def REQ_QUEST_INIT(master, task, game_state):
     master.setSmartLeds(hallwayPuzzles, [0,0,0]*32)
-    game_state.quest_room.current_music.play(-1)
+    # game_state.quest_room.current_music.play(-1)
     # Init Lights
     setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE)
     setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [150, 0, 0])
