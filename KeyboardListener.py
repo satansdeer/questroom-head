@@ -12,8 +12,8 @@ import pythoncom,pyHook
 hallwayPuzzles = "CB_SLAVE_2"
 boxes_slave = "CB_SLAVE_1"
 class KeyboardListener(threading.Thread):
-    PASS_1 = [1,1,1,1]
-    TOGGLE_ENTER_DOOR=[7,7,7,7]
+    PASS_1 = [1,1,2,3, 5, 8, 1,3,2,1]
+    TOGGLE_ENTER_DOOR=[1,1,2,3, 5, 8, 1,3,2,1]
     TOGGLE_ENGINE_DOOR=[5,7,8,3]
     TOGGLE_CAPTAIN_DOOR=[7,0,6,2]
 

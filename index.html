@@ -16,6 +16,7 @@
                 if ("WebSocket" in window) {
                     var id = window.location.search.split("?")[1].split("=")[1]
                     window.ws = new WebSocket("ws://localhost:8888/socket?Id="+id);
+                    window.document.title = "cb_" + id
                     ws.onopen = function() {
                         messageContainer.innerHTML = "Connected";
                     };
