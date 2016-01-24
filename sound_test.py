@@ -1,5 +1,7 @@
 from Sound import Sound
-import time
+
+s = Sound('coin.wav')
+s.play(2)
 
 while True:
     pass

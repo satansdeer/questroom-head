@@ -47,10 +47,12 @@ class Sound:
         while repeat_count != 0:
             repeat_count -= 1
             data = self.wf.readframes(self.CHUNK)
-            stream.write(data)
-            if data == '':
-                self.wf.rewind()
+            while data != '':
+                stream.write(data)
                 data = self.wf.readframes(self.CHUNK)
+
+            self.wf.rewind()
+            data = self.wf.readframes(self.CHUNK)
 
         stream.stop_stream()
         stream.close()
