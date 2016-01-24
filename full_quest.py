@@ -38,7 +38,7 @@ hallwayPuzzles = "hallwayPuzzles"
 class SOUNDS:
     BOX_OPEN = 'coin.wav'
     ROBOT_SAY_RIDDLE_FIRST_TIME = 'full_robot.wav'
-    ROBOT_SAY_RIDDLE_SECOND_TIME = self.BOX_OPEN
+    ROBOT_SAY_RIDDLE_SECOND_TIME = BOX_OPEN
 
 class ButtonsIdTable:
     WIRE_CONNECTION = 11
