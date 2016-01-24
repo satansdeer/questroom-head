@@ -12,7 +12,7 @@
         []
       title: 'Соединить провод'
     -
-      id: 100 
+      id: 100
       success_requirements:
         [REQ_WIRE_CONNECTED]
       success_actions:
@@ -116,12 +116,34 @@
       success_requirements:
         [REQ_ROBOT_ASSEMBLED]
       success_actions:
-        [AC_ROBOT_SAY_RIDDLE, AC_ADD_COMMUTATOR_PUZZLE, AC_ENABLE_ROBOT_HEAD_ROOMS_COLORS]
+        [AC_DISABLE_RADIO, AC_ROBOT_SAY_RIDDLE, AC_ADD_ROBOT_DISASSEMBLED, AC_ADD_COMMUTATOR_PUZZLE, AC_ENABLE_ROBOT_HEAD_ROOMS_COLORS]
       failure_requirements:
         []
       failure_actions:
         []
       title: 'Собрать робота'
+    -
+      id: 110
+      success_requirements:
+        [REQ_ROBOT_DISASSEMBLED]
+      success_actions:
+        [AC_ADD_ROBOT_PUZZLE_AGAIN]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Разобрать робота'
+    -
+      id: 111
+      success_requirements:
+        [REQ_ROBOT_ASSEMBLED]
+      success_actions:
+        [AC_DISABLE_RADIO, AC_ROBOT_SAY_RIDDLE, AC_ADD_ROBOT_DISASSEMBLED]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Снова собрать робота'
     -
       id: 11
       success_requirements:
@@ -451,7 +473,7 @@
 
 
     -
-      id: 243 
+      id: 243
       success_requirements:
         [REQ_TETRAGEKS_ON]
       success_actions:
@@ -479,7 +501,7 @@
       type: 'CB_TASK'
 
     -
-      id: 245 
+      id: 245
       success_requirements:
         [REQ_C3PO_ON]
       success_actions:
@@ -507,7 +529,7 @@
       type: 'CB_TASK'
 
     -
-      id: 247 
+      id: 247
       success_requirements:
         [REQ_REPAIR_NANOROBOTS_ON]
       success_actions:
@@ -535,7 +557,7 @@
       type: 'CB_TASK'
 
     -
-      id: 249 
+      id: 249
       success_requirements:
         [REQ_ULTRAFOTON_ON]
       success_actions:

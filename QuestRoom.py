@@ -122,7 +122,7 @@ class QuestRoom(threading.Thread):
         self.game_state.state['pressed_buttons'].append(button_id)
         print(self.game_state.state)
 
-    def play_robot(self):
-        self.sound_manager.play_sound('full_robot.wav')
+    def play_robot(self, sound):
+        self.sound_manager.play_sound(sound)
 
 

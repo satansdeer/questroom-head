@@ -37,6 +37,8 @@ hallwayPuzzles = "hallwayPuzzles"
 
 class SOUNDS:
     BOX_OPEN = 'coin.wav'
+    ROBOT_SAY_RIDDLE_FIRST_TIME = 'full_robot.wav'
+    ROBOT_SAY_RIDDLE_SECOND_TIME = self.BOX_OPEN
 
 class ButtonsIdTable:
     WIRE_CONNECTION = 11
@@ -127,7 +129,7 @@ class BASIC_COLORS:
 def colorTo12Bit(color):
     COLOR_MULT = 16.058
     to16Bit = lambda byte: int(byte * COLOR_MULT)
-    return map(to16Bit, color) 
+    return map(to16Bit, color)
 
 class COLORS:
     WHITE = colorTo12Bit(BASIC_COLORS.WHITE)
@@ -356,6 +358,7 @@ def AC_ENABLE_RADIO(master, task, game_state):
 def REQ_RADIO_BROADCAST(master, task, game_state):
     global radioDisabled
     if radioDisabled:
+        radio.set_target_value(0)
         return True
     radioValue = master.getAdc(hallwayPuzzles).get()[AdcIdTable.RADIO]
     #print("Radio value: {}".format(radioValue))
@@ -425,6 +428,16 @@ def AC_ADD_ROBOT_PUZZLE(master, task, game_state):
     smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, Colors.RED)
     smartLeds.setOneLed(LedsIdTable.ROBOT_HEAD, Colors.WHITE)
     game_state.add_active_task_with_id(10)
+
+def AC_ADD_ROBOT_DISASSEMBLED(master, task, game_state):
+    game_state.add_active_task_with_id(110)
+
+def AC_ADD_ROBOT_PUZZLE_AGAIN(master, task, game_state):
+    smartLeds = master.getSmartLeds(hallwayPuzzles)
+    smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_LEFT, Colors.RED)
+    smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, Colors.RED)
+    smartLeds.setOneLed(LedsIdTable.ROBOT_HEAD, Colors.WHITE)
+    game_state.add_active_task_with_id(111)
 
 
 def AC_ADD_ENGINE_PUZZLE(master, task, game_state):
@@ -812,36 +825,39 @@ def AC_ENABLE_TUMBLER_PUZZLE(master, task, game_state):
 def REQ_ROBOT_ASSEMBLED(master, task, game_state):
     # return True
     buttons = master.getButtons(hallwayPuzzles)
-    robbotAssembled = buttons.get()[ButtonsIdTable.ROBOT_HEAD]
-    if robbotAssembled:
+    robotAssembled = buttons.get()[ButtonsIdTable.ROBOT_HEAD]
+    if robotAssembled:
+
         smartLeds = master.getSmartLeds(hallwayPuzzles)
-        # smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_LEFT, [0, 0xfff, 0x0])
-        # smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, [0xfff, 0x0, 0x0])
 
         smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_LEFT, Colors.GREEN)
         smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, Colors.RED)
         smartLeds.setOneLed(LedsIdTable.ROBOT_HEAD, Colors.WHITE)
-        # stop radio
-        global radioDisabled
-        radioDisabled = True
-        radio.set_target_value(0)
-        # radio_task = game_state.find_task_with_id()
-        # game_state.remove_active_task(task)
-        # play robot
-        game_state.quest_room.play_robot()
         return True
     return False
 
+def REQ_ROBOT_DISASSEMBLED(master, task, game_state):
+    buttons = master.getButtons(hallwayPuzzles)
+    robotAssembled = buttons.get()[ButtonsIdTable.ROBOT_HEAD]
+    return not robotAssembled
 
+robotWasAssembled = False
 def AC_ROBOT_SAY_RIDDLE(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
 
     smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_LEFT, [0, 0xfff, 750])
     smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, [0xfff, 0x0, 0x0])
 
-    # smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_LEFT, Colors.GREEN)
-    # smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, Colors.RED)
     smartLeds.setOneLed(LedsIdTable.ROBOT_HEAD, [0xff, 0xff, 0xff])
+
+    # play robot
+    global robotWasAssembled
+    if not robotWasAssembled:
+        robotWasAssembled = True
+        game_state.quest_room.play_robot(SOUNDS.ROBOT_SAY_RIDDLE_FIRST_TIME)
+    else:
+        game_state.quest_room.play_robot(SOUNDS.ROBOT_SAY_RIDDLE_SECOND_TIME)
+
     print("Robot say RIDDLE!")
 
 
