@@ -1018,13 +1018,6 @@ def REQ_CAPTAINS_BRIDGE_GAME_SUCCESS(master, task, game_state):
 
     cb_controller = game_state.cb_controller
     return cb_controller.check()
-    time.sleep(5) 
-    return True
-
-# def REQ_AMOUNT_OF_TASK_SUCCESSED(master, task, game_state):
-#     if game_state.successfullTasksForWin == game_state.successfullTasksCounter:
-#             return True
-#     return False
 
 def AC_ENTERED_DOOR_OPEN(master, task, game_state):
     relays = master.getRelays(CB_SLAVE_2).get()

@@ -12,8 +12,8 @@ class CaptainsBridgeController:
     NUM_STAGES = 3
     NUM_STAGE_TASKS = 4
     # number all lives for game
-    NUM_LIVES = 10 
-    
+    NUM_LIVES = 10
+
     # time for done stage on level
     PROGRESS_BAR_LEVEL_TIME=[34, 20, 18, 15, 13, 11]
 
@@ -21,6 +21,26 @@ class CaptainsBridgeController:
     LEVEL_DELAY = 2
 
     MESSAGE_LEVEL = "Уровень: {level}"
+    class LEVEL_MESSAGES:
+        LEVEL_1 = "Первичный запрос в сеть"
+        LEVEL_2 = "Активация метеоритной защиты"
+        LEVEL_3 = "Возобновление подачи топлива"
+        LEVEL_4 = "Стабилизация искуственного интеллекта"
+        LEVEL_5 = "Активация автопилота"
+
+    class GAME_MESSAGES:
+        DOTS = "..."
+        SYSTEM_INIT = "...инициализация системы..."
+        LOAD_NODES = "...загрузка информационных узлов..."
+        RUNNING_APP = "запуск программы..."
+        GEN_CA_LOGO = "Gen-Ca Inc\nпредставляет"
+        PRODUCT_NAME = "Общевидовой пилот без хлопот. v0.78"
+        PROG_OPTIMIZATION = "Программа оптимизирует управление судном под ваш(человек) вид"
+        GREETINGS = "Привет человеки."
+        INSTRUCTIONS = "Управление настроено под (человеки) интеллектуальные способности."
+        INSTRUCTIONS_2 = "Чтобы восстановить автопилот - просто нажимайте на кнопки, которые видите на экране"
+
+        FINAL_MESSAGE = "Поздравляю, вы активировали автопилот. Возвращайтесь в криокамеру."
 
     def __init__(self, game_state):
         self.game_state = game_state
@@ -39,7 +59,7 @@ class CaptainsBridgeController:
         if (current_time - self.progress_bar_read_time_start) > self.progress_bar_delay:
             return True
         return False
-    
+
     def progress_bar_delay_restart(self):
         self.progress_bar_read_time_start = time.time()
 
@@ -51,7 +71,6 @@ class CaptainsBridgeController:
 
     def task_failure(self, task):
         if unicode(task.type) == u'CB_TASK':
-            # self.current_lives_num = self.current_lives_num - 1
 
             self.current_stage = 1
             self.completed_tasks_num = 0
@@ -61,12 +80,8 @@ class CaptainsBridgeController:
 
             self.remove_random_tasks()
 
-            # print("active tasks after remove: {}".format([atask.id for atask in self.game_state.active_tasks]))
-            # print("="*80)
-
             self.add_random_tasks()
 
-            # print("active tasks after add: {}".format([atask.id for atask in self.game_state.active_tasks]))
 
     def remove_random_tasks(self):
         active_cb_task_list = [atask for atask in self.game_state.active_tasks if unicode(atask.type) == u'CB_TASK']
@@ -80,6 +95,7 @@ class CaptainsBridgeController:
     def check(self):
         # Begin
         if self.current_level == 0:
+            self.show_initialization_messages()
             self.current_level = 1
             self.current_stage = 1
             self.showLevelMessage()
@@ -112,24 +128,45 @@ class CaptainsBridgeController:
         # add tasks
         if stage_up or level_up:
             self.add_random_tasks()
-            
+
         return
 
     def progressBarReset(self):
-        message = "" 
+        message = ""
         for monitorId in range(1,5):
             self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'progress_visible': False})
-    
+
     def showOkMessage(self, task):
 
         monitorId = self.game_state.getMonitorIdByTask(task)
         message = "OK"
         self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'progress_visible': False})
 
-    def showLevelMessage(self):
-        message = self.MESSAGE_LEVEL.format(level=self.current_level)
+    def show_on_all_monitors(self, message):
         for monitorId in range(1,5):
             self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'progress_visible': False})
+
+    def showLevelMessage(self):
+        if self.current_level == 1:
+            message = self.LEVEL_MESSAGES.LEVEL_1
+        elif self.current_level == 2:
+            message = self.LEVEL_MESSAGES.LEVEL_2
+        elif self.current_level == 3:
+            message = self.LEVEL_MESSAGES.LEVEL_3
+        elif self.current_level == 4:
+            message = self.LEVEL_MESSAGES.LEVEL_4
+        elif self.current_level == 5:
+            message = self.LEVEL_MESSAGES.LEVEL_5
+        else:
+            return
+
+        self.show_on_all_monitors(message)
+
+    def show_initialization_messages(self):
+        # self.show_on_all_monitors(
+        pass
+
+
 
 class GameState:
     def __init__(self):
@@ -146,7 +183,7 @@ class GameState:
 
         # whis list used by failure requarements of CB tasks
         self.monitorsWithProgressBarZero = []
-        self.failureTasksForLose = 5 
+        self.failureTasksForLose = 5
         self.successfullTasksCounter = 0
         self.failureTasksCounter = 0
 
@@ -204,7 +241,7 @@ class GameState:
     def add_task(self, task):
         self.tasks.append(task)
 
-    def remove_active_task(self, task): 
+    def remove_active_task(self, task):
         if task.showOnMonitor:
             self.freeMonitor(task)
         if task in self.active_tasks:
@@ -311,7 +348,7 @@ class GameState:
             self.cb_controller.progress_bar_delay_restart()
 
             monitorId = int(monitorIdStr)
-            
+
             if monitorId in self.monitorsWithProgressBarZero or len(self.monitorsWithProgressBarZero) != 0:
                 return
             self.monitorsWithProgressBarZero.append(monitorId)
