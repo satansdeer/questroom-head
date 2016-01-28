@@ -224,7 +224,7 @@ class GameState:
         # tasks whom been active on previously steps
         # it's fill in add_random_tasks
         self.usedTasksIds = []
-        self.numUsedTasks = 12
+        self.numUsedTasks = 22
 
     def start_game_loop(self, callback):
         if not self.device_master: return
@@ -287,9 +287,10 @@ class GameState:
 
         # check if task already true - than we don't need execute
         randomTaskRequirement = True
+        # reinit pseudo generator
+        random.seed()
         while randomTaskRequirement:
             randomId = random.randint(0, len(avaliableTaskIds) -1)
-            # print("avaliable task with random id {}".format(avaliableTaskIds[randomId]))
 
             randomTaskId = avaliableTaskIds[randomId]
             randomTask = self.find_task_with_id(randomTaskId)
@@ -299,16 +300,14 @@ class GameState:
         self.update_used_task_ids_list(randomTaskId)
 
     def add_active_task_with_id(self, id):
-        # print("Task id for add: {}".format(id))
         task = self.find_task_with_id(id)
         if task.showOnMonitor:
                 monitorId = self.fillMonitor(task)
-                # print("Add active Task id: {taskId} | monitorId: {monitorId}\n".format(taskId=id, monitorId=monitorId))
                 progress_bar_time = self.cb_controller.get_progress_bar_time()
-                self.quest_room.send_ws_message(str(monitorId), {'message':task.title, 'progress_bar_time': progress_bar_time})
-        # print("self.active_tasks.append task: {}".format(task.id))
+                current_level = self.cb_controller.current_level
+                current_stage = self.cb_controller.current_stage
+                self.quest_room.send_ws_message(str(monitorId), {'message':task.title, 'progress_bar_time': progress_bar_time, 'level': current_level, 'stage': current_stage})
         self.active_tasks.append(task)
-        # print("ADD: active_tasks: {}".format([task_.id for task_ in self.active_tasks]))
 
     def update_used_task_ids_list(self, taskId):
         self.usedTasksIds.insert(0, taskId)
@@ -359,10 +358,8 @@ class GameState:
     def getAvaliableCBTaskIds(self):
         # get  only CaptainBridge Tasks
         allCBTasksIds = [task.id for task in self.tasks if self.cbTaskType(task)]
-        # print("AllCBTask: {}".format(allCBTasksIds))
         # get id not active tasks and not used recently
         avaliableTasksIds = [taskId for taskId in allCBTasksIds if taskId not in self.usedTasksIds]
-        # print('Avaliable task Ids: {}'.format(avaliableTasksIds))
 
         return avaliableTasksIds
 
