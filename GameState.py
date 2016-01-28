@@ -33,12 +33,14 @@ class CaptainsBridgeController:
         SYSTEM_INIT = "...инициализация системы..."
         LOAD_NODES = "...загрузка информационных узлов..."
         RUNNING_APP = "запуск программы..."
-        GEN_CA_LOGO = "Gen-Ca Inc\nпредставляет"
+        LOGO = "Gen-Ca Inc\nпредставляет"
         PRODUCT_NAME = "Общевидовой пилот без хлопот. v0.78"
         PROG_OPTIMIZATION = "Программа оптимизирует управление судном под ваш(человек) вид"
         GREETINGS = "Привет человеки."
         INSTRUCTIONS = "Управление настроено под (человеки) интеллектуальные способности."
         INSTRUCTIONS_2 = "Чтобы восстановить автопилот - просто нажимайте на кнопки, которые видите на экране"
+        PRESS_BUTTON = "Когда будете готовы - жмите H.E.R.A.B.O.R.A"
+
 
         FINAL_MESSAGE = "Поздравляю, вы активировали автопилот. Возвращайтесь в криокамеру."
 
@@ -95,7 +97,8 @@ class CaptainsBridgeController:
     def check(self):
         # Begin
         if self.current_level == 0:
-            self.show_initialization_messages()
+            # use it in quest_full.py
+            # self.show_initialization_messages()
             self.current_level = 1
             self.current_stage = 1
             self.showLevelMessage()
@@ -119,6 +122,7 @@ class CaptainsBridgeController:
             if self.current_level > self.NUM_LEVELS:
                 #game end
                 self.remove_random_tasks()
+                self.show_on_all_monitors(GAME_MESSAGES.FINAL_MESSAGE)
                 return True
 
             level_up = True
@@ -163,7 +167,35 @@ class CaptainsBridgeController:
         self.show_on_all_monitors(message)
 
     def show_initialization_messages(self):
-        # self.show_on_all_monitors(
+        self.show_on_all_monitors(GAME_MESSAGES.DOTS)
+        time.sleep(0.5)
+        self.show_on_all_monitors(GAME_MESSAGES.SYSTEM_INIT)
+        time.sleep(2)
+        self.show_on_all_monitors(GAME_MESSAGES.LOAD_NODES)
+        time.sleep(1)
+        self.show_on_all_monitors(GAME_MESSAGES.RUNNING_APP)
+        time.sleep(2)
+        self.show_on_all_monitors(GAME_MESSAGES.LOGO)
+        time.sleep(2)
+        self.show_on_all_monitors(GAME_MESSAGES.PRODUCT_NAME)
+        time.sleep(2)
+        self.show_on_all_monitors(GAME_MESSAGES.DOTS)
+        time.sleep(0.5)
+        self.show_on_all_monitors(GAME_MESSAGES.PROG_OPTIMIZATION)
+        time.sleep(1.5)
+        self.show_on_all_monitors(GAME_MESSAGES.GREETINGS)
+        time.sleep(2)
+        self.show_on_all_monitors(GAME_MESSAGES.INSTRUCTIONS)
+        time.sleep(2)
+        self.show_on_all_monitors(GAME_MESSAGES.INSTRUCTIONS_2)
+        time.sleep(2)
+        self.show_on_all_monitors(GAME_MESSAGES.INSTRUCTIONS_2)
+        time.sleep(5)
+        self.show_on_all_monitors(GAME_MESSAGES.DOTS)
+        time.sleep(0.5)
+        self.show_on_all_monitors(GAME_MESSAGES.PRESS_BUTTON)
+
+
         pass
 
 

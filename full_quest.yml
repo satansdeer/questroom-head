@@ -261,12 +261,25 @@
       success_requirements:
         [REQ_CHECK_HERABORA]
       success_actions:
+        [AC_SHOW_GAME_INSTRUCTIONS]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'SHOW GAME INSTRUCTIONS'
+
+    -
+      id: 202
+      success_requirements:
+        [REQ_CHECK_HERABORA]
+      success_actions:
         [AC_ADD_END_GAME_TASK, AC_FINAL_GAME_MUSIC_START]
       failure_requirements:
         []
       failure_actions:
         []
-      title: 'Press Herabora'
+      title: 'Press Herabora to start GAME'
+
 
     -
       id: 203

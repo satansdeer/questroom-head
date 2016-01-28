@@ -985,8 +985,16 @@ def AC_PRESS_HERABORA(master, task, game_state):
     for monitorId in range(1,5):
         sendMessageToMonitor(game_state, monitorId, MESSAGE.PRESS_HERABORA, False)
         # game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.PRESS_HERABORA})
-    # added REQ_CHECK_HERABORA task
+    # added REQ_CHECK_HERABORA task and instructions
     game_state.add_active_task_with_id(201)
+
+def AC_SHOW_GAME_INSTRUCTIONS(master, task, game_state):
+
+    cb_controller = game_state.cb_controller
+
+    cb_controller.show_initialization_messages()
+    # added REQ_CHECK_HERABORA and start game
+    game_state.add_active_task_with_id(202)
 
 def AC_FINAL_GAME_MUSIC_START(master, task, game_state):
     game_state.quest_room.current_music.stop()
@@ -1088,7 +1096,7 @@ def REQ_DEFLECTOR_OFF(master, task, game_state):
     return 0 == buttons[CB_CTRL.DEFLECTOR]
 
 def REQ_LEVITRON_ON(master, task, game_state):
-    buttons = master.getButtons(CB_SLAVE_1).get()
+    buttons = master.geEButtons(CB_SLAVE_1).get()
     return 1 == buttons[CB_CTRL.LEVITRON]
 
 def REQ_LEVITRON_OFF(master, task, game_state):
