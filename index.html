@@ -37,7 +37,7 @@
 
                         countdownActive = received_msg.countdown_active
                         setProgressVisibility(received_msg.progress_visible);
-                        setHearts(received_msg.hearts);
+                        setLevelIndicators(received_msg.level);
                     };
                     ws.onclose = function() {
                         messageContainer.innerHTML = "Connection is closed...";
@@ -78,16 +78,16 @@
               }
             }
 
-            function setHearts(heartsNumber){
-                var hearts = document.querySelectorAll(".heart");
-                for(var i = 0; i < hearts.length; i++){
-                  hearts[i].style.display = 'inline-block';
+            function setLevelIndicators(level){
+              var levelIndicators = document.querySelectorAll(".level_indicator");
+              for(var i = 0; i < levelIndicators.length; i++){
+                if(i < level){
+                  levelIndicators[i].className = 'level_indicator green';
+                  if(i == level - 1){ levelIndicators[i].className += ' blinking' }
+                } else {
+                  levelIndicators[i].className = 'level_indicator'
                 }
-                if(hearts.length == heartsNumber){return}
-                var diff = hearts.length - heartsNumber;
-                for(var i = 0; i < diff; i++){
-                  hearts[i].style.display = 'none';
-                }
+              }
             }
 
             function sendButton(event){
@@ -96,7 +96,7 @@
             }
 
             function cretateMessage(messageString, id) {
-                
+
                 var message = {message: messageString, id: id};
                 return message
             }
@@ -124,10 +124,12 @@
     </head>
     <body>
       <div class="screen">
-        <div class="hearts">
-          <div class="heart"></div>
-          <div class="heart"></div>
-          <div class="heart"></div>
+        <div class="level_indicators">
+          <div class="level_indicator"></div>
+          <div class="level_indicator"></div>
+          <div class="level_indicator"></div>
+          <div class="level_indicator"></div>
+          <div class="level_indicator"></div>
         </div>
         <div class="message" id="message"div></div>
         <div class="time-left" id="time-left">
