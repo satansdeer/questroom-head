@@ -51,7 +51,7 @@ class KeyboardListener(threading.Thread):
         self.toggleBox(self.TOGGLE_FIRST_BOX, 2)
         self.toggleBox(self.TOGGLE_FIRST_BOX, 3)
         self.toggleBox(self.TOGGLE_FIRST_BOX, 4)
-        return 0
+        return True
 
     def run(self):
 
