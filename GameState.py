@@ -138,7 +138,6 @@ class CaptainsBridgeController:
     def progressBarReset(self):
         message = ""
         for monitorId in range(1,5):
-            if self
             self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'level': self.current_level, 'progress_visible': False})
 
     def showOkMessage(self, task):
