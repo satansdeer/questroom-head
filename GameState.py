@@ -18,7 +18,7 @@ class CaptainsBridgeController:
     PROGRESS_BAR_LEVEL_TIME=[34, 20, 18, 15, 13, 11]
 
     STAGE_DELAY = 1
-    LEVEL_DELAY = 2
+    LEVEL_DELAY = 4
 
     MESSAGE_LEVEL = "Уровень: {level}"
     class LEVEL_MESSAGES:
@@ -122,7 +122,7 @@ class CaptainsBridgeController:
             if self.current_level > self.NUM_LEVELS:
                 #game end
                 self.remove_random_tasks()
-                self.show_on_all_monitors(GAME_MESSAGES.FINAL_MESSAGE)
+                self.show_on_all_monitors(self.GAME_MESSAGES.FINAL_MESSAGE)
                 return True
 
             level_up = True
@@ -166,34 +166,45 @@ class CaptainsBridgeController:
 
         self.show_on_all_monitors(message)
 
+    def beautiful_type(self, message, wordDelay=0.3):
+        half_message = ""
+        for word in message:
+            half_message = half_message + word
+            print("beautiful_type: {}".format(half_message))
+            self.show_on_all_monitors(half_message)
+            time.sleep(wordDelay)
+
+
+
     def show_initialization_messages(self):
-        self.show_on_all_monitors(GAME_MESSAGES.DOTS)
-        time.sleep(0.5)
-        self.show_on_all_monitors(GAME_MESSAGES.SYSTEM_INIT)
+
+        self.show_on_all_monitors(self.GAME_MESSAGES.DOTS)
         time.sleep(2)
-        self.show_on_all_monitors(GAME_MESSAGES.LOAD_NODES)
+        self.show_on_all_monitors(self.GAME_MESSAGES.SYSTEM_INIT)
+        time.sleep(4)
+        self.show_on_all_monitors(self.GAME_MESSAGES.LOAD_NODES)
+        time.sleep(3)
+        self.show_on_all_monitors(self.GAME_MESSAGES.RUNNING_APP)
+        time.sleep(3)
+        self.show_on_all_monitors(self.GAME_MESSAGES.LOGO)
+        time.sleep(4)
+        self.show_on_all_monitors(self.GAME_MESSAGES.PRODUCT_NAME)
+        time.sleep(4)
+        self.show_on_all_monitors(self.GAME_MESSAGES.DOTS)
+        time.sleep(2)
+        self.show_on_all_monitors(self.GAME_MESSAGES.PROG_OPTIMIZATION)
+        time.sleep(3)
+        self.show_on_all_monitors(self.GAME_MESSAGES.GREETINGS)
+        time.sleep(4)
+        self.show_on_all_monitors(self.GAME_MESSAGES.INSTRUCTIONS)
+        time.sleep(4)
+        self.show_on_all_monitors(self.GAME_MESSAGES.INSTRUCTIONS_2)
+        time.sleep(4)
+        self.show_on_all_monitors(self.GAME_MESSAGES.INSTRUCTIONS_2)
+        time.sleep(3)
+        self.show_on_all_monitors(self.GAME_MESSAGES.DOTS)
         time.sleep(1)
-        self.show_on_all_monitors(GAME_MESSAGES.RUNNING_APP)
-        time.sleep(2)
-        self.show_on_all_monitors(GAME_MESSAGES.LOGO)
-        time.sleep(2)
-        self.show_on_all_monitors(GAME_MESSAGES.PRODUCT_NAME)
-        time.sleep(2)
-        self.show_on_all_monitors(GAME_MESSAGES.DOTS)
-        time.sleep(0.5)
-        self.show_on_all_monitors(GAME_MESSAGES.PROG_OPTIMIZATION)
-        time.sleep(1.5)
-        self.show_on_all_monitors(GAME_MESSAGES.GREETINGS)
-        time.sleep(2)
-        self.show_on_all_monitors(GAME_MESSAGES.INSTRUCTIONS)
-        time.sleep(2)
-        self.show_on_all_monitors(GAME_MESSAGES.INSTRUCTIONS_2)
-        time.sleep(2)
-        self.show_on_all_monitors(GAME_MESSAGES.INSTRUCTIONS_2)
-        time.sleep(5)
-        self.show_on_all_monitors(GAME_MESSAGES.DOTS)
-        time.sleep(0.5)
-        self.show_on_all_monitors(GAME_MESSAGES.PRESS_BUTTON)
+        self.show_on_all_monitors(self.GAME_MESSAGES.PRESS_BUTTON)
 
 
         pass

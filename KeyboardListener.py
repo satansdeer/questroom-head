@@ -35,7 +35,7 @@ class KeyboardListener(threading.Thread):
     def OnKeyboardEvent(self, event):
         key = event.Ascii
         if not ord('0') <= key <= ord('9'):
-            return 0
+            return True
 
         keyNumber = int(key - ord('0'))
         print("Keyboard char: {}".format(keyNumber))

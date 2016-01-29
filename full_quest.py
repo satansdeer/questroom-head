@@ -1102,7 +1102,7 @@ def REQ_DEFLECTOR_OFF(master, task, game_state):
     return 0 == buttons[CB_CTRL.DEFLECTOR]
 
 def REQ_LEVITRON_ON(master, task, game_state):
-    buttons = master.geEButtons(CB_SLAVE_1).get()
+    buttons = master.getButtons(CB_SLAVE_1).get()
     return 1 == buttons[CB_CTRL.LEVITRON]
 
 def REQ_LEVITRON_OFF(master, task, game_state):

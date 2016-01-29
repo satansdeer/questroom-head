@@ -81,7 +81,8 @@ class QuestRoom(threading.Thread):
 
         master.setRelays(self.hallwayPuzzles, [1,1,1,1])
 
-        master.setRelays(self.captainsBridge_2, [1,1,1,0])
+        # master.setRelays(self.captainsBridge_2, [0,0,0,0])
+        master.setRelays(self.captainsBridge_2, [1,1,1,1])
 
 
         self.game_state = parse("full_quest.yml")
