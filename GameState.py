@@ -226,6 +226,9 @@ class GameState:
         self.usedTasksIds = []
         self.numUsedTasks = 22
 
+        # always allow to open enter door
+        self.openDoorPermission = [True, False, False]
+
     def start_game_loop(self, callback):
         if not self.device_master: return
         if not self.slave: return
@@ -381,3 +384,13 @@ class GameState:
             if monitorId in self.monitorsWithProgressBarZero or len(self.monitorsWithProgressBarZero) != 0:
                 return
             self.monitorsWithProgressBarZero.append(monitorId)
+
+
+    def allowOpenDoor(self, doorNumber):
+        if 0 <= doorNumber < len(self.openDoorPermission):
+            self.openDoorPermission[doorNumber] = True
+
+    def canOpenDoor(self, doorNumber):
+        if 0 <= doorNumber < len(self.openDoorPermission):
+            return self.openDoorPermission[doorNumber]
+        return False

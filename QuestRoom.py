@@ -58,40 +58,41 @@ class QuestRoom(threading.Thread):
         setLedValue(leds, 9, [0x888, 0x0, 0x0])
         setLedValue(leds, 10, [0x888, 0x0, 0x0])
         setLedValue(leds, 11, [0x888, 0x0, 0x0])
-    
+
         setLedValue(leds, 7, [0x0, 0x0, 0x888]) # engine room
-        
+
         setLedValue(leds, 14, [0x888, 0x0, 0x0]) # entrance bottom
         setLedValue(leds, 6, [0x0, 0x0, 0x0]) # entrance top
-		
+
         master.setSmartLeds(self.hallwayPuzzles, leds)
 
         leds_2 = master.getSmartLeds(self.captainsBridge_1).get()
         setLedValue(leds_2, 1, [0x888, 0x0, 0x888]) # main room bottom
         setLedValue(leds_2, 2, [0x888, 0x888, 0x0]) # main room top
-        
+
         setLedValue(leds_2, 0, [0x888, 0x888, 0x0]) # captains bridge
-        
-        
+
+
         master.setSmartLeds(self.captainsBridge_1, leds_2)
-        
+
         master.setRelays(self.hallwayPuzzles, [0,0,0,0])
         time.sleep(1)
-        
+
 
         master.setRelays(self.hallwayPuzzles, [1,1,1,1])
 
         master.setRelays(self.captainsBridge_2, [1,1,1,0])
 
-        keyboardListener = KeyboardListener(master)
-        keyboardListener.daemon = True
-        keyboardListener.start()
 
         self.game_state = parse("full_quest.yml")
+        keyboardListener = KeyboardListener(master, self.game_state)
+        keyboardListener.daemon = True
+        keyboardListener.start()
         self.game_state.device_master = master
         self.game_state.slave = hallwayPuzzles
         self.game_state.quest_room = self
         self.game_state.start_game_loop(self.send_state)
+
 
     def set_door_state(self, door_id, door_state):
         relays = master.getRelays(self.captainsBridge_2).get()

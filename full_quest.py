@@ -901,6 +901,12 @@ def AC_SHOW_ENGINE_MESSAGE(master, task, game_state):
     for monitorId in range(1,5):
         sendMessageToMonitor(game_state, monitorId, MESSAGE.ENGINE_BROKEN, False)
 
+def AC_ALLOW_DOOR_OPEN(master, task, game_state):
+    # allow open Engine door from keyboard
+    game_state.allowOpenDoor(1)
+    # allow open Captain door from keyboard
+    game_state.allowOpenDoor(2)
+
 def AC_ADD_4_BATTERIES_TASKS(master, task, game_state):
     # One by one
     game_state.add_active_task_with_id(151)

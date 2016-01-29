@@ -17,17 +17,18 @@ class KeyboardListener(threading.Thread):
     TOGGLE_ENGINE_DOOR=[5,7,8,3]
     TOGGLE_CAPTAIN_DOOR=[7,0,6,2]
 
-    TOGGLE_FIRST_BOX=[1,1,1,1]
-    TOGGLE_SECOND_BOX=[2,2,2,2]
-    TOGGLE_THIRD_BOX=[3,3,3,3]
-    TOGGLE_FOURTH_BOX=[4,4,4,4]
+    TOGGLE_FIRST_BOX=[1,1,1,1,0,0,0,0]
+    TOGGLE_SECOND_BOX=[2,2,2,2,0,0,0,0]
+    TOGGLE_THIRD_BOX=[3,3,3,3,0,0,0,0]
+    TOGGLE_FOURTH_BOX=[4,4,4,4,0,0,0,0]
 
-    def __init__(self, questMaster):
+    def __init__(self, questMaster, game_state):
         pygame.mixer.init(buffer=512)
         self.beep = pygame.mixer.Sound('coin.wav')
         self.beep.set_volume(0.3)
         self.last_keys_pressed = []
         self.questMaster = questMaster
+        self.game_state = game_state
         super(KeyboardListener, self).__init__()
         # self.run()
 
@@ -77,6 +78,9 @@ class KeyboardListener(threading.Thread):
         return False
 
     def toggleDoor(self, password, doorId):
+        if not self.game_state.canOpenDoor(doorId - 1):
+            return
+
         if self.check(password):
             doors = self.questMaster.getRelays(hallwayPuzzles).get()
             doors[doorId] = 1 if doors[doorId] == 0 else 0
