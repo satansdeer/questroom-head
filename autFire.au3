@@ -11,71 +11,30 @@ Local $MONITOR_TOOL_EXE="C:\Users\dementr.DESKTOP-27EDVKQ.000\MonitorEXE\MultiMo
 Local $NUM_ID=4
 Sleep(5000)
 Local $chindex = 1
-Local $url_with_id = 1
+Local $url_with_id[$NUM_ID]
+Local $browsersPidsp[$NUM_ID]
+Local $winHandlers[$NUM_ID]
+Local $titles[$NUM_ID]
+
 For $index=1 To 4
-   if $index = 4 Then
-	  Local $url_with_id = $URL_ADDRESS & String(2)
-	  $chindex = 2
-   ElseIf $index = 2 Then
-	  $url_with_id = $URL_ADDRESS & String(3)
-	  $chindex = 3
-   ElseIf $index = 3 Then
-	  $url_with_id = $URL_ADDRESS & String(4)
-	  $chindex = 4
-   Else
-	  $url_with_id = $URL_ADDRESS & String(1)
-	  $chindex = 1
-   EndIf
+    $url_with_ids[$index - 1] = $URL_ADDRESS & String($index)
+    $titles[$index - 1] = $TITLE & String($index)
 
-   Local $url_with_id = $URL_ADDRESS & String($chindex)
-   Local $browserPid = Run($BROWSER_EXE & $BROWSER_ARGS & $url_with_id)
-
-   Local $hWnd = WinWait($TITLE & String($chindex), "", 10)
-   Run( $MONITOR_TOOL_EXE & " /MoveWindow " & String($chindex) & " Title " & $TITLE & String($chindex))
-   Sleep(1000)
-   WinActivate($hWnd)
-   WinWaitActive($hWnd, "", 5)
-   Send("{F11}")
-   Sleep(500)
+    $browserPid[$index - 1] = Run($BROWSER_EXE & $BROWSER_ARGS & $url_with_ids[$index - 1])
+    $winHandlers[$index - 1] = WinWait($titles[$index - 1], "", 10)
 Next
-#CS ;Run("C:\Program Files (x86)\Mozilla Firefox\firefox.exe -new-window http://localhost:8888/?id=1")
-### Run("C:\Program Files (x86)\Mozilla Firefox\firefox.exe -new-window http://google.com")
-###
-### ; Wait for the calculator to become active. The classname "CalcFrame" is monitored instead of the window title
-### WinWaitActive("[CLASS:MozillaWindowClass]", "", 5)
-###
-### ; Now that the calculator window is active type the values 2 x 4 x 8 x 16
-### ; Use AutoItSetOption to slow down the typing speed so we can see it
-###
-### Sleep(2000)
-###
-### Run("C:\Users\dementr.DESKTOP-27EDVKQ.000\MonitorEXE\MultiMonitorTool.exe /MoveWindow 1 Title google")
-### Sleep(2000)
-### AutoItSetOption("SendKeyDelay", 400)
-### Send("{F11}")
-### Sleep(2000)
-###
-###
-### Run("C:\Program Files (x86)\Mozilla Firefox\firefox.exe -new-window http://google.com")
-###
-### ; Wait for the calculator to become active. The classname "CalcFrame" is monitored instead of the window title
-### WinWaitActive("[CLASS:MozillaWindowClass]", "", 5)
-###
-### ; Now that the calculator window is active type the values 2 x 4 x 8 x 16
-### ; Use AutoItSetOption to slow down the typing speed so we can see it
-###
-### Sleep(2000)
-###
-### Run("C:\Users\dementr.DESKTOP-27EDVKQ.000\MonitorEXE\MultiMonitorTool.exe /MoveWindow 2 Title google")
-### Sleep(2000)
-### AutoItSetOption("SendKeyDelay", 400)
-### Send("{F11}")
-### Sleep(2000)
- #CE
-; Now quit by sending a "close" request to the calculator window using the classname
-;WinClose("[CLASS:MozillaWindowClass]")
 
-; Now wait for the calculator to close before continuing
-;WinWaitClose("[CLASS:MozillaWindowClass]")
+Sleep(5000)
 
-; Finished!
+For $index=1 To 4
+   Run($MONITOR_TOOL_EXE & " /MoveWindow " & String($index) & " Title " & titles[$index - 1])
+   Sleep(2000)
+   WinActivate($winHandlers[$index - 1])
+   WinWaitActive($winHandlers[$index - 1], "", 5)
+   ;WinSetState($winHandlers[$index - 1], "", @SW_MAXIMIZE)
+   Send("{F11}")
+   Sleep(1000)
+   ; try to deactivate window
+   WinActivate("Program Manager");
+Next
+
