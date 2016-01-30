@@ -21,6 +21,10 @@ html, body {
   width: 100%;
 }
 
+.message.green {
+  color: #36df0b;
+}
+
 .level_indicators {
   position: absolute;
   top: 20px;

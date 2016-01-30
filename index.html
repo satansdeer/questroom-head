@@ -23,6 +23,11 @@
                     ws.onmessage = function (evt) {
                         var received_msg = JSON.parse(evt.data);
                         messageContainer.innerHTML = unescape(received_msg.message);
+                        if('not_a_task' in received_msg){
+                          messageContainer.className = 'message green';
+                        } else {
+                          messageContainer.className = 'message';
+                        }
                         console.log("RECEIVED MESSAGE")
                         resetProgress();
                         if(!countdownActive && received_msg.countdown_active){
