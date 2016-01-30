@@ -32,7 +32,7 @@ class CaptainsBridgeController:
         DOTS = "..."
         SYSTEM_INIT = "...инициализация системы..."
         LOAD_NODES = "...загрузка информационных узлов..."
-        RUNNING_APP = "запуск программы..."
+        RUNNING_APP = "...запуск программы..."
         LOGO = "Gen-Ca Inc\nпредставляет"
         PRODUCT_NAME = "Общевидовой пилот без хлопот. v0.78"
         PROG_OPTIMIZATION = "Программа оптимизирует управление судном под ваш(человек) вид"
@@ -42,7 +42,7 @@ class CaptainsBridgeController:
         PRESS_BUTTON = "Когда будете готовы - жмите H.E.R.A.B.O.R.A"
 
 
-        FINAL_MESSAGE = "Поздравляю, вы активировали автопилот. Возвращайтесь в криокамеру."
+        FINAL_MESSAGE = "Поздравляю, вы активировали автопилот. Возвращайтесь в криокамеру.\nДля поднятия боевого духа играет бодрящая музыка"
 
     def __init__(self, game_state):
         self.game_state = game_state

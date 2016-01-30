@@ -320,7 +320,7 @@ def REQ_FUSE_PUZZLE_SOLVED(master, task, game_state):
     fuseSolved = buttons.get()[ButtonsIdTable.FUSE]
     if fuseSolved:
         smartLeds = master.getSmartLeds(hallwayPuzzles)
-        smartLeds.setOneLed(LedsIdTable.FUSE, Colors.LIGHT_GREEN)
+        smartLeds.setOneLed(LedsIdTable.FUSE, Colors.GREEN)
         return True
     return False
 
