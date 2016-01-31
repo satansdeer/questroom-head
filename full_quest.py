@@ -441,11 +441,7 @@ def AC_ADD_ROBOT_PUZZLE_AGAIN(master, task, game_state):
     game_state.add_active_task_with_id(111)
 
 
-def AC_ADD_ENGINE_PUZZLE(master, task, game_state):
-    smartLeds = master.getSmartLeds(hallwayPuzzles)
-    smartLeds.setOneLed(LedsIdTable.ENGINE_RIGTH, Colors.BLUE)
-    smartLeds.setOneLed(LedsIdTable.ENGINE_LEFT, Colors.RED)
-
+def AC_ADD_ENGINE_ROOM_LIGHT(master, task, game_state):
     game_state.add_active_task_with_id(11)
 
 def AC_ADD_BATTARIES_PUZZLE(master, task, game_state):
@@ -862,17 +858,6 @@ def AC_ROBOT_SAY_RIDDLE(master, task, game_state):
     print("Robot say RIDDLE!")
 
 
-def REQ_ENGINE_ASSEMBLED(master, task, game_state):
-    # return True
-    buttons = master.getButtons(hallwayPuzzles)
-    engineAssembled = buttons.get()[ButtonsIdTable.ENGINE]
-    smartLeds = master.getSmartLeds(hallwayPuzzles)
-
-    if engineAssembled:
-        smartLeds.setOneLed(LedsIdTable.ENGINE_RIGTH, Colors.GREEN)
-        smartLeds.setOneLed(LedsIdTable.ENGINE_LEFT, Colors.GREEN)
-        return True
-    return False
 
 
 def AC_ACTIVATE_CAPTAIN_BRIDGE(master, state):
@@ -883,23 +868,14 @@ def AC_ACTIVATE_CAPTAIN_BRIDGE(master, state):
 def REQ_TRUE(master, task, game_state):
     return True
 
-def AC_ADD_CHECK_BATTERIES(master, task, game_state):
+def AC_ADD_CHECK_ENGINE_AND_BATTERIES(master, task, game_state):
     game_state.add_active_task_with_id(101)
 
-def AC_ADD_ENGINE_MESSAGE(master, task, game_state):
-    game_state.add_active_task_with_id(102)
 
 def AC_INIT(master, task, game_state):
     taskList = [151, 152, 153, 154, 102, 101]
     for taskId in taskList:
         game_state.add_active_task_with_id(taskId)
-
-def AC_SHOW_ENGINE_MESSAGE(master, task, game_state):
-    if REQ_ENGINE_ASSEMBLED(master, None, game_state):
-        return
-
-    for monitorId in range(1,5):
-        sendMessageToMonitor(game_state, monitorId, MESSAGE.ENGINE_BROKEN, False)
 
 def AC_ALLOW_DOOR_OPEN(master, task, game_state):
     # allow open Engine door from keyboard
@@ -907,32 +883,45 @@ def AC_ALLOW_DOOR_OPEN(master, task, game_state):
     # allow open Captain door from keyboard
     game_state.allowOpenDoor(2)
 
-def AC_ADD_4_BATTERIES_TASKS(master, task, game_state):
-    # One by one
-    game_state.add_active_task_with_id(151)
-    game_state.add_active_task_with_id(152)
-    game_state.add_active_task_with_id(153)
-    game_state.add_active_task_with_id(154)
+def REQ_ENGINE_ASSEMBLED(master, task, game_state):
+    # return True
+    buttons = master.getButtons(hallwayPuzzles)
+    engineAssembled = buttons.get()[ButtonsIdTable.ENGINE]
+    smartLeds = master.getSmartLeds(hallwayPuzzles)
 
+    if engineAssembled:
+        smartLeds.setOneLed(LedsIdTable.ENGINE_RIGTH, Colors.GREEN)
+        smartLeds.setOneLed(LedsIdTable.ENGINE_LEFT, Colors.GREEN)
+        return True
+    else:
+        smartLeds.setOneLed(LedsIdTable.ENGINE_RIGTH, Colors.BLUE)
+        smartLeds.setOneLed(LedsIdTable.ENGINE_LEFT, Colors.RED)
+        for monitorId in range(1,5):
+            sendMessageToMonitor(game_state, monitorId, MESSAGE.ENGINE_BROKEN, False)
+
+    return False
 
 def REQ_CHECK_BATTERIES(master, task, game_state):
+
     buttons = master.getButtons(CB_SLAVE_2).get()
-    battery_1 = buttons[CB_CTRL.BATTERY_1]
-    battery_2 = buttons[CB_CTRL.BATTERY_2]
-    battery_3 = buttons[CB_CTRL.BATTERY_3]
-    battery_4 = buttons[CB_CTRL.BATTERY_4]
-    # print("REQ_CHECK_BATTARIES")
-    batteryState = (battery_1 and battery_2 and battery_3 and battery_4)
+    batterys_state[1] = buttons[CB_CTRL.BATTERY_1]
+    batterys_state[2] = buttons[CB_CTRL.BATTERY_2]
+    batterys_state[3] = buttons[CB_CTRL.BATTERY_3]
+    batterys_state[4] = buttons[CB_CTRL.BATTERY_4]
 
-    # batteryState = True
-    if not batteryState:
-        return batteryState
+    hallwayButtons = master.getButtons(hallwayPuzzles)
+    engineAssembled = buttons.get()[ButtonsIdTable.ENGINE]
 
-    taskList = [151, 152, 153, 154]
-    for taskId in taskList:
-        task = game_state.find_task_with_id(taskId)
-        game_state.remove_active_task(task)
-    return True
+    if engineAssembled:
+        for index in range(1,5):
+            monitroId = index
+            batteryId = index
+            sendBatteryMessage(game_state, monitorId, batterys_state[index], batteryId)
+
+    batteryState = all( state is True for state in batterys_state)
+
+    return batteryState
+
 
 def sendBatteryMessage(game_state, monitorId, battery, batteryId):
     if battery:
@@ -943,49 +932,6 @@ def sendBatteryMessage(game_state, monitorId, battery, batteryId):
 def sendMessageToMonitor(game_state, monitorId, message, progress_bar_visible):
     game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'progress_visible': progress_bar_visible})
 
-def REQ_CHECK_BATTERY_1(master, task, game_state):
-    buttons = master.getButtons(CB_SLAVE_2).get()
-    battery = buttons[CB_CTRL.BATTERY_1]
-
-    monitorId = game_state.getMonitorIdByTask(task)
-
-    batteryId = 1
-
-    sendBatteryMessage(game_state, monitorId, battery, batteryId)
-    return False
-
-def REQ_CHECK_BATTERY_2(master, task, game_state):
-    buttons = master.getButtons(CB_SLAVE_2).get()
-    battery = buttons[CB_CTRL.BATTERY_2]
-
-    monitorId = game_state.getMonitorIdByTask(task)
-
-    batteryId = 2
-
-    sendBatteryMessage(game_state, monitorId, battery, batteryId)
-    return False
-
-def REQ_CHECK_BATTERY_3(master, task, game_state):
-    buttons = master.getButtons(CB_SLAVE_2).get()
-    battery = buttons[CB_CTRL.BATTERY_3]
-
-    monitorId = game_state.getMonitorIdByTask(task)
-
-    batteryId = 3
-
-    sendBatteryMessage(game_state, monitorId, battery, batteryId)
-    return False
-
-def REQ_CHECK_BATTERY_4(master, task, game_state):
-    buttons = master.getButtons(CB_SLAVE_2).get()
-    battery = buttons[CB_CTRL.BATTERY_4]
-
-    monitorId = game_state.getMonitorIdByTask(task)
-
-    batteryId = 4
-
-    sendBatteryMessage(game_state, monitorId, battery, batteryId)
-    return False
 
 def AC_PRESS_HERABORA(master, task, game_state):
     for monitorId in range(1,5):

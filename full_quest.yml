@@ -83,7 +83,7 @@
       success_requirements:
         [REQ_TUMBLER_PUZZLE_SOLVED]
       success_actions:
-        [AC_OPEN_SECOND_BOX, AC_OPEN_THIRD_BOX, AC_ADD_ROBOT_PUZZLE, AC_ADD_ENGINE_PUZZLE, AC_ADD_ENGINE_MESSAGE, AC_ADD_CHECK_BATTERIES, AC_ADD_4_BATTERIES_TASKS, AC_ALLOW_DOOR_OPEN]
+        [AC_OPEN_SECOND_BOX, AC_OPEN_THIRD_BOX, AC_ADD_ROBOT_PUZZLE, AC_ADD_ENGINE_ROOM_LIGHT, AC_ADD_CHECK_ENGINE_AND_BATTERIES, AC_ALLOW_DOOR_OPEN]
       failure_requirements:
         []
       failure_actions:
@@ -191,71 +191,7 @@
         []
       failure_actions:
         []
-      title: 'Insert bataries'
-
-    -
-      id: 102
-      success_requirements:
-        [REQ_CHECK_BATTERIES]
-      success_actions:
-        [AC_SHOW_ENGINE_MESSAGE]
-      failure_requirements:
-        []
-      failure_actions:
-        []
-      title: ''
-
-    -
-      id: 151
-      success_requirements:
-        [REQ_CHECK_BATTERY_1]
-      success_actions:
-        []
-      failure_requirements:
-        []
-      failure_actions:
-        []
-      title: ''
-      showOnMonitor: True
-
-    -
-      id: 152
-      success_requirements:
-        [REQ_CHECK_BATTERY_2]
-      success_actions:
-        []
-      failure_requirements:
-        []
-      failure_actions:
-        []
-      title: ''
-      showOnMonitor: True
-
-    -
-      id: 153
-      success_requirements:
-        [REQ_CHECK_BATTERY_3]
-      success_actions:
-        []
-      failure_requirements:
-        []
-      failure_actions:
-        []
-      title: ''
-      showOnMonitor: True
-
-    -
-      id: 154
-      success_requirements:
-        [REQ_CHECK_BATTERY_4]
-      success_actions:
-        []
-      failure_requirements:
-        []
-      failure_actions:
-        []
-      title: ''
-      showOnMonitor: True
+      title: 'Собрать Батареи и Двигатель'
 
     -
       id: 201
