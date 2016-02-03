@@ -888,37 +888,44 @@ def REQ_ENGINE_ASSEMBLED(master, task, game_state):
     buttons = master.getButtons(hallwayPuzzles)
     engineAssembled = buttons.get()[ButtonsIdTable.ENGINE]
     smartLeds = master.getSmartLeds(hallwayPuzzles)
+    
+    print("We in req_engine")
 
     if engineAssembled:
-        smartLeds.setOneLed(LedsIdTable.ENGINE_RIGTH, Colors.GREEN)
-        smartLeds.setOneLed(LedsIdTable.ENGINE_LEFT, Colors.GREEN)
         return True
-    else:
-        smartLeds.setOneLed(LedsIdTable.ENGINE_RIGTH, Colors.BLUE)
-        smartLeds.setOneLed(LedsIdTable.ENGINE_LEFT, Colors.RED)
-        for monitorId in range(1,5):
-            sendMessageToMonitor(game_state, monitorId, MESSAGE.ENGINE_BROKEN, False)
-
     return False
 
 def REQ_CHECK_BATTERIES(master, task, game_state):
 
     buttons = master.getButtons(CB_SLAVE_2).get()
+    batterys_state = [1] * 5
     batterys_state[1] = buttons[CB_CTRL.BATTERY_1]
     batterys_state[2] = buttons[CB_CTRL.BATTERY_2]
     batterys_state[3] = buttons[CB_CTRL.BATTERY_3]
     batterys_state[4] = buttons[CB_CTRL.BATTERY_4]
 
-    hallwayButtons = master.getButtons(hallwayPuzzles)
+    buttons = master.getButtons(hallwayPuzzles)
     engineAssembled = buttons.get()[ButtonsIdTable.ENGINE]
+    smartLeds = master.getSmartLeds(hallwayPuzzles)
 
     if engineAssembled:
+
+        smartLeds.setOneLed(LedsIdTable.ENGINE_RIGTH, Colors.GREEN)
+        smartLeds.setOneLed(LedsIdTable.ENGINE_LEFT, Colors.GREEN)
+        print("Engine assembled, we wait battery: {}".format(batterys_state))
+
         for index in range(1,5):
-            monitroId = index
+            monitorId = index
             batteryId = index
             sendBatteryMessage(game_state, monitorId, batterys_state[index], batteryId)
+    else:
 
-    batteryState = all( state is True for state in batterys_state)
+        smartLeds.setOneLed(LedsIdTable.ENGINE_RIGTH, Colors.BLUE)
+        smartLeds.setOneLed(LedsIdTable.ENGINE_LEFT, Colors.RED)
+        for monitorId in range(1,5):
+            sendMessageToMonitor(game_state, monitorId, MESSAGE.ENGINE_BROKEN, False)
+
+    batteryState = all( state is 1 for state in batterys_state)
 
     return batteryState
 
