@@ -889,7 +889,7 @@ def REQ_ENGINE_ASSEMBLED(master, task, game_state):
     engineAssembled = buttons.get()[ButtonsIdTable.ENGINE]
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     
-    print("We in req_engine")
+    # print("We in req_engine")
 
     if engineAssembled:
         return True
@@ -912,7 +912,7 @@ def REQ_CHECK_BATTERIES(master, task, game_state):
 
         smartLeds.setOneLed(LedsIdTable.ENGINE_RIGTH, Colors.GREEN)
         smartLeds.setOneLed(LedsIdTable.ENGINE_LEFT, Colors.GREEN)
-        print("Engine assembled, we wait battery: {}".format(batterys_state))
+        # print("Engine assembled, we wait battery: {}".format(batterys_state))
 
         for index in range(1,5):
             monitorId = index
