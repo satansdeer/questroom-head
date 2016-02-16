@@ -2,6 +2,7 @@
 import random
 import os
 import time
+import datetime
 CB_SLAVE_1="CB_SLAVE_1"
 CB_SLAVE_2="CB_SLAVE_2"
 hallwayPuzzles = "hallwayPuzzles"
@@ -46,12 +47,17 @@ class CaptainsBridgeController:
 
     def __init__(self, game_state):
         self.game_state = game_state
+        self.initialization()
+
+
+    def initialization(self):
         self.current_level = 0
         self.current_stage = 0
         self.current_lives_num = self.NUM_LIVES
         self.completed_tasks_num = 0
         self.progress_bar_delay = 1
         self.progress_bar_read_time_start = time.time()
+
 
     def get_progress_bar_time(self):
         return self.PROGRESS_BAR_LEVEL_TIME[self.current_level]
@@ -239,6 +245,11 @@ class GameState:
         # always allow to open enter door
         self.openDoorPermission = [True, False, False]
 
+        self.send_time_to_monitors = True
+
+        self.time_stamp_old = time.time()
+        self.time_stamp_new = time.time()
+
     def start_game_loop(self, callback):
         if not self.device_master: return
         if not self.slave: return
@@ -250,6 +261,8 @@ class GameState:
             self.state['pressed_buttons'] = []
 
 
+
+
     def game_loop(self, callback):
         if not self.state: return
 
@@ -257,6 +270,16 @@ class GameState:
             self.perform_task_if_satisfies(task)
         message = {'message': [x.title for x in self.active_tasks]}
         callback(message) if callback else None
+
+        if self.send_time_to_monitors:
+            self.time_stamp_new = time.time()
+            secondLeft = (self.time_stamp_new - self.time_stamp_old) > 1
+            if secondLeft:
+                self.time_stamp_old = time.time()
+                time_string = datetime.datetime.now().strftime("%H:%M:%S")
+                # print("Send time to monitors: {}".format(time_string))
+                for monitorId in range(1,5):
+                    self.quest_room.send_ws_message(str(monitorId), {'message': time_string , 'progress_visible': False, 'not_a_task': True})
 
 
     def perform_task_if_satisfies(self, task):
@@ -285,6 +308,12 @@ class GameState:
 
     def add_task(self, task):
         self.tasks.append(task)
+
+    def task_with_id_active(self, task_id):
+        for active_task in self.active_tasks:
+            if active_task.id == task_id:
+                return True
+        return False
 
     def remove_active_task(self, task):
         if task.showOnMonitor:
