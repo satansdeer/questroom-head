@@ -7,6 +7,7 @@
       success_actions:
         # [AC_ADD_ROBOT_PUZZLE, AC_PRESS_HERABORA]
         [AC_ADD_CONNECT_WIRE]
+        # [AC_ADD_CHECK_ENGINE_AND_BATTERIES, AC_ALLOW_DOOR_OPEN]
       failure_requirements:
         []
       failure_actions:
@@ -23,12 +24,24 @@
       failure_actions:
         []
       title: 'Соединить провод'
+
+    -
+      id: 1000
+      success_requirements:
+        [REQ_WIRE_CONNECTED_AGAIN]
+      success_actions:
+        [AC_ADD_DISCONNECT_WIRE, AC_ADD_FUSE_PUZZLE_AGAIN, AC_ENABLE_WIRE_ROOMS_COLORS, AC_ENABLE_FUSE_PUZZLE]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Снова cоединить провод'
     -
       id: 1
       success_requirements:
         [REQ_WIRE_DISCONNECTED]
       success_actions:
-        [AC_DISABLE_FUSE_PUZZLE, AC_ADD_CONNECT_WIRE]
+        [AC_DISABLE_FUSE_PUZZLE, AC_ADD_CONNECT_WIRE_AGAIN, AC_DISABLE_WIRE_ROOMS_COLORS, AC_DISABLE_RADIO]
       failure_requirements:
         []
       failure_actions:
@@ -39,7 +52,7 @@
       success_requirements:
         [REQ_FUSE_PUZZLE_SOLVED]
       success_actions:
-        [AC_ENABLE_RADIO, AC_ADD_SEQUENCE_PUZZLE, AC_ADD_FUSE_REMOVED, AC_ENABLE_FUSE_ROOMS_COLORS]
+        [AC_ENABLE_RADIO, AC_ADD_RADIO_BROADCAST, AC_ADD_SEQUENCE_PUZZLE, AC_ADD_FUSE_REMOVED, AC_ENABLE_FUSE_ROOMS_COLORS]
       failure_requirements:
         []
       failure_actions:
@@ -50,12 +63,23 @@
       success_requirements:
         [REQ_FUSE_REMOVED]
       success_actions:
-        [AC_DISABLE_RADIO, AC_ENABLE_FUSE_PUZZLE, AC_ADD_FUSE_PUZZLE]
+        [AC_DISABLE_RADIO, AC_ENABLE_FUSE_PUZZLE, AC_ADD_FUSE_PUZZLE_AGAIN, AC_DISABLE_FUSE_ROOMS_COLORS]
       failure_requirements:
         []
       failure_actions:
         []
       title: 'Убрать предохранитель'
+    -
+      id: 2000
+      success_requirements:
+        [REQ_FUSE_PUZZLE_SOLVED]
+      success_actions:
+        [AC_ENABLE_RADIO, AC_ADD_FUSE_REMOVED, AC_ENABLE_FUSE_ROOMS_COLORS]
+      failure_requirements:
+        []
+      failure_actions:
+        []
+      title: 'Снова заменить предохранитель'
     -
       id: 4
       success_requirements:
@@ -83,7 +107,7 @@
       success_requirements:
         [REQ_TUMBLER_PUZZLE_SOLVED]
       success_actions:
-        [AC_OPEN_SECOND_BOX, AC_OPEN_THIRD_BOX, AC_ADD_ROBOT_PUZZLE, AC_ADD_ENGINE_PUZZLE, AC_ADD_ENGINE_MESSAGE, AC_ADD_CHECK_BATTERIES, AC_ADD_4_BATTERIES_TASKS, AC_ALLOW_DOOR_OPEN]
+        [AC_OPEN_SECOND_BOX, AC_OPEN_THIRD_BOX, AC_ADD_ROBOT_PUZZLE, AC_ADD_ENGINE_ROOM_LIGHT, AC_ADD_CHECK_ENGINE_AND_BATTERIES, AC_ALLOW_DOOR_OPEN]
       failure_requirements:
         []
       failure_actions:
@@ -191,71 +215,7 @@
         []
       failure_actions:
         []
-      title: 'Insert bataries'
-
-    -
-      id: 102
-      success_requirements:
-        [REQ_CHECK_BATTERIES]
-      success_actions:
-        [AC_SHOW_ENGINE_MESSAGE]
-      failure_requirements:
-        []
-      failure_actions:
-        []
-      title: ''
-
-    -
-      id: 151
-      success_requirements:
-        [REQ_CHECK_BATTERY_1]
-      success_actions:
-        []
-      failure_requirements:
-        []
-      failure_actions:
-        []
-      title: ''
-      showOnMonitor: True
-
-    -
-      id: 152
-      success_requirements:
-        [REQ_CHECK_BATTERY_2]
-      success_actions:
-        []
-      failure_requirements:
-        []
-      failure_actions:
-        []
-      title: ''
-      showOnMonitor: True
-
-    -
-      id: 153
-      success_requirements:
-        [REQ_CHECK_BATTERY_3]
-      success_actions:
-        []
-      failure_requirements:
-        []
-      failure_actions:
-        []
-      title: ''
-      showOnMonitor: True
-
-    -
-      id: 154
-      success_requirements:
-        [REQ_CHECK_BATTERY_4]
-      success_actions:
-        []
-      failure_requirements:
-        []
-      failure_actions:
-        []
-      title: ''
-      showOnMonitor: True
+      title: 'Собрать Батареи и Двигатель'
 
     -
       id: 201
@@ -288,6 +248,7 @@
         [REQ_CAPTAINS_BRIDGE_GAME_SUCCESS]
       success_actions:
         [AC_ENTERED_DOOR_OPEN, AC_WIN_MUSIC_START, AC_RANDOM_ROOM_LIGHT]
+        # [AC_ENTERED_DOOR_OPEN, AC_WIN_MUSIC_START]
       failure_requirements:
         [REQ_AMOUNT_OF_TASK_FAILURE]
       failure_actions:
