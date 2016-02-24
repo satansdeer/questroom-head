@@ -1,6 +1,6 @@
 from Sound import Sound
 
-s = Sound('final_game.wav')
+s = Sound('sounds/symphony.wav')
 s.play()
 
 while True:
