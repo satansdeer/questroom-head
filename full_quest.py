@@ -199,6 +199,17 @@ def setLedValue(leds, id, color):
     leds[id * 3 + 2] = color[2]
 
 def REQ_QUEST_INIT(master, task, game_state):
+
+
+    # close boxes
+    #master.setRelays(hallwayPuzzles, [0,0,0,0])
+    master.setRelays(hallwayPuzzles, [1,1,1,1])
+
+    # close doors
+    # master.setRelays(CB_SLAVE_2, [0,0,0,0])
+    master.setRelays(CB_SLAVE_2, [1,1,1,1])
+
+
     master.setSmartLeds(hallwayPuzzles, [0,0,0]*32)
     # game_state.quest_room.current_music.play(-1)
     # Init Lights
@@ -356,12 +367,11 @@ def REQ_FUSE_PUZZLE_SOLVED(master, task, game_state):
     # return True
     buttons = master.getButtons(hallwayPuzzles)
     fuseSolved = buttons.get()[ButtonsIdTable.FUSE]
-    if fuseSolved:
-        smartLeds = master.getSmartLeds(hallwayPuzzles)
-        wiredConnection = master.getButtons(hallwayPuzzles).get()[
+    wiredConnection = master.getButtons(hallwayPuzzles).get()[
             ButtonsIdTable.WIRE_CONNECTION]
-        if wiredConnection:
-            smartLeds.setOneLed(LedsIdTable.FUSE, Colors.GREEN)
+    if fuseSolved and wiredConnection:
+        smartLeds = master.getSmartLeds(hallwayPuzzles)
+        smartLeds.setOneLed(LedsIdTable.FUSE, Colors.GREEN)
         return True
     return False
 
@@ -415,19 +425,23 @@ def AC_ENABLE_RADIO(master, task, game_state):
 
 def REQ_RADIO_BROADCAST(master, task, game_state):
     global radioDisabled
+    global radio
     if radioDisabled:
         radio.set_target_value(0)
-        return 
+        return
     radioValue = master.getAdc(hallwayPuzzles).get()[AdcIdTable.RADIO]
     #print("Radio value: {}".format(radioValue))
-    radio.set_target_value(radioValue)
+    if radio:
+        radio.set_target_value(radioValue)
 
 
 def AC_DISABLE_RADIO(master, task, game_state):
     global radioDisabled
+    global radio
     # radio.stop()
     radioDisabled = True
-    radio.set_target_value(0)
+    if radio:
+        radio.set_target_value(0)
 
 
 #=============== ADDING TASKS =================================================
@@ -435,9 +449,11 @@ def AC_DISABLE_RADIO(master, task, game_state):
 
 class TaskIdTable:
     WIRE_CONNECTED = 100
+    WIRE_CONNECTED_AGAIN = 1000
     WIRE_DISCONNECTED = 1
     FUSE_PUZZLE = 2
     FUSE_REMOVED = 3
+    FUSE_PUZZLE_AGAIN = 2000
     # RADIO_ENABLE =
     # RADIO_DISABLE = 3
 
@@ -446,20 +462,24 @@ def AC_ADD_CONNECT_WIRE(master, task, game_state):
     game_state.add_active_task_with_id(TaskIdTable.WIRE_CONNECTED)
 
 def AC_ADD_CONNECT_WIRE_AGAIN(master, task, game_state):
-    game_state.add_active_task_with_id(1000)
+    game_state.add_active_task_with_id(TaskIdTable.WIRE_CONNECTED_AGAIN)
 
 def AC_ADD_DISCONNECT_WIRE(master, task, game_state):
     game_state.add_active_task_with_id(TaskIdTable.WIRE_DISCONNECTED)
 
 
 def AC_ADD_FUSE_PUZZLE(master, task, game_state):
-    game_state.add_active_task_with_id(TaskIdTable.FUSE_PUZZLE)
+    if not game_state.task_with_id_active(TaskIdTable.FUSE_PUZZLE):
+        game_state.add_active_task_with_id(TaskIdTable.FUSE_PUZZLE)
 
 def AC_ADD_FUSE_PUZZLE_AGAIN(master, task, game_state):
-    game_state.add_active_task_with_id(2000)
+
+    if (not game_state.task_with_id_active(TaskIdTable.FUSE_PUZZLE_AGAIN)) and (not game_state.task_with_id_active(TaskIdTable.FUSE_PUZZLE)):
+        game_state.add_active_task_with_id(TaskIdTable.FUSE_PUZZLE_AGAIN)
 
 def AC_ADD_FUSE_REMOVED(master, task, game_state):
-    game_state.add_active_task_with_id(3)
+    if not game_state.task_with_id_active(TaskIdTable.FUSE_REMOVED):
+        game_state.add_active_task_with_id(TaskIdTable.FUSE_REMOVED)
 
 # Включение и Выкл.  радио выполняются в action
 # def ADD_DISABLE_RADIO(master, task, game_state):

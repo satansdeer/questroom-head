@@ -30,7 +30,7 @@
       success_requirements:
         [REQ_WIRE_CONNECTED_AGAIN]
       success_actions:
-        [AC_ENABLE_FUSE_PUZZLE, AC_ADD_DISCONNECT_WIRE, AC_ENABLE_WIRE_ROOMS_COLORS]
+        [AC_ADD_DISCONNECT_WIRE, AC_ADD_FUSE_PUZZLE_AGAIN, AC_ENABLE_WIRE_ROOMS_COLORS, AC_ENABLE_FUSE_PUZZLE]
       failure_requirements:
         []
       failure_actions:
