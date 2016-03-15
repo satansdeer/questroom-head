@@ -1,6 +1,5 @@
 from __future__ import print_function
 from Parser import parse
-# from QuestDeviceMaster import *
 from deviceMaster.devicemaster import DeviceMaster
 from GameState import GameState
 from Requirement import Requirement
@@ -8,10 +7,10 @@ from Task import Task
 from Action import Action
 import time
 import threading
-from KeyboardListener import KeyboardListener
-#from NewFunctions_map import *
+import platform
+if platform.system() == 'Windows':
+    from KeyboardListener import KeyboardListener
 from hallway_function import *
-#from cb_functions import *
 import tornado
 from full_quest import *
 
@@ -51,9 +50,12 @@ class QuestRoom(threading.Thread):
         master.start()
 
         self.game_state = parse("full_quest.yml")
-        keyboardListener = KeyboardListener(master, self.game_state)
-        keyboardListener.daemon = True
-        keyboardListener.start()
+
+        if platform.system() == 'Windows':
+            keyboardListener = KeyboardListener(master, self.game_state)
+            keyboardListener.daemon = True
+            keyboardListener.start()
+
         self.game_state.device_master = master
         self.game_state.slave = hallwayPuzzles
         self.game_state.quest_room = self

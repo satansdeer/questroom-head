@@ -8,7 +8,10 @@ from GameState import GameState
 from time import sleep
 from SoundManager import SoundManager
 from QuestRoom import QuestRoom
-from KeyboardListener import KeyboardListener
+
+import platform
+if platform.system() == 'Windows':
+    from KeyboardListener import KeyboardListener
 from tornado.options import define, options, parse_command_line
 import json
 
@@ -102,7 +105,4 @@ if __name__ == '__main__':
     quest_room = QuestRoom(clients)
     quest_room.sound_manager = sound_manager
     quest_room.start()
-    # keyboard_listener = KeyboardListener(False)
-    # keyboard_listener.daemon = True
-    # keyboard_listener.start()
     tornado.ioloop.IOLoop.instance().start()

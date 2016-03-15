@@ -22,6 +22,7 @@ class SoundManager(threading.Thread):
     def run(self):
         while True:
             pass
+            time.sleep(1)
 
 
     @run_in_thread
