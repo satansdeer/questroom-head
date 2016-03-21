@@ -7,8 +7,10 @@
             <!--<link href='https://fonts.googleapis.com/css?family=Press+Start+2P&subset=latin,cyrillic' rel='stylesheet' type='text/css'>-->
             <script type="text/javascript">
             countdownActive = true;
-            progressValue = 100;
-            progressStep = .1;
+            var PROGRESS_BAR_TIME_DEFAULT_VALUE = 34;
+            var progressBarTimeTotal = PROGRESS_BAR_TIME_DEFAULT_VALUE * 1000;
+            var progressBarTimeStart = (new Date()).getTime();
+
             requestAnimationFrame(progressBarCountDown)
             function WebSocketTest() {
                 var messageContainer = document.getElementById("message");
@@ -29,15 +31,15 @@
                           messageContainer.className = 'message';
                         }
                         console.log("RECEIVED MESSAGE")
-                        resetProgress();
+                        resetProgressBar();
                         if(!countdownActive && received_msg.countdown_active){
                           countdownActive = received_msg.countdown_active
                           requestAnimationFrame(progressBarCountDown)
                         }
                         if (received_msg.progress_bar_time) {
-                            progressStep = 34 / (received_msg.progress_bar_time * 10)
+                            progressBarTimeTotal = received_msg.progress_bar_time * 1000;
                         } else {
-                            progressStep = .1
+                            progressBarTimeTotal = PROGRESS_BAR_TIME_DEFAULT_VALUE;
                         }
 
                         countdownActive = received_msg.countdown_active
@@ -58,9 +60,13 @@
 
             function progressBarCountDown(){
               var progressBar = document.querySelector(".time-left_progress");
-              progressValue -= progressStep;
-              if(progressValue < 0){
-                progressValue = 100;
+
+              var progressBarTimePassed = (new Date()).getTime() - progressBarTimeStart;
+              var progressBarValue = 100 - (progressBarTimePassed / progressBarTimeTotal) * 100;
+
+              if(progressBarValue < 0){
+                resetProgressBar();
+                progressBarValue = 100;
                 try{
                   var id = window.location.search.split("?")[1].split("=")[1]
                   var messageString = "Time end";
@@ -69,7 +75,7 @@
                 }catch(err){}
               }
               if(countdownActive){
-                progressBar.style.width = progressValue + '%'
+                progressBar.style.width = progressBarValue + '%'
                 requestAnimationFrame(progressBarCountDown)
               }
             }
@@ -106,6 +112,11 @@
                 return message
             }
 
+            function resetProgressBar() {
+              progressBarTimeStart = (new Date()).getTime();
+
+            }
+
             function resetProgress(){
                 progressValue = 100;
             }
@@ -114,7 +125,8 @@
               WebSocketTest();
               var progressBar = document.querySelector(".time-left_progress");
               progressBar.addEventListener("webkitTransitionEnd", function(event){
-                resetProgress();
+                // resetProgress();
+                resetProgressBar();
                 console.log("Reset progress");
                 setTimeout(function(){
                   progressBar.style.width = '0%';
