@@ -7,8 +7,8 @@
             <!--<link href='https://fonts.googleapis.com/css?family=Press+Start+2P&subset=latin,cyrillic' rel='stylesheet' type='text/css'>-->
             <script type="text/javascript">
             countdownActive = true;
-            var PROGRESS_BAR_TIME_DEFAULT_VALUE = 34;
-            var progressBarTimeTotal = PROGRESS_BAR_TIME_DEFAULT_VALUE * 1000;
+            var PROGRESS_BAR_TIME_DEFAULT_VALUE = 34 * 1000;
+            var progressBarTimeTotal = PROGRESS_BAR_TIME_DEFAULT_VALUE;
             var progressBarTimeStart = (new Date()).getTime();
 
             requestAnimationFrame(progressBarCountDown)
@@ -37,6 +37,7 @@
                           requestAnimationFrame(progressBarCountDown)
                         }
                         if (received_msg.progress_bar_time) {
+                            // we received value in sec
                             progressBarTimeTotal = received_msg.progress_bar_time * 1000;
                         } else {
                             progressBarTimeTotal = PROGRESS_BAR_TIME_DEFAULT_VALUE;
