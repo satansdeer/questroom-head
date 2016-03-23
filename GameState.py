@@ -17,6 +17,9 @@ class GameState:
         self.device_master = None
         self.tasks = []
         self.active_tasks = []
+
+        self.skipped_tasks = [];
+
         self.state = {'pressed_buttons':[]}
 
         self.monitors = [ { 'id': 1, 'task': None },
@@ -27,9 +30,6 @@ class GameState:
 
         # whis list used by failure requarements of CB tasks
         self.monitorsWithProgressBarZero = []
-        self.failureTasksForLose = 5
-        self.successfullTasksCounter = 0
-        self.failureTasksCounter = 0
 
         self.cb_controller = CaptainsBridgeController(self)
 
@@ -45,6 +45,8 @@ class GameState:
 
         self.time_stamp_old = time.time()
         self.time_stamp_new = time.time()
+
+        self.time_stamp_to_send = time.time()
 
     def start_game_loop(self, callback):
         if not self.device_master: return
@@ -64,8 +66,13 @@ class GameState:
 
         for task in self.active_tasks:
             self.perform_task_if_satisfies(task)
-        message = {'message': [x.title for x in self.active_tasks]}
-        callback(message) if callback else None
+
+        if time.time() - self.time_stamp_to_send > 0.5:
+            self.time_stamp_to_send = time.time()
+            # message = {'message': [u" ({}).{} a{}a".format(x.id, x.title, 115).encode('cp1251') for x in self.active_tasks]}
+            message = None
+            callback(message) if callback else None
+            # print("Send message: {}".format(message))
 
         if self.send_time_to_monitors:
             self.time_stamp_new = time.time()
@@ -79,25 +86,28 @@ class GameState:
 
 
     def perform_task_if_satisfies(self, task):
-        # if task.success_requirements_satisfied(self.device_master, task, self):
-        if task.success_requirements_satisfied(self.device_master, task, self):
-            # counter inc only if task is Captain's Bridge type
-            self.incSuccessfullTaskCounter(task)
+
+        task_success = task.success_requirements_satisfied(self.device_master, task, self)
+
+        task_skipped = task in self.skipped_tasks
+        if task_skipped:
+            print("Task with id {}: skipped".format(task.id))
+            self.skipped_tasks.remove(task)
+
+        if task_success or task_skipped:
+
             self.cb_controller.task_success(task)
 
             self.remove_active_task(task)
+
             task.perform_success_actions(self.device_master, task, self)
 
         elif task.failure_requirements_satisfied(self.device_master, task, self):
-            # remove task from active list
-            # remove task from monitor list
-            # remove monitor from Progress bar zero list
-            # monitor removed in cbTaskFailure
-            self.incFailureTaskCounter(task)
+
             self.cb_controller.task_failure(task)
+
             self.remove_active_task(task)
-            # Increment failure tasks counter
-            # if task is Captian's bridge
+
             task.perform_failure_actions(self.device_master, task, self)
 
 
@@ -170,14 +180,6 @@ class GameState:
            if monitor['task'] == taskId:
                return monitor['id']
         return None
-
-    def incFailureTaskCounter(self, task):
-        if unicode(task.type) == u'CB_TASK':
-            self.failureTasksCounter = self.failureTasksCounter + 1
-
-    def incSuccessfullTaskCounter(self, task):
-        if unicode(task.type) == u'CB_TASK':
-            self.successfullTasksCounter = self.successfullTasksCounter + 1
 
     def cbTaskFailure(self,task):
         """Checked is progress bar for task is zero

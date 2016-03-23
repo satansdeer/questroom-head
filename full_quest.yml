@@ -13,7 +13,7 @@
         []
       failure_actions:
         []
-      title: 'Соединить провод'
+      title: 'Инициализация'
     -
       id: 100
       success_requirements:
@@ -228,7 +228,7 @@
         []
       failure_actions:
         []
-      title: 'SHOW GAME INSTRUCTIONS'
+      title: 'Показать инструкцию к игре: Херабора'
 
     -
       id: 202
@@ -240,7 +240,7 @@
         []
       failure_actions:
         []
-      title: 'Press Herabora to start GAME'
+      title: 'Нажать Херабору для старта игры'
 
 
     -

@@ -6,19 +6,21 @@
         <link rel="stylesheet" href="static/dashboard.css">
         <script type="text/javascript">
             function initWebSocket() {
-                var messageContainer = document.getElementById("current_tasks");
-                if ("WebSocket" in window) {
-                    window.ws = new WebSocket("ws://"+window.location.hostname+":8888/socket?Id=42");
-                    ws.onopen = function() {
-                        messageContainer.innerHTML = "Connected";
-                        //ws.send('{"message": "get_state"}')
-                    };
-                    ws.onmessage = function (evt) {
-                      var received_msg = JSON.parse(evt.data);
-                      messageContainer.innerHTML = unescape(received_msg.message);
-                    }
+              var messageContainer = document.getElementById("current_tasks");
+              if ("WebSocket" in window) {
+                window.ws = new WebSocket("ws://"+window.location.hostname+":8888/socket?Id=42");
+                ws.onopen = function() {
+                  messageContainer.innerHTML = "Connected";
+                  //ws.send('{"message": "get_state"}')
+                };
+                ws.onmessage = function (evt) {
+                  var received_msg = JSON.parse(evt.data);
+                  var received_tasks = decodeURI(received_msg.message);
+                  var tasks_string = received_tasks.replace(/,/g, ' | ');
+                  messageContainer.innerHTML = tasks_string;
+                  }
                 }
-            }
+              }
 
             function playSound(event){
                 sound = event.currentTarget.dataset.sound
@@ -45,30 +47,29 @@
               ws.send('{"message": "box", "box_id":"' + box + '", "state": 1}')
             }
 
+            function toggle_skip_task(event) {
+              task_id = document.getElementById("skip_task_input").value;
+              ws.send('{"message": "skip_task", "task_id":"' + task_id + '"}');
+
+
+            }
+
             document.addEventListener("DOMContentLoaded", function(event) {
                 initWebSocket();
             });
+
         </script>
     </head>
     <body>
        <h1>Панель управления</h1>
        <hr/>
+       Текущие активные задачи:
        <div class='current-tasks' id='current_tasks'></div>
        <hr/>
-       <table>
-         <tr><th>Фразы робота</th></tr>
-         <tr><td><button data-sound='sounds/robot_second_time.wav' onClick='playSound(event)'>Стандартная фраза</button></td></tr>
-         <tr><td><button data-sound='sounds/robot_laughter.wav' onClick='playSound(event)'>ХаХаХаХа</button></td></tr>
-         <tr><td><button data-sound='sounds/robot_dont_leave_me_alone.wav' onClick='playSound(event)'>Не оставляйте меня одного</button></td></tr>
-         <tr><td><button data-sound='sounds/symphony.wav' onClick='playSound(event)'>Симфония</button></td></tr>
-         <tr><td><button data-sound='sounds/i_dont_listen_to_you.wav' onClick='playSound(event)'>Вы мне не интересны</button></td></tr>
-         <tr><td><button data-sound='sounds/electric_sheeps.wav' onClick='playSound(event)'>Электроовцы</button></td></tr>
-         <tr><td><button data-sound='sounds/march.wav' onClick='playSound(event)'>Марш</button></td></tr>
-       </table>
-       <table>
-         <tr><th>Звуковые эффекты</th></tr>
-         <tr><td><button data-sound='coin.wav' onClick='playSound(event)'>Coin</button></td></tr>
-       </table>
+
+       <input type="text" id="skip_task_input" placeholder="Номер задачи: ####" pattern="[0-9]{,4}" title="Номер задачи - только цифры">
+       <button id="skip_task_button" onClick='toggle_skip_task(event)'>Пропустить задачу</button></td>
+
        <table>
          <th>Управление дверями</th>
          <tr>
@@ -84,6 +85,7 @@
            <td><button data-door_id='3' onClick='closeDoor(event)'>Закрыть капитанский мостик</button></td>
          </tr>
        </table>
+
        <table>
          <th>Управление ящиками</th>
          <tr>
@@ -102,6 +104,21 @@
            <td><button data-box_id='3' onClick='openBox(event)'>Открыть четвертый ящик</button></td>
            <td><button data-box_id='3' onClick='closeBox(event)'>Закрыть четвертый ящик</button></td>
          </tr>
+       </table>
+
+      <table>
+         <tr><th>Фразы робота</th></tr>
+         <tr><td><button data-sound='sounds/robot_second_time.wav' onClick='playSound(event)'>Стандартная фраза</button></td></tr>
+         <tr><td><button data-sound='sounds/robot_laughter.wav' onClick='playSound(event)'>ХаХаХаХа</button></td></tr>
+         <tr><td><button data-sound='sounds/robot_dont_leave_me_alone.wav' onClick='playSound(event)'>Не оставляйте меня одного</button></td></tr>
+         <tr><td><button data-sound='sounds/symphony.wav' onClick='playSound(event)'>Симфония</button></td></tr>
+         <tr><td><button data-sound='sounds/i_dont_listen_to_you.wav' onClick='playSound(event)'>Вы мне не интересны</button></td></tr>
+         <tr><td><button data-sound='sounds/electric_sheeps.wav' onClick='playSound(event)'>Электроовцы</button></td></tr>
+         <tr><td><button data-sound='sounds/march.wav' onClick='playSound(event)'>Марш</button></td></tr>
+       </table>
+       <table>
+         <tr><th>Звуковые эффекты</th></tr>
+         <tr><td><button data-sound='coin.wav' onClick='playSound(event)'>Coin</button></td></tr>
        </table>
     </body>
 </html>

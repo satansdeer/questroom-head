@@ -86,13 +86,22 @@ class QuestRoom(threading.Thread):
 
 
     def send_state(self, message):
-        message = {'message': [x.title for x in self.game_state.active_tasks]}
+        message = {'message': [u" ({}).{}".format(x.id, x.title).encode('utf-8') for x in self.game_state.active_tasks]}
         message = tornado.escape.json_encode(message)
         try:
             if '42' in clients:
                 clients['42']['object'].write_message(message)
         except:
             pass
+
+    def toggle_skiped_task(self, task_id):
+        """ Skip or unskip task from questlogic"""
+        for task in self.game_state.tasks:
+            if task_id == task.id:
+                if task in self.game_state.skipped_tasks:
+                    self.game_state.skipped_tasks.remove(task)
+                else:
+                    self.game_state.skipped_tasks.append(task)
 
 
     def button_pressed(self, button_id):
