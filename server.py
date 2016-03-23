@@ -57,6 +57,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         clients[self.id] = { "id": self.id, "object": self }
         data = {'msg_type': 'init', 'buttons': self.get_buttons(int(self.id)), 'hearts': 3}
         self.write_message(data)
+        quest_room.send_state(None)
 
     def on_message(self, jsonMessage):
         message = json.loads(jsonMessage)

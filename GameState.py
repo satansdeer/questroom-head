@@ -3,6 +3,7 @@ import random
 import os
 import time
 import datetime
+import copy
 
 from CaptainsBridgeController import CaptainsBridgeController
 
@@ -16,7 +17,9 @@ class GameState:
     def __init__(self):
         self.device_master = None
         self.tasks = []
+
         self.active_tasks = []
+        self.active_tasks_old_state = []
 
         self.skipped_tasks = [];
 
@@ -67,12 +70,9 @@ class GameState:
         for task in self.active_tasks:
             self.perform_task_if_satisfies(task)
 
-        if time.time() - self.time_stamp_to_send > 0.5:
-            self.time_stamp_to_send = time.time()
-            # message = {'message': [u" ({}).{} a{}a".format(x.id, x.title, 115).encode('cp1251') for x in self.active_tasks]}
-            message = None
-            callback(message) if callback else None
-            # print("Send message: {}".format(message))
+        if self.active_tasks_old_state != self.active_tasks:
+            self.active_tasks_old_state = copy.copy(self.active_tasks)
+            callback(None) if callback else None
 
         if self.send_time_to_monitors:
             self.time_stamp_new = time.time()
