@@ -229,6 +229,26 @@ def press_herabora():
     buttons[Buttons.HERABORA] = 0
     master.setButtons(CB_SLAVE_2, buttons)
 
+def play_game():
+    def inverse_buttons(buttons):
+        for index, button in enumerate(buttons):
+            buttons[index] = (~button) & 0x1
+
+    def pass_stage():
+        buttons_controller_1 = master.getButtons(CB_SLAVE_1, "value")
+        inverse_buttons(buttons_controller_1)
+        master.setButtons(CB_SLAVE_1, buttons_controller_1)
+        time.sleep(2)
+
+
+        buttons_controller_2 = master.getButtons(CB_SLAVE_2, "value")
+        inverse_buttons(buttons_controller_2)
+        master.setButtons(CB_SLAVE_2, buttons_controller_2)
+
+    time.sleep(3)
+    pass_stage()
+    time.sleep(2)
+    pass_stage()
 
 # create a proxy for the Pyro object, and return that
 remote_master = Pyro.core.getProxyForURI(URI)
@@ -267,4 +287,7 @@ time.sleep(60)
 
 press_herabora()
 
+time.sleep(2)
+while True:
+    play_game()
 

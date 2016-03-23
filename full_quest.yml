@@ -8,6 +8,7 @@
         # [AC_ADD_ROBOT_PUZZLE, AC_PRESS_HERABORA]
         [AC_ADD_CONNECT_WIRE]
         # [AC_ADD_CHECK_ENGINE_AND_BATTERIES, AC_ALLOW_DOOR_OPEN]
+        # [AC_ADD_END_GAME_TASK, AC_FINAL_GAME_MUSIC_START]
       failure_requirements:
         []
       failure_actions:

@@ -1063,6 +1063,7 @@ def AC_CB_ADD_RANDOM_TASK(master, task, game_state):
     # game_state.add_cb_random_task()
 
 def AC_ADD_END_GAME_TASK(master, task, game_state):
+    game_state.send_time_to_monitors = False
     game_state.add_active_task_with_id(203)
 
 def REQ_CAPTAINS_BRIDGE_GAME_SUCCESS(master, task, game_state):
