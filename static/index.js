@@ -43,7 +43,6 @@ function WebSocketTest() {
 			countdownActive = received_msg.countdown_active;
 			setProgressVisibility(received_msg.progress_visible);
 			setLevelIndicators(received_msg.level);
-			console.log("Get Stage: " + received_msg.stage);
 			setStageIndicators(received_msg.level, received_msg.stage);
 		};
 
@@ -105,9 +104,8 @@ function setLevelIndicators(level){
 
 
 function setStageIndicators(level, stage){
-	console.log("We in setStageIndicators");
+
 	var stage_blocks = document.querySelectorAll(".stage_indicators");
-	console.log("len stage_blocks: " + stage_blocks.length);
 	for (var stage_block_index = 0; stage_block_index < stage_blocks.length; stage_block_index++) {
 		if (stage_block_index != level - 1) {
 			stage_blocks[stage_block_index].style.visibility = "hidden";
@@ -116,13 +114,11 @@ function setStageIndicators(level, stage){
 
 		stage_blocks[stage_block_index].style.visibility = "visible";
 		var stage_indicators = stage_blocks[stage_block_index].getElementsByClassName("stage_indicator");
-		console.log("block index: " + stage_block_index + " stage_indicators len: " + stage_indicators.length);
 		for (var stage_indicator_index = 0; stage_indicator_index < stage_indicators.length; stage_indicator_index++) {
 
 			if (stage_indicator_index < stage - 1) {
 				stage_indicators[stage_indicator_index].className = 'stage_indicator green';
 			} else if (stage_indicator_index == stage - 1) {
-				console.log("we try to set indicator blinking");
 				stage_indicators[stage_indicator_index].className += ' blinking';
 			} else {
 				stage_indicators[stage_indicator_index].className = 'stage_indicator';
