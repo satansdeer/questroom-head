@@ -137,16 +137,16 @@ class CaptainsBridgeController:
     def progressBarReset(self):
         message = ""
         for monitorId in range(1,5):
-            self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'level': self.current_level, 'progress_visible': False})
+            self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'level': self.current_level, 'stage': self.current_stage, 'progress_visible': False})
 
     def showOkMessage(self, task):
         monitorId = self.game_state.getMonitorIdByTask(task)
         message = "OK"
-        self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'level': self.current_level, 'progress_visible': False, 'not_a_task': True})
+        self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'level': self.current_level, 'stage': self.current_stage, 'progress_visible': False, 'not_a_task': True})
 
     def show_on_all_monitors(self, message):
         for monitorId in range(1,5):
-            self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'level': self.current_level, 'progress_visible': False, 'not_a_task': True})
+            self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'level': self.current_level, 'stage': self.current_stage, 'progress_visible': False, 'not_a_task': True})
 
     def showLevelMessage(self):
         if self.current_level == 1:
