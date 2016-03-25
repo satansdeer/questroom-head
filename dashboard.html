@@ -18,40 +18,43 @@
                   var received_tasks = decodeURI(received_msg.message);
                   var tasks_string = received_tasks.replace(/,/g, ' | ');
                   messageContainer.innerHTML = tasks_string;
-                  }
+                  };
                 }
               }
 
             function playSound(event){
-                sound = event.currentTarget.dataset.sound
+                sound = event.currentTarget.dataset.sound;
                 ws.send('{"message": "play_sound", "sound":"'+sound+'"}')
             }
 
             function openDoor(event){
-              door = event.currentTarget.dataset.door_id
-              ws.send('{"message": "door", "door_id":"' + door + '", "state": 0}')
+              door = event.currentTarget.dataset.door_id;
+              ws.send('{"message": "door", "door_id":"' + door + '", "state": 0}');
             }
 
             function closeDoor(event){
-              door = event.currentTarget.dataset.door_id
-              ws.send('{"message": "door", "door_id":"' + door + '", "state": 1}')
+              door = event.currentTarget.dataset.door_id;
+              ws.send('{"message": "door", "door_id":"' + door + '", "state": 1}');
             }
 
             function openBox(event){
-              box = event.currentTarget.dataset.box_id
-              ws.send('{"message": "box", "box_id":"' + box + '", "state": 0}')
+              box = event.currentTarget.dataset.box_id;
+              ws.send('{"message": "box", "box_id":"' + box + '", "state": 0}');
             }
 
             function closeBox(event){
-              box = event.currentTarget.dataset.box_id
-              ws.send('{"message": "box", "box_id":"' + box + '", "state": 1}')
+              box = event.currentTarget.dataset.box_id;
+              ws.send('{"message": "box", "box_id":"' + box + '", "state": 1}');
             }
 
             function toggle_skip_task(event) {
               task_id = document.getElementById("skip_task_input").value;
               ws.send('{"message": "skip_task", "task_id":"' + task_id + '"}');
+            }
 
-
+            function turnLight(event){
+              light_id = event.currentTarget.dataset.light_id;
+              ws.send('{"message": "light", "light_id":"' + light_id + '"}');
             }
 
             document.addEventListener("DOMContentLoaded", function(event) {
@@ -83,6 +86,19 @@
          <tr>
            <td><button data-door_id='3' onClick='openDoor(event)'>Открыть капитанский мостик</button></td>
            <td><button data-door_id='3' onClick='closeDoor(event)'>Закрыть капитанский мостик</button></td>
+         </tr>
+       </table>
+
+       <table>
+         <th>Управление освещением</th>
+         <tr>
+           <td><button data-light_id="onAll" onClick='turnLight(event)'>Вкл. всё</button></td>
+           <td><button data-light_id="offAll" onClick='turnLight(event)'>Выкл. всё</button></td>
+         </tr>
+         <tr>
+           <td><button data-light_id="startOn" onClick='turnLight(event)'>Вкл. старт</button></td>
+           <td><button data-light_id="wireOn" onClick='turnLight(event)'>Вкл. провод</button></td>
+           <td><button data-light_id="fuseOn" onClick='turnLight(event)'>Вкл. предохранитель</button></td>
          </tr>
        </table>
 

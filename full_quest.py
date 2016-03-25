@@ -213,6 +213,10 @@ def REQ_QUEST_INIT(master, task, game_state):
     master.setSmartLeds(hallwayPuzzles, [0,0,0]*32)
     # game_state.quest_room.current_music.play(-1)
 
+    AC_ENABLE_INIT_LIGHTS(master, task, game_state)
+    return True
+
+def AC_ENABLE_INIT_LIGHTS(master, task, game_state):
     # Init Lights
     setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE)
     setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [150, 0, 0])
@@ -220,7 +224,6 @@ def REQ_QUEST_INIT(master, task, game_state):
     setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.NONE)
     setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, Colors.NONE)
     setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, Colors.NONE)
-    return True
 
 def REQ_WIRE_CONNECTED(master, task, game_state):
     wiredConnection = master.getButtons(hallwayPuzzles).get()[
@@ -242,6 +245,7 @@ def REQ_WIRE_DISCONNECTED(master, task, game_state):
     if not wiredConnection:
         return True
     return False
+
 
 def AC_ENABLE_WIRE_ROOMS_COLORS(master, task, game_state):
     RED = 2000
@@ -288,6 +292,13 @@ def AC_ENABLE_WIRE_ROOMS_COLORS(master, task, game_state):
     setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
     setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0])
 
+    
+def AC_ENABLE_WIRE_ROOMS_LIGHT(master, task, game_state):
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.RED)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.RED)
+    smartLeds = master.getSmartLeds(hallwayPuzzles)
+    smartLeds.setOneLed(LedsIdTable.FUSE, Colors.RED)
+
 def AC_DISABLE_WIRE_ROOMS_COLORS(master, task, game_state):
 
     setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE)
@@ -296,9 +307,6 @@ def AC_DISABLE_WIRE_ROOMS_COLORS(master, task, game_state):
     setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.NONE)
     setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, Colors.NONE)
     # setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, Colors.NONE)
-
-
-
 
 def AC_ENABLE_FUSE_ROOMS_COLORS(master, task, game_state):
 
@@ -313,6 +321,19 @@ def AC_ENABLE_FUSE_ROOMS_COLORS(master, task, game_state):
     setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [2000, 2000, 2000])
     setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, VIOLENT)
 
+
+
+def AC_ENABLE_FUSE_ROOMS_LIGHT(master, task, game_state):
+    """ only light """
+    VIOLENT = [232 * 10, 100 *10, 255 * 10]
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, [2000, 2000, 2000])
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, VIOLENT)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [2000, 2000, 2000])
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, VIOLENT)
+
+    smartLeds = master.getSmartLeds(hallwayPuzzles)
+    smartLeds.setOneLed(LedsIdTable.FUSE, Colors.GREEN)
+
 def AC_DISABLE_FUSE_ROOMS_COLORS(master, task, game_state):
     wiredConnection = master.getButtons(hallwayPuzzles).get()[
         ButtonsIdTable.WIRE_CONNECTION]
@@ -326,6 +347,22 @@ def AC_DISABLE_FUSE_ROOMS_COLORS(master, task, game_state):
     setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
     setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0])
 
+def AC_ENABLE_ALL_LIGHT(master, task, game_state):
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, COLORS.WHITE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, COLORS.WHITE)
+    setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, COLORS.WHITE)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, COLORS.WHITE)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, COLORS.WHITE)
+    setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, COLORS.WHITE)
+
+
+def AC_DISABLE_ALL_LIGHT(master, task, game_state):
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, COLORS.NONE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, COLORS.NONE)
+    setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, COLORS.NONE)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, COLORS.NONE)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, COLORS.NONE)
+    setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, COLORS.NONE)
 
 def AC_ENABLE_ROBOT_HEAD_ROOMS_COLORS(master, task, game_state):
     VIOLENT = [232 * 10, 100 *10, 255 * 10]

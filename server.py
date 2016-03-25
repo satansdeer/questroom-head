@@ -85,6 +85,9 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
                 task_id = int(message['task_id'])
                 quest_room.toggle_skiped_task(task_id)
 
+        if "light" in message['message']:
+            quest_room.turn_light(message['light_id'])
+
 
     def on_close(self):
         if self.id not in clients: return

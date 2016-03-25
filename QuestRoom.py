@@ -86,7 +86,8 @@ class QuestRoom(threading.Thread):
 
 
     def send_state(self, message):
-	if self.game_state is None: return
+        if self.game_state is None:
+            return
 
         message = {'message': [u" ({}).{}".format(x.id, x.title).encode('utf-8') for x in self.game_state.active_tasks]}
         message = tornado.escape.json_encode(message)
@@ -104,6 +105,25 @@ class QuestRoom(threading.Thread):
                     self.game_state.skipped_tasks.remove(task)
                 else:
                     self.game_state.skipped_tasks.append(task)
+
+    def turn_light(self, light_id):
+        global master
+        if light_id == "onAll":
+            # print("Command to light all")
+            AC_ENABLE_ALL_LIGHT(master, None, None)
+        elif light_id == "offAll":
+            # print("Command to light off")
+            AC_DISABLE_ALL_LIGHT(master, None, None)
+        elif light_id == "startOn":
+            # print("Command light to start ")
+            AC_ENABLE_INIT_LIGHTS(master, None, None)
+        elif light_id == "wireOn":
+            # print("Command light to wireConnected ")
+            AC_ENABLE_WIRE_ROOMS_LIGHT(master, None, None)
+        elif light_id == "fuseOn":
+            # print("Command light to fuse insert ")
+            AC_ENABLE_FUSE_ROOMS_LIGHT(master, None, None)
+
 
 
     def button_pressed(self, button_id):
