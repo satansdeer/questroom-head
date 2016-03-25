@@ -22,12 +22,12 @@ function WebSocketTest() {
 		ws.onmessage = function (evt) {
 			var received_msg = JSON.parse(evt.data);
 			messageContainer.innerHTML = unescape(received_msg.message);
-			if('not_a_task' in received_msg){
+			if (received_msg.not_a_task) {
 				messageContainer.className = 'message green';
 			} else {
 				messageContainer.className = 'message';
 			}
-			console.log("RECEIVED MESSAGE");
+
 			resetProgressBar();
 			if(!countdownActive && received_msg.countdown_active){
 				countdownActive = received_msg.countdown_active;

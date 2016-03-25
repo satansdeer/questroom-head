@@ -3,7 +3,6 @@
 from __future__ import print_function
 import time
 import random
-import copy
 from Radio import Radio
 from collections import Counter
 from copy import copy
@@ -12,8 +11,8 @@ import pygame
 
 
 class MESSAGE:
-    BATTERY_AVALIABLE = "Батарея {id} вставлена"
-    BATTERY_ABSENT = "ОШИБКА: Батарея {id} отсутствует!"
+    BATTERY_AVALIABLE = "Универсальная батарея Попова №{id} вставлена"
+    BATTERY_ABSENT = "ОШИБКА: Универсальная батарея Попова №{id} отсутствует!"
     ENGINE_BROKEN = "Почините двигатель"
     PRESS_HERABORA = "Когда будете готовы - жмите H.E.R.A.B.O.R.A."
     WINNER = "Вы выжили! \nВходная дверь открыта"
@@ -207,20 +206,20 @@ def REQ_QUEST_INIT(master, task, game_state):
     master.setRelays(hallwayPuzzles, [1,1,1,1])
 
     # close doors
-    master.setRelays(CB_SLAVE_2, [0,0,0,0])
-    # master.setRelays(CB_SLAVE_2, [1,1,1,1])
+    # master.setRelays(CB_SLAVE_2, [0,0,0,0])
+    master.setRelays(CB_SLAVE_2, [1,1,1,1])
 
 
     master.setSmartLeds(hallwayPuzzles, [0,0,0]*32)
     # game_state.quest_room.current_music.play(-1)
 
     # Init Lights
-    # setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE)
-    # setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [150, 0, 0])
-    # setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, Colors.NONE)
-    # setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.NONE)
-    # setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, Colors.NONE)
-    # setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, Colors.NONE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [150, 0, 0])
+    setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, Colors.NONE)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.NONE)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, Colors.NONE)
+    setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, Colors.NONE)
     return True
 
 def REQ_WIRE_CONNECTED(master, task, game_state):
@@ -995,7 +994,7 @@ def REQ_CHECK_BATTERIES(master, task, game_state):
 
     batterys_state_changed = batterys_state != batterys_saved_state
     if batterys_state_changed:
-        batterys_saved_state = copy.copy(batterys_state)
+        batterys_saved_state = copy(batterys_state)
 
     buttons = master.getButtons(hallwayPuzzles)
     engineAssembled = buttons.get()[ButtonsIdTable.ENGINE]
@@ -1010,9 +1009,8 @@ def REQ_CHECK_BATTERIES(master, task, game_state):
         if engine_state_changed:
             smartLeds.setOneLed(LedsIdTable.ENGINE_RIGTH, Colors.GREEN)
             smartLeds.setOneLed(LedsIdTable.ENGINE_LEFT, Colors.GREEN)
-        # print("Engine assembled, we wait battery: {}".format(batterys_state))
 
-        if batterys_state_changed:
+        if batterys_state_changed or engine_state_changed:
             for index in range(1,5):
                 monitorId = index
                 batteryId = index
@@ -1032,12 +1030,12 @@ def REQ_CHECK_BATTERIES(master, task, game_state):
 
 def sendBatteryMessage(game_state, monitorId, battery, batteryId):
     if battery:
-        sendMessageToMonitor(game_state, monitorId, MESSAGE.BATTERY_AVALIABLE.format(id=batteryId), False)
+        sendMessageToMonitor(game_state, monitorId, MESSAGE.BATTERY_AVALIABLE.format(id=batteryId), False, True)
     else:
         sendMessageToMonitor(game_state, monitorId, MESSAGE.BATTERY_ABSENT.format(id=batteryId), False)
 
-def sendMessageToMonitor(game_state, monitorId, message, progress_bar_visible):
-    game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'progress_visible': progress_bar_visible})
+def sendMessageToMonitor(game_state, monitorId, message, progress_bar_visible, not_a_task=False):
+    game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'progress_visible': progress_bar_visible, 'not_a_task': not_a_task})
 
 
 

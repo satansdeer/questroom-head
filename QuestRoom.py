@@ -23,7 +23,7 @@ class QuestRoom(threading.Thread):
     def __init__(self, cli):
         global clients
         clients = cli
-        game_state = None
+        self.game_state = None
         sound_manager = None
         captainsBridge_2 = None
         pygame.mixer.init()
@@ -86,6 +86,8 @@ class QuestRoom(threading.Thread):
 
 
     def send_state(self, message):
+	if self.game_state is None: return
+
         message = {'message': [u" ({}).{}".format(x.id, x.title).encode('utf-8') for x in self.game_state.active_tasks]}
         message = tornado.escape.json_encode(message)
         try:
