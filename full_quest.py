@@ -445,10 +445,24 @@ def AC_ENABLE_RADIO(master, task, game_state):
     global radio
     print("Radio puzzle solved")
     smartLeds = master.getSmartLeds(hallwayPuzzles)
-    smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.RED)
-    smartLeds.setOneLed(LedsIdTable.BOX_2, Colors.RED)
-    smartLeds.setOneLed(LedsIdTable.BOX_3, Colors.RED)
-    smartLeds.setOneLed(LedsIdTable.BOX_4, Colors.RED)
+
+    relays = master.getRelays(hallwayPuzzles).get()
+    if relays[0]:
+        smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.RED)
+    else:
+        smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.BLUE)
+    if relays[1]:
+        smartLeds.setOneLed(LedsIdTable.BOX_2, Colors.RED)
+    else:
+        smartLeds.setOneLed(LedsIdTable.BOX_2, Colors.BLUE)
+    if relays[2]:
+        smartLeds.setOneLed(LedsIdTable.BOX_3, Colors.RED)
+    else:
+        smartLeds.setOneLed(LedsIdTable.BOX_3, Colors.BLUE)
+    if relays[3]:
+        smartLeds.setOneLed(LedsIdTable.BOX_4, Colors.RED)
+    else:
+        smartLeds.setOneLed(LedsIdTable.BOX_4, Colors.BLUE)
 
     if radio is None:
         # print("========================Radio start!=======================")
@@ -939,6 +953,14 @@ def AC_ENABLE_TUMBLER_PUZZLE(master, task, game_state):
         setLedValue(smartLeds, index, Colors.RED)
     master.setSmartLeds(hallwayPuzzles, smartLeds)
 
+def AC_ENABLE_TUMBLER_PUZZLE_LIGHT_WIN(master, task, game_state):
+    smartLeds = master.getSmartLeds(hallwayPuzzles).get()
+    ledIdStartPosition = 31
+    for index in range(6):
+        ledID = ledIdStartPosition - index
+        setLedValue(smartLeds, ledID, Colors.BLUE)
+        setLedValue(smartLeds, index, Colors.BLUE)
+    master.setSmartLeds(hallwayPuzzles, smartLeds)
 
 def REQ_ROBOT_ASSEMBLED(master, task, game_state):
     # return True
