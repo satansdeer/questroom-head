@@ -42,8 +42,11 @@ function WebSocketTest() {
 
 			countdownActive = received_msg.countdown_active;
 			setProgressVisibility(received_msg.progress_visible);
-			setLevelIndicators(received_msg.level);
-			setStageIndicators(received_msg.level, received_msg.stage);
+
+			if (received_msg.level) {
+				setLevelIndicators(received_msg.level);
+				if (received_msg.stage) { setStageIndicators(received_msg.level, received_msg.stage); }
+			}
 		};
 
 		ws.onclose = function() {
