@@ -57,6 +57,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         clients[self.id] = { "id": self.id, "object": self }
         data = {'msg_type': 'init', 'buttons': self.get_buttons(int(self.id)), 'hearts': 3}
         self.write_message(data)
+        quest_room.send_state(None)
 
     def on_message(self, jsonMessage):
         message = json.loads(jsonMessage)
@@ -79,6 +80,14 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             quest_room.set_box_state(box_id, box_state)
         if "get_state" == message['message']:
             quest_room.send_state()
+        if "skip_task" in message['message']:
+            if message['task_id'].isdigit():
+                task_id = int(message['task_id'])
+                quest_room.toggle_skiped_task(task_id)
+
+        if "light" in message['message']:
+            quest_room.turn_light(message['light_id'])
+
 
     def on_close(self):
         if self.id not in clients: return

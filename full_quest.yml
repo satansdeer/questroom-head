@@ -8,11 +8,12 @@
         # [AC_ADD_ROBOT_PUZZLE, AC_PRESS_HERABORA]
         [AC_ADD_CONNECT_WIRE]
         # [AC_ADD_CHECK_ENGINE_AND_BATTERIES, AC_ALLOW_DOOR_OPEN]
+        # [AC_ADD_END_GAME_TASK, AC_FINAL_GAME_MUSIC_START]
       failure_requirements:
         []
       failure_actions:
         []
-      title: 'Соединить провод'
+      title: 'Инициализация'
     -
       id: 100
       success_requirements:
@@ -107,7 +108,7 @@
       success_requirements:
         [REQ_TUMBLER_PUZZLE_SOLVED]
       success_actions:
-        [AC_OPEN_SECOND_BOX, AC_OPEN_THIRD_BOX, AC_ADD_ROBOT_PUZZLE, AC_ADD_ENGINE_ROOM_LIGHT, AC_ADD_CHECK_ENGINE_AND_BATTERIES, AC_ALLOW_DOOR_OPEN]
+        [AC_ENABLE_TUMBLER_PUZZLE_LIGHT_WIN, AC_OPEN_SECOND_BOX, AC_OPEN_THIRD_BOX, AC_ADD_ROBOT_PUZZLE, AC_ADD_ENGINE_ROOM_LIGHT, AC_ADD_CHECK_ENGINE_AND_BATTERIES, AC_ALLOW_DOOR_OPEN]
       failure_requirements:
         []
       failure_actions:
@@ -227,7 +228,7 @@
         []
       failure_actions:
         []
-      title: 'SHOW GAME INSTRUCTIONS'
+      title: 'Показать инструкцию к игре: Херабора'
 
     -
       id: 202
@@ -239,7 +240,7 @@
         []
       failure_actions:
         []
-      title: 'Press Herabora to start GAME'
+      title: 'Нажать Херабору для старта игры'
 
 
     -
