@@ -13,6 +13,7 @@ if platform.system() == 'Windows':
 from hallway_function import *
 import tornado
 from full_quest import *
+import subprocess
 
 import pygame
 
@@ -48,9 +49,18 @@ class QuestRoom(threading.Thread):
             captain_bridge_1_comport = "COM5"
             captain_bridge_2_comport = "COM4"
         else:
-            hallway_comport = "/dev/ttyUSB0"
-            captain_bridge_1_comport = "/dev/ttyUSB2"
-            captain_bridge_2_comport = "/dev/ttyUSB1"
+            get_tty_script="./get_ttyUSB.sh "
+            bashCommand = get_tty_script + "13HDL11431N"
+            process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+            hallway_comport = process.communicate()[0]
+
+            bashCommand = get_tty_script + "AL0079CW"
+            process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+            captain_bridge_1_comport = process.communicate()[0]
+
+            bashCommand = get_tty_script + "A4033KK5"
+            process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+            captain_bridge_2_comport = process.communicate()[0]
 
         self.hallwayPuzzles = master.addSlave("hallwayPuzzles", hallway_comport, 1, boudrate=5)
         self.captainsBridge_1 = master.addSlave("CB_SLAVE_1", captain_bridge_1_comport, 2, boudrate=5)
