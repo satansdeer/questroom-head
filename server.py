@@ -55,7 +55,14 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         if self.id in clients:
             del clients[self.id]
         clients[self.id] = { "id": self.id, "object": self }
-        data = {'msg_type': 'init', 'buttons': self.get_buttons(int(self.id)), 'hearts': 3}
+
+        id_str = str(self.id)
+        # print("quest last_sended_messages: {}".format(quest_room.last_sended_messages))
+        if id_str in quest_room.last_sended_messages:
+            data = quest_room.last_sended_messages[id_str]
+        else:
+            data = {'init': 'True'}
+
         self.write_message(data)
         quest_room.send_state(None)
 

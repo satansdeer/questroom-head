@@ -22,6 +22,20 @@ function WebSocketTest() {
 		ws.onmessage = function (evt) {
 			var received_msg = JSON.parse(evt.data);
 			messageContainer.innerHTML = unescape(received_msg.message);
+
+			// rec_mes = messageContainer.innerHTML + " ";
+			// for (var value in received_msg) {
+			// 	rec_mes = rec_mes + value + " | ";
+			// 	console.log("Rec: " + rec_mes);
+			// }
+
+			if (received_msg.init) {
+				resetProgressBar();
+				messageContainer.className = 'message';
+				progressBarTimeTotal = PROGRESS_BAR_TIME_DEFAULT_VALUE;
+				setLevelIndicators(0);
+			}
+
 			if (received_msg.not_a_task) {
 				messageContainer.className = 'message green';
 			} else {
@@ -29,10 +43,12 @@ function WebSocketTest() {
 			}
 
 			resetProgressBar();
+
 			if(!countdownActive && received_msg.countdown_active){
 				countdownActive = received_msg.countdown_active;
 				requestAnimationFrame(progressBarCountDown);
 			}
+
 			if (received_msg.progress_bar_time) {
 				// we received value in sec
 				progressBarTimeTotal = received_msg.progress_bar_time * 1000;

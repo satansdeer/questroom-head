@@ -32,6 +32,8 @@ class QuestRoom(threading.Thread):
         self.win_music = pygame.mixer.Sound("you_win.wav")
         self.current_music = self.ambient_music
 
+        self.last_sended_messages = {}
+
         hallwayPuzzles = None
         super(QuestRoom, self).__init__()
 
@@ -78,11 +80,16 @@ class QuestRoom(threading.Thread):
         master.setRelays(self.hallwayPuzzles, relays)
 
     def send_ws_message(self, client_id, message):
+        # print("send_ws_message: to client {}".format(client_id))
         str_id = str(client_id)
         if str_id not in clients: return
         if 'progress_visible' not in message: message['progress_visible'] = True
         if 'countdown_active' not in message: message['countdown_active'] = True
+
         clients[str_id]['object'].write_message(message)
+
+        # save last sended message
+        self.last_sended_messages[str_id] = message
 
 
     def send_state(self, message):
