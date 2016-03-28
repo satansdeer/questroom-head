@@ -42,12 +42,16 @@ function WebSocketTest() {
 				messageContainer.className = 'message';
 			}
 
-			resetProgressBar();
 
 			if(!countdownActive && received_msg.countdown_active){
 				countdownActive = received_msg.countdown_active;
 				requestAnimationFrame(progressBarCountDown);
 			}
+
+			countdownActive = received_msg.countdown_active;
+			setProgressVisibility(received_msg.progress_visible);
+
+			resetProgressBar();
 
 			if (received_msg.progress_bar_time) {
 				// we received value in sec
@@ -56,8 +60,6 @@ function WebSocketTest() {
 				progressBarTimeTotal = PROGRESS_BAR_TIME_DEFAULT_VALUE;
 			}
 
-			countdownActive = received_msg.countdown_active;
-			setProgressVisibility(received_msg.progress_visible);
 
 			if (received_msg.level) {
 				setLevelIndicators(received_msg.level);
@@ -78,6 +80,9 @@ function WebSocketTest() {
 }
 
 function progressBarCountDown(){
+	if(!countdownActive){
+		return
+	}
 	var progressBar = document.querySelector(".time-left_progress");
 
 	var progressBarTimePassed = (new Date()).getTime() - progressBarTimeStart;
