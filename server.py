@@ -58,12 +58,14 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
         id_str = str(self.id)
         # print("quest last_sended_messages: {}".format(quest_room.last_sended_messages))
-        if id_str in quest_room.last_sended_messages:
-            data = quest_room.last_sended_messages[id_str]
-        else:
-            data = {'init': 'True'}
 
-        self.write_message(data)
+        init_data = {'init': 'True'}
+        self.write_message(init_data)
+
+        if id_str in quest_room.last_sended_messages:
+            last_data = quest_room.last_sended_messages[id_str]
+            self.write_message(last_data)
+
         quest_room.send_state(None)
 
     def on_message(self, jsonMessage):

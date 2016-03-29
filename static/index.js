@@ -34,6 +34,7 @@ function WebSocketTest() {
 				messageContainer.className = 'message';
 				progressBarTimeTotal = PROGRESS_BAR_TIME_DEFAULT_VALUE;
 				setLevelIndicators(0);
+				setStageIndicators(0, 0);
 			}
 
 			if (received_msg.not_a_task) {
