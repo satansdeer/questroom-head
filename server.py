@@ -94,8 +94,17 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
                 task_id = int(message['task_id'])
                 quest_room.toggle_skiped_task(task_id)
 
-        if "light" in message['message']:
+        if "light" == message['message']:
             quest_room.turn_light(message['light_id'])
+
+        if "set_room_light" == message['message']:
+            room_led = message['room_led_id']
+            rgb_color_str = message['color']
+            rgb_color = [int(char_h + char_l, 16) for char_h, char_l in zip(rgb_color_str[0::2], rgb_color_str[1::2])]
+            # print("We receive set_room_light with room_led_id: {} and color {} = {}".format(room_led, rgb_color_str, rgb_color))
+
+            quest_room.set_room_light(room_led, rgb_color)
+
 
 
     def on_close(self):
