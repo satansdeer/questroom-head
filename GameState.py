@@ -58,7 +58,7 @@ class GameState:
         root_task = self.find_task_with_id(0)
         self.active_tasks.append(root_task)
         while len(self.active_tasks):
-            time.sleep(0.01)
+            # time.sleep(0.01)
             self.game_loop(callback)
             self.state['pressed_buttons'] = []
 
