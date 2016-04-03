@@ -68,6 +68,7 @@ class Radio(threading.Thread):
 
     def run(self):
         while True:
+            # time.sleep(0.1)
             clock = time.clock()
             if (clock - self.last_time_clock) < self.tick:
                 continue

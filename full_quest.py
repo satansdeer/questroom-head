@@ -292,7 +292,7 @@ def AC_ENABLE_WIRE_ROOMS_COLORS(master, task, game_state):
     setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
     setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0])
 
-    
+
 def AC_ENABLE_WIRE_ROOMS_LIGHT(master, task, game_state):
     setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.RED)
     setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.RED)

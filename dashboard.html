@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="{{ static_url("dashboard.css") }}">
         <link rel="stylesheet" href="static/dashboard.css">
+        <script src="static/jscolor.js"></script>
         <script type="text/javascript">
             function initWebSocket() {
               var messageContainer = document.getElementById("current_tasks");
@@ -52,9 +53,18 @@
               ws.send('{"message": "skip_task", "task_id":"' + task_id + '"}');
             }
 
-            function turnLight(event){
+            function turnLight(event) {
               light_id = event.currentTarget.dataset.light_id;
               ws.send('{"message": "light", "light_id":"' + light_id + '"}');
+            }
+
+            function setRoomLight(event) {
+              let room_led_id = event.currentTarget.dataset.room_led_id;
+              let color_value = document.getElementById(room_led_id).value;
+              console.log("Color_value for room " + room_led_id + ": " + color_value);
+              let message = '{"message": "set_room_light", "room_led_id":"' + room_led_id + '", "color":"' + color_value + '"}';
+              <!-- console.log("Send: " + message); -->
+              ws.send(message);
             }
 
             document.addEventListener("DOMContentLoaded", function(event) {
@@ -101,6 +111,36 @@
            <td><button data-light_id="fuseOn" onClick='turnLight(event)'>Вкл. предохранитель</button></td>
          </tr>
        </table>
+
+       <input type="checkbox" id="hd_light_table" class="hide"/>
+       <label id="some_label" for="hd_light_table">Расширенное управление освещением</label>
+
+       <table class="light_controller_table">
+         <tr>
+           <td><button class="led_set_btn" data-room_led_id="entrance_top" onClick='setRoomLight(event)'>Вход верх:</button></td>
+           <td><input id="entrance_top" value="000000" class="jscolor"></td>
+           <td><button class="led_set_btn" data-room_led_id="entrance_bottom" onClick='setRoomLight(event)'>Вход низ:</button></td>
+           <td><input id="entrance_bottom" value="ff0000" class="jscolor"></td>
+         </tr>
+
+         <tr>
+           <td><button class="led_set_btn" data-room_led_id="main_room_top" onClick='setRoomLight(event)'>Корридор верх:</button></td>
+           <td><input id="main_room_top" value="ff0000" class="jscolor"></td>
+           <td><button class="led_set_btn" data-room_led_id="main_room_bottom" onClick='setRoomLight(event)'>Корридор низ:</button></td>
+           <td><input id="main_room_bottom" value="00ff00" class="jscolor"></td>
+         </tr>
+
+         <tr>
+           <td><button class="led_set_btn" data-room_led_id="engine_room" onClick='setRoomLight(event)'>Машинное отделение:</button></td>
+           <td><input id="engine_room" value="2542FF" class="jscolor"></td>
+         </tr>
+         <tr>
+           <td><button class="led_set_btn" data-room_led_id="captains_bridge" onClick='setRoomLight(event)'>Кап. мостик:</button></td>
+           <td><input id="captains_bridge" value="C116FF" class="jscolor"></td>
+         </tr>
+       </table>
+       <br/>
+       <br/>
 
        <table>
          <th>Управление ящиками</th>

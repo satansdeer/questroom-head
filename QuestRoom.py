@@ -33,6 +33,8 @@ class QuestRoom(threading.Thread):
         self.win_music = pygame.mixer.Sound("you_win.wav")
         self.current_music = self.ambient_music
 
+        self.last_sended_messages = {}
+
         hallwayPuzzles = None
         super(QuestRoom, self).__init__()
 
@@ -101,11 +103,16 @@ class QuestRoom(threading.Thread):
         master.setRelays(self.hallwayPuzzles, relays)
 
     def send_ws_message(self, client_id, message):
+        # print("send_ws_message: to client {}".format(client_id))
         str_id = str(client_id)
         if str_id not in clients: return
         if 'progress_visible' not in message: message['progress_visible'] = True
         if 'countdown_active' not in message: message['countdown_active'] = True
+
         clients[str_id]['object'].write_message(message)
+
+        # save last sended message
+        self.last_sended_messages[str_id] = message
 
 
     def send_state(self, message):
@@ -147,7 +154,31 @@ class QuestRoom(threading.Thread):
             # print("Command light to fuse insert ")
             AC_ENABLE_FUSE_ROOMS_LIGHT(master, None, None)
 
+    def set_room_light(self, room_led_id, in_color):
+        # convert color range from 255 to 4096
+        color = [value * 16 for value in in_color]
+        # print("Color {} in new range {}".format(in_color, color))
 
+        if room_led_id == "entrance_top":
+            setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, color)
+
+        elif room_led_id == "entrance_bottom":
+            setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, color)
+
+        elif room_led_id == "main_room_top":
+            setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, color)
+
+        elif room_led_id == "main_room_bottom":
+            setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, color)
+
+        elif room_led_id == "engine_room":
+            setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, color)
+
+        elif room_led_id == "captains_bridge":
+            setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, color)
+
+        else:
+            print("Error in set_room_light in quest_room: unknown room led {}".format(room_led_id))
 
     def button_pressed(self, button_id):
         self.game_state.state['pressed_buttons'].append(button_id)

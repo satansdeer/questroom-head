@@ -276,14 +276,17 @@ time.sleep(1)
 pass_commutator()
 time.sleep(1)
 
+raw_input("Please enter something: ")
+
 assembled_engine()
 time.sleep(1)
 
 insert_batteries()
 time.sleep(1)
+raw_input("Please enter something: ")
 
 press_herabora()
-time.sleep(60)
+time.sleep(35)
 
 press_herabora()
 

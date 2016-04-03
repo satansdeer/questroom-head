@@ -7,10 +7,86 @@ html, body {
   margin: 0;
 }
 
-.current-tasks{
+.current-tasks {
   background-color: black;
   color: white;
   font-family: Arial;
   width: 100%;
   height: 55px;
+}
+
+.jscolor {
+  position:'left';
+  borderColor:'#FFF #666 #666 #FFF';
+  insetColor:'#666 #FFF #FFF #666';
+  backgroundColor:'#CCC';
+  width: 80px;
+  size: 6;
+}
+
+table.light_controller_table td {
+  width: 150px;
+  /* margin: 0 auto; */
+}
+
+.led_set_btn {
+  width: 90%;
+  height: 50px;
+  margin-top: 5px; 
+}
+
+.hide {
+    display: none;
+}
+
+.hide + #some_label ~ .light_controller_table{
+    display: none;
+}
+
+#some_label {
+  margin-top: 20px;
+}
+
+.hide + #some_label {
+    border-bottom: 1px dotted green;
+    padding: 0;
+    color: green;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.hide + #some_label:before {
+    background-color: #1e90ff;
+    color: #fff;
+    content: "+";
+    display: block;
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    height: 16px;
+    line-height: 16px;
+    margin: 0px 5px;
+    text-align: center;
+    width: 16px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+.hide:checked + #some_label:before {
+    content: "\2212";
+}
+
+/* вид текста #some_label при активном переключателе */
+.hide:checked + #some_label {
+    color: red;
+    border-bottom: 0;
+}
+
+.hide:checked + #some_label + .light_controller_table {
+display: block;
+    background: #efefef;
+    -moz-box-shadow: inset 3px 3px 10px #7d8e8f;
+    -webkit-box-shadow: inset 3px 3px 10px #7d8e8f;
+    box-shadow: inset 3px 3px 10px #7d8e8f;
+    padding: 10px;
 }
