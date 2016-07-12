@@ -18,18 +18,53 @@ class MESSAGE:
     WINNER = "Вы выжили! \nВходная дверь открыта"
     FAIL = "Ваша команда погибла! \nВходная дверь открыта"
 
-class LedsIdTable:
-    FUSE = 23
-    ROBOT_BODY_LEFT = 12
-    ROBOT_BODY_RIGHT = 13
-    ROBOT_HEAD = 16
-    ENGINE_LEFT = 21
-    ENGINE_RIGTH = 20
-    BOX_1 = 8
-    BOX_2 = 9
-    BOX_3 = 10
-    BOX_4 = 11
+class ROOM_LEDS:
+#=====SPB=====
+#    # hallwayPuzzles
+#    ENTRANCE_TOP = 6
+#    ENTRANCE_BOTTOM = 14
+#
+#    ENGINE_ROOM = 7
+#
+#    # captainsBridge_1
+#    MAIN_ROOM_TOP = 2
+#    MAIN_ROOM_BOTTOM = 1
+#    CAPTAINTS_BRIDGE = 0
+#=====KZN=====
+    # hallwayPuzzles
+    ENTRANCE_TOP = 2
+    ENTRANCE_BOTTOM = 3
 
+    ENGINE_ROOM = 1
+
+    # captainsBridge_1
+    MAIN_ROOM_TOP = 2
+    MAIN_ROOM_BOTTOM = 1
+    CAPTAINTS_BRIDGE = 0
+
+class LedsIdTable:
+#=====SPB======
+#    FUSE = 23
+#    ROBOT_BODY_LEFT = 12
+#    ROBOT_BODY_RIGHT = 13
+#    ROBOT_HEAD = 16
+#    ENGINE_LEFT = 21
+#    ENGINE_RIGTH = 20
+#    BOX_1 = 8
+#    BOX_2 = 9
+#    BOX_3 = 10
+#    BOX_4 = 11
+#=====KZN======
+    FUSE = 0
+    ROBOT_BODY_LEFT = 10
+    ROBOT_BODY_RIGHT = 11
+    ROBOT_HEAD = 16
+    ENGINE_LEFT = 9
+    ENGINE_RIGTH = 8
+    BOX_1 = 4
+    BOX_2 = 5
+    BOX_3 = 6
+    BOX_4 = 7
 
 CB_SLAVE_1="CB_SLAVE_1"
 CB_SLAVE_2="CB_SLAVE_2"
@@ -41,59 +76,67 @@ class SOUNDS:
     ROBOT_SAY_RIDDLE_SECOND_TIME = 'robot_second_time.wav'
 
 class ButtonsIdTable:
-    WIRE_CONNECTION = 11
-    FUSE = 6
-    MECHANICS_CARD = 10
-    ROBOT_HEAD = 8
-    ENGINE = 9
-    COMMUTATOR = 7
+#=====SPB=====
+#    WIRE_CONNECTION = 11
+#    FUSE = 6
+#    MECHANICS_CARD = 10
+#    ROBOT_HEAD = 8
+#    ENGINE = 9
+#    COMMUTATOR = 7
+#=====KZN=====
+    WIRE_CONNECTION = 12
+    FUSE = 13
+    MECHANICS_CARD = 14
+    ROBOT_HEAD = 17
+    ENGINE = 16
+    COMMUTATOR = 15
 
 class CB_CTRL:
     """Named constant for Captain's Bridge controls"""
     # Controller 1
     #    # Buttons
-    REPULSIVE_DESYNCRONISER = 0
-    LEVITRON = 1
-    DEFLECTOR = 2
-    BIG_RED_BUTTON = 3
-    KRIVOSHUP_MINUS = 4
-    KRIVOSHUP_PLUS = 5
-    SERVO_COOLING_SYSTEM = 6
-    ULTRAFOTON = 13
-    REPAIR_NANOROBOTS = 12
-    C3PO = 14
-    R2D2 = 15
-    TETRAGEKS = 16
+    REPULSIVE_DESYNCRONISER = 14
+    LEVITRON = 13
+    DEFLECTOR = 12
+    BIG_RED_BUTTON = 6
+    KRIVOSHUP_MINUS = 2
+    KRIVOSHUP_PLUS = 1
+    SERVO_COOLING_SYSTEM = 0
+    ULTRAFOTON = 15
+    REPAIR_NANOROBOTS = 5
+    C3PO = 16
+    R2D2 = 11
+    TETRAGEKS = 3
     #    # ADC
-    CLUTCH_REVERSE_CYCLE = 1
-    SUPER_BRAIN = 0
+    CLUTCH_REVERSE_CYCLE = 7
+    SUPER_BRAIN = 6
 
     # Controller 2
     #    # Buttons
-    TPBACH_1 = 0
-    TPBACH_2 = 1
-    DVORNIKI = 2
-    ECO_LAZER = 3
+    TPBACH_1 = 8
+    TPBACH_2 = 12
+    DVORNIKI = 13
+    ECO_LAZER = 14
 
     BATTERY_1 = 7
     BATTERY_2 = 8
-    BATTERY_3 = 10
-    BATTERY_4 = 6
+    BATTERY_3 = 9
+    BATTERY_4 = 10
 
-    PROTON_LAUNCHERS_BATTERY = 4
-    DARK_MATTER_STABILIZER = 5
-    HERABORA = 12
-    TECHNO = 13
-    UGNETATEL = 14
-    GIPERBOLOID = 15
-    ZOND_JS = 16
-    ZOND_JC = 17
+    PROTON_LAUNCHERS_BATTERY = 0
+    DARK_MATTER_STABILIZER = 1
+    HERABORA = 4
+    TECHNO = 17
+    UGNETATEL = 9
+    GIPERBOLOID = 3
+    ZOND_JS = 15
+    ZOND_JC = 16
 
     #    # ADC
-    CHAMAEMELUM_NOBILE = 0
-    DIPSOMANIA_SUPERCHARGER = 1
-    HYPER_DRIVE_GENERATOR = 2
-    CONDENSER = 7
+    CHAMAEMELUM_NOBILE = 6
+    DIPSOMANIA_SUPERCHARGER = 5
+    HYPER_DRIVE_GENERATOR = 4
+    CONDENSER = 7 # Что ещё за condenser?
 
     DOOR_ENTER = 1
     DOOR_ENGINE = 2
@@ -142,18 +185,6 @@ class COLORS:
     SAND_STORM = colorTo12Bit(BASIC_COLORS.SAND_STORM)
     PSYCHEDELIC_PURPLE = colorTo12Bit(BASIC_COLORS.PSYCHEDELIC_PURPLE)
     RASPBERRY_PINK = colorTo12Bit(BASIC_COLORS.RASPBERRY_PINK)
-
-class ROOM_LEDS:
-    # hallwayPuzzles
-    ENTRANCE_TOP = 6
-    ENTRANCE_BOTTOM = 14
-
-    ENGINE_ROOM = 7
-
-    # captainsBridge_1
-    MAIN_ROOM_TOP = 2
-    MAIN_ROOM_BOTTOM = 1
-    CAPTAINTS_BRIDGE = 0
 
 def setRoomLight(master, roomLed, color):
     if roomLed in [ROOM_LEDS.ENTRANCE_TOP, ROOM_LEDS.ENTRANCE_BOTTOM, ROOM_LEDS.ENGINE_ROOM]:
@@ -712,13 +743,14 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
     buttons = master.getButtons(hallwayPuzzles).get()
 
     # get values from visible Panel
-    visiblePanelSwitchers = buttons[VISIBLE_SWITCHERS_START_NUM:
-            VISIBLE_SWITCHERS_END_NUM + 1]
+    #visiblePanelSwitchers = buttons[VISIBLE_SWITCHERS_START_NUM:
+    #        VISIBLE_SWITCHERS_END_NUM + 1]
+    visiblePanelSwitchers = buttons[0, 1, 2, 6, 7, 8]
     # doing reverse because num 12 in buttons is 6 on panel
-    visiblePanelSwitchers.reverse()
 
-    hiddenPanelSwitchers = buttons[HIDDEN_SWITCHERS_START_NUM:
-            HIDDEN_SWITCHERS_END_NUM + 1]
+    #hiddenPanelSwitchers = buttons[HIDDEN_SWITCHERS_START_NUM:
+    #        HIDDEN_SWITCHERS_END_NUM + 1]
+    hiddenPanelSwitchers = buttons[5, 4, 3, 11, 10, 9]
 
     # print("Visible values: {}".format(visiblePanelSwitchers))
     # print("Hidden values: {}".format(hiddenPanelSwitchers))
