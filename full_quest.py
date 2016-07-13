@@ -144,9 +144,9 @@ class CB_CTRL:
     HYPER_DRIVE_GENERATOR = 4
     CONDENSER = 7 # Что ещё за condenser?
 
-    DOOR_ENTER = 1
-    DOOR_ENGINE = 2
-    DOOR_CAPTAIN = 3
+    DOOR_ENTER = 0
+    DOOR_ENGINE = 1
+    DOOR_CAPTAIN = 2
 
 class Colors:
     WHITE = [0xfff, 0xfff, 0xfff]
