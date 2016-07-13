@@ -98,9 +98,10 @@ class QuestRoom(threading.Thread):
             smartLeds.setOneLed(box_id + 8, Colors.BLUE)
         else:
             smartLeds.setOneLed(box_id + 8, Colors.RED)
-        relays = master.getRelays(self.hallwayPuzzles).get()
-        relays[box_id] = box_state
-        master.setRelays(self.hallwayPuzzles, relays)
+
+        sl_control = master.getSimpleLeds(hallwayPuzzles).get()
+        sl_control[LedsIdTable.BOX_LOCKS[box_id]] = box_state
+        master.setSimpleLeds(hallwayPuzzles, sl_control)
 
     def send_ws_message(self, client_id, message):
         # print("send_ws_message: to client {}".format(client_id))

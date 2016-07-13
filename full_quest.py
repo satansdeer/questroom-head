@@ -69,6 +69,11 @@ class LedsIdTable:
     VISIBLE_SWITCHERS = [26, 27, 28, 29, 30, 31]
     HIDDEN_SWITCHERS = [22, 23, 20, 21, 18, 19]
 
+    # 1 -> R -> b-z -> led1 R = 0
+    # 2 -> G -> z -> led1 G = 1
+    # 3 -> B -> b-o -> led1 B = 2
+    # 4 -> R -> b-c -> led2 R = 3
+    BOX_LOCKS = [0, 1, 2, 3]
 CB_SLAVE_1="CB_SLAVE_1"
 CB_SLAVE_2="CB_SLAVE_2"
 hallwayPuzzles = "hallwayPuzzles"
@@ -237,10 +242,11 @@ def setLedValue(leds, id, color):
 
 def REQ_QUEST_INIT(master, task, game_state):
 
-
     # close boxes
-    #master.setRelays(hallwayPuzzles, [0,0,0,0])
-    master.setRelays(hallwayPuzzles, [1,1,1,1])
+    sl_control = master.getSimpleLeds(hallwayPuzzles).get()
+    for index in range(4):
+        sl_control[LedsIdTable.BOX_LOCKS[index]] = 1
+    master.setSimpleLeds(hallwayPuzzles, sl_control)
 
     # close doors
     # master.setRelays(CB_SLAVE_2, [0,0,0,0])
@@ -638,9 +644,11 @@ def AC_OPEN_FIRST_BOX(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     # blue, because blue and green are switched
     smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.BLUE)
-    relays = master.getRelays(hallwayPuzzles).get()
-    relays[0] = 0
-    master.setRelays(hallwayPuzzles, relays)
+
+    sl_control = master.getSimpleLeds(hallwayPuzzles).get()
+    sl_control[LedsIdTable.BOX_LOCKS[0]] = 0
+    master.setSimpleLeds(hallwayPuzzles, sl_control)
+
     beep = pygame.mixer.Sound(SOUNDS.BOX_OPEN)
     beep.set_volume(0.3)
     beep.play()
@@ -651,9 +659,9 @@ def AC_OPEN_SECOND_BOX(master, task, game_state):
     smartLeds.setOneLed(LedsIdTable.BOX_2, Colors.BLUE)
 
 
-    relays = master.getRelays(hallwayPuzzles).get()
-    relays[1] = 0
-    master.setRelays(hallwayPuzzles, relays)
+    sl_control = master.getSimpleLeds(hallwayPuzzles).get()
+    sl_control[LedsIdTable.BOX_LOCKS[1]] = 0
+    master.setSimpleLeds(hallwayPuzzles, sl_control)
 
     beep = pygame.mixer.Sound(SOUNDS.BOX_OPEN)
     beep.set_volume(0.3)
@@ -664,9 +672,9 @@ def AC_OPEN_THIRD_BOX(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.BOX_3, Colors.BLUE)
 
-    relays = master.getRelays(hallwayPuzzles).get()
-    relays[2] = 0
-    master.setRelays(hallwayPuzzles, relays)
+    sl_control = master.getSimpleLeds(hallwayPuzzles).get()
+    sl_control[LedsIdTable.BOX_LOCKS[2]] = 0
+    master.setSimpleLeds(hallwayPuzzles, sl_control)
 
 
     beep = pygame.mixer.Sound(SOUNDS.BOX_OPEN)
@@ -678,9 +686,9 @@ def AC_OPEN_FOURTH_BOX(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.BOX_4, Colors.BLUE)
 
-    relays = master.getRelays(hallwayPuzzles).get()
-    relays[3] = 0
-    master.setRelays(hallwayPuzzles, relays)
+    sl_control = master.getSimpleLeds(hallwayPuzzles).get()
+    sl_control[LedsIdTable.BOX_LOCKS[3]] = 0
+    master.setSimpleLeds(hallwayPuzzles, sl_control)
 
     beep = pygame.mixer.Sound(SOUNDS.BOX_OPEN)
     beep.set_volume(0.3)
