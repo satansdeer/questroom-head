@@ -757,7 +757,7 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
     buttons = master.getButtons(hallwayPuzzles).get()
 
     # get values from visible and hidden Panels
-    for index in range(ButtonsIdTable.VISIBLE_SWITCHERS):
+    for index in range(ButtonsIdTable.VISIBLE_SWITCHERS.length):
         visiblePanelSwitchers[index] = buttons[ButtonsIdTable.VISIBLE_SWITCHERS[index]]
         hiddenPanelSwitchers[index] = buttons[ButtonsIdTable.HIDDEN_SWITCHERS[index]]
 
