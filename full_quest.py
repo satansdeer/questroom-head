@@ -66,6 +66,9 @@ class LedsIdTable:
     BOX_3 = 6
     BOX_4 = 7
 
+    VISIBLE_SWITCHERS = [27, 28, 29, 30, 31, 32]
+    HIDDEN_SWITCHERS = [23, 24, 21, 22, 19, 20]
+
 CB_SLAVE_1="CB_SLAVE_1"
 CB_SLAVE_2="CB_SLAVE_2"
 hallwayPuzzles = "hallwayPuzzles"
@@ -90,6 +93,9 @@ class ButtonsIdTable:
     ROBOT_HEAD = 17
     ENGINE = 16
     COMMUTATOR = 15
+    VISIBLE_SWITCHERS = [0, 1, 2, 6, 7, 8]
+    HIDDEN_SWITCHERS  = [5, 4, 3, 11, 10, 9]
+
 
 class CB_CTRL:
     """Named constant for Captain's Bridge controls"""
@@ -717,9 +723,9 @@ def toggleVisibleColor(color):
 hiddenPanelColors = [pColors.RED] * 6
 visiblePanelColors = [pColors.RED] * 6
 
-visiblePanelSwitchers = []
+visiblePanelSwitchers = [None] * 6
 oldVisiblePanelSwitchers = [None] * 6
-hiddenPanelSwitchers = []
+hiddenPanelSwitchers = [None] * 6
 oldHiddenPanelSwitchers = [None] * 6
 
 def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
@@ -742,15 +748,10 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
 
     buttons = master.getButtons(hallwayPuzzles).get()
 
-    # get values from visible Panel
-    #visiblePanelSwitchers = buttons[VISIBLE_SWITCHERS_START_NUM:
-    #        VISIBLE_SWITCHERS_END_NUM + 1]
-    visiblePanelSwitchers = buttons[0, 1, 2, 6, 7, 8]
-    # doing reverse because num 12 in buttons is 6 on panel
-
-    #hiddenPanelSwitchers = buttons[HIDDEN_SWITCHERS_START_NUM:
-    #        HIDDEN_SWITCHERS_END_NUM + 1]
-    hiddenPanelSwitchers = buttons[5, 4, 3, 11, 10, 9]
+    # get values from visible and hidden Panels
+    for index in range(ButtonsIdTable.VISIBLE_SWITCHERS):
+        visiblePanelSwitchers[index] = buttons[ButtonsIdTable.VISIBLE_SWITCHERS[index]]
+        hiddenPanelSwitchers[index] = buttons[ButtonsIdTable.HIDDEN_SWITCHERS[index]]
 
     # print("Visible values: {}".format(visiblePanelSwitchers))
     # print("Hidden values: {}".format(hiddenPanelSwitchers))
@@ -789,10 +790,8 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
     # It's might be critical
     smartLedsObj = master.getSmartLeds(hallwayPuzzles)
     for index in range(ELEMENTS_NUMBER):
-        smartLedsObj.setOneLed(index, hiddenPanelColors[index])
-        # NUM_LEDS 32, but index from 0 to 31
-        visibleIndex = smartLedsObj.NUM_LEDS - 1 - index
-        smartLedsObj.setOneLed(visibleIndex, visiblePanelColors[index])
+        smartLedsObj.setOneLed(LedsIdTable.HIDDEN_SWITCHERS[index], hiddenPanelColors[index])
+        smartLedsObj.setOneLed(LedsIdTable.VISIBLE_SWITCHERS[index], visiblePanelColors[index])
 
     WINNER_COLOR_LIST= [pColors.BLUE] * 6
     visiblePanelState = (WINNER_COLOR_LIST == visiblePanelColors)
