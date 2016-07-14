@@ -231,8 +231,8 @@ def RANDOM_ROOM_LIGHT(master):
     setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, LIGHT_RANDOM[randColorId])
 
 class AdcIdTable:
-    RADIO = 0
-    BOX_LOCK = 1
+    RADIO = 1
+    BOX_LOCK = 0
 
 
 def setLedValue(leds, id, color):
