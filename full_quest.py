@@ -757,7 +757,7 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
     buttons = master.getButtons(hallwayPuzzles).get()
 
     # get values from visible and hidden Panels
-    for index in range(ButtonsIdTable.VISIBLE_SWITCHERS.length):
+    for index in range(len(ButtonsIdTable.VISIBLE_SWITCHERS)):
         visiblePanelSwitchers[index] = buttons[ButtonsIdTable.VISIBLE_SWITCHERS[index]]
         hiddenPanelSwitchers[index] = buttons[ButtonsIdTable.HIDDEN_SWITCHERS[index]]
 
@@ -984,22 +984,20 @@ def REQ_MECHANICS_CARD_USED(master, task, game_state):
 
 
 def AC_ENABLE_TUMBLER_PUZZLE(master, task, game_state):
-    smartLeds = master.getSmartLeds(hallwayPuzzles).get()
-    ledIdStartPosition = 31
-    for index in range(6):
-        ledID = ledIdStartPosition - index
-        setLedValue(smartLeds, ledID, Colors.RED)
-        setLedValue(smartLeds, index, Colors.RED)
-    master.setSmartLeds(hallwayPuzzles, smartLeds)
+    ELEMENTS_NUMBER = len(LedsIdTable.HIDDEN_SWITCHERS)
+
+    smartLedsObj = master.getSmartLeds(hallwayPuzzles)
+    for index in range(ELEMENTS_NUMBER):
+        smartLedsObj.setOneLed(LedsIdTable.HIDDEN_SWITCHERS[index], Colors.RED)
+        smartLedsObj.setOneLed(LedsIdTable.VISIBLE_SWITCHERS[index], Colors.RED)
 
 def AC_ENABLE_TUMBLER_PUZZLE_LIGHT_WIN(master, task, game_state):
-    smartLeds = master.getSmartLeds(hallwayPuzzles).get()
-    ledIdStartPosition = 31
-    for index in range(6):
-        ledID = ledIdStartPosition - index
-        setLedValue(smartLeds, ledID, Colors.BLUE)
-        setLedValue(smartLeds, index, Colors.BLUE)
-    master.setSmartLeds(hallwayPuzzles, smartLeds)
+    ELEMENTS_NUMBER = len(LedsIdTable.HIDDEN_SWITCHERS)
+
+    smartLedsObj = master.getSmartLeds(hallwayPuzzles)
+    for index in range(ELEMENTS_NUMBER):
+        smartLedsObj.setOneLed(LedsIdTable.HIDDEN_SWITCHERS[index], Colors.BLUE)
+        smartLedsObj.setOneLed(LedsIdTable.VISIBLE_SWITCHERS[index], Colors.BLUE)
 
 def REQ_ROBOT_ASSEMBLED(master, task, game_state):
     # return True
