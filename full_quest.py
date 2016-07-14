@@ -59,8 +59,8 @@ class LedsIdTable:
     ROBOT_BODY_LEFT = 10
     ROBOT_BODY_RIGHT = 11
     ROBOT_HEAD = 16
-    ENGINE_LEFT = 9
-    ENGINE_RIGTH = 8
+    ENGINE_LEFT = 8
+    ENGINE_RIGTH = 9
     BOX_1 = 12
     BOX_2 = 13
     BOX_3 = 14
