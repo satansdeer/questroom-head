@@ -68,9 +68,9 @@ class QuestRoom(threading.Thread):
             captain_bridge_2_comport = process.communicate()[0]
             print("CB_2: {}".format(captain_bridge_2_comport))
 
-        self.captainsBridge_2 = master.addSlave("CB_SLAVE_2", captain_bridge_2_comport, 3, boudrate=1)
-        self.hallwayPuzzles = master.addSlave("hallwayPuzzles", hallway_comport, 1, boudrate=1)
-        self.captainsBridge_1 = master.addSlave("CB_SLAVE_1", captain_bridge_1_comport, 2, boudrate=1)
+        self.captainsBridge_2 = master.addSlave("CB_SLAVE_2", captain_bridge_2_comport, 3, boudrate=5)
+        self.hallwayPuzzles = master.addSlave("hallwayPuzzles", hallway_comport, 1, boudrate=5)
+        self.captainsBridge_1 = master.addSlave("CB_SLAVE_1", captain_bridge_1_comport, 2, boudrate=5)
 
         master.start()
 
