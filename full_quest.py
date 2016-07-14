@@ -66,8 +66,8 @@ class LedsIdTable:
     BOX_3 = 14
     BOX_4 = 15
 
-    VISIBLE_SWITCHERS = [26, 27, 28, 29, 30, 31]
-    HIDDEN_SWITCHERS = [22, 23, 20, 21, 18, 19]
+    VISIBLE_SWITCHERS = [31, 30, 29, 28, 27, 26]
+    HIDDEN_SWITCHERS = [23, 22, 21, 20, 19, 18]
 
     # 1 -> R -> b-z -> led1 R = 0
     # 2 -> G -> z -> led1 G = 1
