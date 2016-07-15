@@ -941,7 +941,7 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
             correctLedTimerDescriptor.start()
             CORRECT_LED = True
             smartLeds = master.getSmartLeds(hallwayPuzzles)
-            smartLeds.setOneLed(LedsIdTable.BOX_LEDS[0], Colors.GREEN)
+            smartLeds.setOneLed(LedsIdTable.BOX_LEDS[0], Colors.BLUE)
 
     reversePlayerSequence = copy(PLAYER_SEQUENCE[:len(ACTIVATION_SEQUENCE)])
     reversePlayerSequence.reverse()
