@@ -883,7 +883,7 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     global OPEN_FLAG
     global CORRECT_LED, CORRECT_LED_TIMEOUT, correctLedTimerDescriptor
     # Позиция в массиве ADC
-    LOCK_ID = 1
+    LOCK_ID = AdcIdTable.BOX_LOCK
     # погрешность
     ERROR_VALUE = 15
 
