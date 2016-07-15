@@ -65,6 +65,7 @@ class LedsIdTable:
     BOX_2 = 13
     BOX_3 = 14
     BOX_4 = 15
+    BOX_LEDS = [12, 13, 14, 15]
 
     VISIBLE_SWITCHERS = [31, 30, 29, 28, 27, 26]
     HIDDEN_SWITCHERS = [23, 22, 21, 20, 19, 18]
@@ -489,23 +490,14 @@ def AC_ENABLE_RADIO(master, task, game_state):
     print("Radio puzzle solved")
     smartLeds = master.getSmartLeds(hallwayPuzzles)
 
-    relays = master.getRelays(hallwayPuzzles).get()
-    if relays[0]:
-        smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.RED)
-    else:
-        smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.BLUE)
-    if relays[1]:
-        smartLeds.setOneLed(LedsIdTable.BOX_2, Colors.RED)
-    else:
-        smartLeds.setOneLed(LedsIdTable.BOX_2, Colors.BLUE)
-    if relays[2]:
-        smartLeds.setOneLed(LedsIdTable.BOX_3, Colors.RED)
-    else:
-        smartLeds.setOneLed(LedsIdTable.BOX_3, Colors.BLUE)
-    if relays[3]:
-        smartLeds.setOneLed(LedsIdTable.BOX_4, Colors.RED)
-    else:
-        smartLeds.setOneLed(LedsIdTable.BOX_4, Colors.BLUE)
+
+    sl_control = master.getSimpleLeds(hallwayPuzzles).get()
+    for index in range(4):
+        if sl_control[LedsIdTable.BOX_LOCKS[index]]:
+            smartLeds.setOneLed(LedsIdTable.BOX_LEDS[index], Colors.RED)
+        else:
+            smartLeds.setOneLed(LedsIdTable.BOX_LEDS[index], Colors.GREEN)
+
 
     if radio is None:
         # print("========================Radio start!=======================")
@@ -641,13 +633,14 @@ def REQ_SECRET_DOORS(master, task, game_state):
 
 def AC_OPEN_FIRST_BOX(master, task, game_state):
     print("First box was open!")
-    smartLeds = master.getSmartLeds(hallwayPuzzles)
-    # blue, because blue and green are switched
-    smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.BLUE)
 
+    box_id = 0
     sl_control = master.getSimpleLeds(hallwayPuzzles).get()
-    sl_control[LedsIdTable.BOX_LOCKS[0]] = 0
+    sl_control[LedsIdTable.BOX_LOCKS[box_id]] = 0
     master.setSimpleLeds(hallwayPuzzles, sl_control)
+
+    smartLeds = master.getSmartLeds(hallwayPuzzles)
+    smartLeds.setOneLed(LedsIdTable.BOX_LEDS[box_id], Colors.GREEN)
 
     beep = pygame.mixer.Sound(SOUNDS.BOX_OPEN)
     beep.set_volume(0.3)
@@ -655,13 +648,13 @@ def AC_OPEN_FIRST_BOX(master, task, game_state):
 
 def AC_OPEN_SECOND_BOX(master, task, game_state):
     print("Second box was open!")
-    smartLeds = master.getSmartLeds(hallwayPuzzles)
-    smartLeds.setOneLed(LedsIdTable.BOX_2, Colors.BLUE)
-
-
+    box_id = 1
     sl_control = master.getSimpleLeds(hallwayPuzzles).get()
-    sl_control[LedsIdTable.BOX_LOCKS[1]] = 0
+    sl_control[LedsIdTable.BOX_LOCKS[box_id]] = 0
     master.setSimpleLeds(hallwayPuzzles, sl_control)
+
+    smartLeds = master.getSmartLeds(hallwayPuzzles)
+    smartLeds.setOneLed(LedsIdTable.BOX_LEDS[box_id], Colors.GREEN)
 
     beep = pygame.mixer.Sound(SOUNDS.BOX_OPEN)
     beep.set_volume(0.3)
@@ -669,12 +662,13 @@ def AC_OPEN_SECOND_BOX(master, task, game_state):
 
 def AC_OPEN_THIRD_BOX(master, task, game_state):
     print("Third box was open!")
-    smartLeds = master.getSmartLeds(hallwayPuzzles)
-    smartLeds.setOneLed(LedsIdTable.BOX_3, Colors.BLUE)
-
+    box_id = 2
     sl_control = master.getSimpleLeds(hallwayPuzzles).get()
-    sl_control[LedsIdTable.BOX_LOCKS[2]] = 0
+    sl_control[LedsIdTable.BOX_LOCKS[box_id]] = 0
     master.setSimpleLeds(hallwayPuzzles, sl_control)
+
+    smartLeds = master.getSmartLeds(hallwayPuzzles)
+    smartLeds.setOneLed(LedsIdTable.BOX_LEDS[box_id], Colors.GREEN)
 
 
     beep = pygame.mixer.Sound(SOUNDS.BOX_OPEN)
@@ -683,12 +677,13 @@ def AC_OPEN_THIRD_BOX(master, task, game_state):
 
 def AC_OPEN_FOURTH_BOX(master, task, game_state):
     print("Fourth box was open!")
-    smartLeds = master.getSmartLeds(hallwayPuzzles)
-    smartLeds.setOneLed(LedsIdTable.BOX_4, Colors.BLUE)
-
+    box_id = 3
     sl_control = master.getSimpleLeds(hallwayPuzzles).get()
-    sl_control[LedsIdTable.BOX_LOCKS[3]] = 0
+    sl_control[LedsIdTable.BOX_LOCKS[box_id]] = 0
     master.setSimpleLeds(hallwayPuzzles, sl_control)
+
+    smartLeds = master.getSmartLeds(hallwayPuzzles)
+    smartLeds.setOneLed(LedsIdTable.BOX_LEDS[box_id], Colors.GREEN)
 
     beep = pygame.mixer.Sound(SOUNDS.BOX_OPEN)
     beep.set_volume(0.3)
@@ -862,10 +857,9 @@ def enableCorrectLedTimeout(master):
     CORRECT_LED = False
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     if OPEN_FLAG:
-        # smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.BLUE)
         pass
     else:
-        smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.RED)
+        smartLeds.setOneLed(LedsIdTable.BOX_LEDS[0], Colors.RED)
 
 sequencePeriodicRead = None
 def AC_ADD_SEQUENCE_PUZZLE(master, task, game_state):
@@ -951,7 +945,7 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
             correctLedTimerDescriptor.start()
             CORRECT_LED = True
             smartLeds = master.getSmartLeds(hallwayPuzzles)
-            smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.GREEN)
+            smartLeds.setOneLed(LedsIdTable.BOX_LEDS[0], Colors.GREEN)
 
     reversePlayerSequence = copy(PLAYER_SEQUENCE[:len(ACTIVATION_SEQUENCE)])
     reversePlayerSequence.reverse()
@@ -964,10 +958,8 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
         if OPEN_FLAG:
         # blue, because blue and green are switched
             OPEN_FLAG = False
-            # smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.BLUE)
         else:
             OPEN_FLAG = True
-            # smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.RED)
         # return  False
         return  True
 
