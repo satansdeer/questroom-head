@@ -61,10 +61,6 @@ class LedsIdTable:
     ROBOT_HEAD = 16
     ENGINE_LEFT = 8
     ENGINE_RIGTH = 9
-    BOX_1 = 12
-    BOX_2 = 13
-    BOX_3 = 14
-    BOX_4 = 15
     BOX_LEDS = [12, 13, 14, 15]
 
     VISIBLE_SWITCHERS = [31, 30, 29, 28, 27, 26]

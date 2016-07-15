@@ -95,9 +95,9 @@ class QuestRoom(threading.Thread):
     def set_box_state(self, box_id, box_state):
         smartLeds = master.getSmartLeds(self.hallwayPuzzles)
         if(box_state == 0):
-            smartLeds.setOneLed(box_id + 8, Colors.BLUE)
+            smartLeds.setOneLed(LedsIdTable.BOX_LEDS[box_id], Colors.GREEN)
         else:
-            smartLeds.setOneLed(box_id + 8, Colors.RED)
+            smartLeds.setOneLed(LedsIdTable.BOX_LEDS[box_id], Colors.RED)
 
         sl_control = master.getSimpleLeds(hallwayPuzzles).get()
         sl_control[LedsIdTable.BOX_LOCKS[box_id]] = box_state
