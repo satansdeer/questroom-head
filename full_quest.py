@@ -9,6 +9,9 @@ from copy import copy
 from threading import Timer
 import pygame
 
+CB_SLAVE_1="CB_SLAVE_1"
+CB_SLAVE_2="CB_SLAVE_2"
+hallwayPuzzles = "hallwayPuzzles"
 
 class MESSAGE:
     BATTERY_AVALIABLE = "Универсальная батарея Попова №{id} вставлена"
@@ -17,6 +20,11 @@ class MESSAGE:
     PRESS_HERABORA = "Когда будете готовы - жмите H.E.R.A.B.O.R.A."
     WINNER = "Вы выжили! \nВходная дверь открыта"
     FAIL = "Ваша команда погибла! \nВходная дверь открыта"
+
+class RoomLight():
+    def __init__(self, room, led):
+        self.room = room
+        self.led = led
 
 class ROOM_LEDS:
 #=====SPB=====
@@ -31,16 +39,16 @@ class ROOM_LEDS:
 #    MAIN_ROOM_BOTTOM = 1
 #    CAPTAINTS_BRIDGE = 0
 #=====KZN=====
+    # =====================
     # hallwayPuzzles
-    ENTRANCE_TOP = 2
-    ENTRANCE_BOTTOM = 3
-
-    ENGINE_ROOM = 1
+    ENTRANCE_TOP = RoomLight(room=hallwayPuzzles, led=2)
+    ENTRANCE_BOTTOM = RoomLight(room=hallwayPuzzles, led=3)
+    ENGINE_ROOM = RoomLight(room=hallwayPuzzles, led=1)
 
     # captainsBridge_1
-    MAIN_ROOM_TOP = 2
-    MAIN_ROOM_BOTTOM = 1
-    CAPTAINTS_BRIDGE = 0
+    MAIN_ROOM_TOP = RoomLight(room=CB_SLAVE_1, led=2)
+    MAIN_ROOM_BOTTOM = RoomLight(room=CB_SLAVE_1, led=1)
+    CAPTAINTS_BRIDGE = RoomLight(room=CB_SLAVE_1, led=0)
 
 class LedsIdTable:
 #=====SPB======
@@ -71,9 +79,6 @@ class LedsIdTable:
     # 3 -> B -> b-o -> led1 B = 2
     # 4 -> R -> b-c -> led2 R = 3
     BOX_LOCKS = [0, 1, 2, 3]
-CB_SLAVE_1="CB_SLAVE_1"
-CB_SLAVE_2="CB_SLAVE_2"
-hallwayPuzzles = "hallwayPuzzles"
 
 class SOUNDS:
     BOX_OPEN = 'coin.wav'
@@ -195,14 +200,8 @@ class COLORS:
     RASPBERRY_PINK = colorTo12Bit(BASIC_COLORS.RASPBERRY_PINK)
 
 def setRoomLight(master, roomLed, color):
-    if roomLed in [ROOM_LEDS.ENTRANCE_TOP, ROOM_LEDS.ENTRANCE_BOTTOM, ROOM_LEDS.ENGINE_ROOM]:
-        slave = hallwayPuzzles
-    elif roomLed in [ROOM_LEDS.MAIN_ROOM_TOP, ROOM_LEDS.MAIN_ROOM_BOTTOM, ROOM_LEDS.CAPTAINTS_BRIDGE]:
-        slave = CB_SLAVE_1
-    else: return
-
-    leds = master.getSmartLeds(slave)
-    leds.setOneLed(roomLed, color)
+    leds = master.getSmartLeds(roomLed.room)
+    leds.setOneLed(roomLed.led, color)
 
 def RANDOM_ROOM_LIGHT(master):
     LIGHT_RANDOM = [COLORS.WHITE, COLORS.RED, COLORS.LIGHT_RED, COLORS.GREEN, COLORS.LIGHT_GREEN, COLORS.BLUE, COLORS.NONE, COLORS.SAND_STORM, COLORS.PSYCHEDELIC_PURPLE, COLORS.RASPBERRY_PINK]
