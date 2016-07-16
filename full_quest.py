@@ -703,7 +703,7 @@ class pColors:
 
 def toggleHiddenColor(color):
     if pColors.RED == color:
-        color = pColors.BLUE
+        color = pColors.GREEN
     else:
         color = pColors.RED
     return color
@@ -792,7 +792,7 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
         smartLedsObj.setOneLed(LedsIdTable.HIDDEN_SWITCHERS[index], hiddenPanelColors[index])
         smartLedsObj.setOneLed(LedsIdTable.VISIBLE_SWITCHERS[index], visiblePanelColors[index])
 
-    WINNER_COLOR_LIST= [pColors.BLUE] * 6
+    WINNER_COLOR_LIST= [pColors.GREEN] * 6
     visiblePanelState = (WINNER_COLOR_LIST == visiblePanelColors)
     hiddenPanelState = (WINNER_COLOR_LIST == hiddenPanelColors)
 
@@ -984,8 +984,8 @@ def AC_ENABLE_TUMBLER_PUZZLE_LIGHT_WIN(master, task, game_state):
 
     smartLedsObj = master.getSmartLeds(hallwayPuzzles)
     for index in range(ELEMENTS_NUMBER):
-        smartLedsObj.setOneLed(LedsIdTable.HIDDEN_SWITCHERS[index], Colors.BLUE)
-        smartLedsObj.setOneLed(LedsIdTable.VISIBLE_SWITCHERS[index], Colors.BLUE)
+        smartLedsObj.setOneLed(LedsIdTable.HIDDEN_SWITCHERS[index], Colors.GREEN)
+        smartLedsObj.setOneLed(LedsIdTable.VISIBLE_SWITCHERS[index], Colors.GREEN)
 
 def REQ_ROBOT_ASSEMBLED(master, task, game_state):
     # return True
