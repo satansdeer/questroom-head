@@ -703,7 +703,7 @@ class pColors:
 
 def toggleHiddenColor(color):
     if pColors.RED == color:
-        color = pColors.BLUE
+        color = pColors.GREEN
     else:
         color = pColors.RED
     return color
@@ -792,7 +792,7 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
         smartLedsObj.setOneLed(LedsIdTable.HIDDEN_SWITCHERS[index], hiddenPanelColors[index])
         smartLedsObj.setOneLed(LedsIdTable.VISIBLE_SWITCHERS[index], visiblePanelColors[index])
 
-    WINNER_COLOR_LIST= [pColors.BLUE] * 6
+    WINNER_COLOR_LIST= [pColors.GREEN] * 6
     visiblePanelState = (WINNER_COLOR_LIST == visiblePanelColors)
     hiddenPanelState = (WINNER_COLOR_LIST == hiddenPanelColors)
 
