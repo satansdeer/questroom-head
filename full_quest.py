@@ -984,8 +984,8 @@ def AC_ENABLE_TUMBLER_PUZZLE_LIGHT_WIN(master, task, game_state):
 
     smartLedsObj = master.getSmartLeds(hallwayPuzzles)
     for index in range(ELEMENTS_NUMBER):
-        smartLedsObj.setOneLed(LedsIdTable.HIDDEN_SWITCHERS[index], Colors.BLUE)
-        smartLedsObj.setOneLed(LedsIdTable.VISIBLE_SWITCHERS[index], Colors.BLUE)
+        smartLedsObj.setOneLed(LedsIdTable.HIDDEN_SWITCHERS[index], Colors.GREEN)
+        smartLedsObj.setOneLed(LedsIdTable.VISIBLE_SWITCHERS[index], Colors.GREEN)
 
 def REQ_ROBOT_ASSEMBLED(master, task, game_state):
     # return True
