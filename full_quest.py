@@ -115,9 +115,9 @@ class CB_CTRL:
     KRIVOSHUP_MINUS = 2
     KRIVOSHUP_PLUS = 1
     SERVO_COOLING_SYSTEM = 0
-    ULTRAFOTON = 15
+    ULTRAFOTON = 6
     REPAIR_NANOROBOTS = 5
-    C3PO = 16
+    C3PO = 15
     R2D2 = 11
     TETRAGEKS = 3
     #    # ADC
@@ -127,8 +127,8 @@ class CB_CTRL:
     # Controller 2
     #    # Buttons
     TPBACH_1 = 8
-    TPBACH_2 = 12
-    DVORNIKI = 13
+    TPBACH_2 = 13
+    DVORNIKI = 12
     ECO_LAZER = 14
 
     BATTERY_1 = 7
@@ -139,11 +139,11 @@ class CB_CTRL:
     PROTON_LAUNCHERS_BATTERY = 0
     DARK_MATTER_STABILIZER = 1
     HERABORA = 4
-    TECHNO = 17
-    UGNETATEL = 9
+    TECHNO = 15
+    UGNETATEL = 17
     GIPERBOLOID = 3
-    ZOND_JS = 15
-    ZOND_JC = 16
+    ZOND_JS = 16
+    ZOND_JC = 9
 
     #    # ADC
     CHAMAEMELUM_NOBILE = 6
