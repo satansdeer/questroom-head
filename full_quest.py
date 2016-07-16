@@ -1149,7 +1149,7 @@ def AC_WIN_MUSIC_START(master, task, game_state):
     game_state.quest_room.current_music.play(-1)
 
 def REQ_CHECK_HERABORA(master, task, game_state):
-        heraboraPressed = master.getButtons(CB_SLAVE_2).get()[12]
+        heraboraPressed = master.getButtons(CB_SLAVE_2).get()[CB_CTRL.HERABORA]
         #print("Herabora value: {}\n", heraboraPressed)
         return heraboraPressed
 
