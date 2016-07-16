@@ -1069,7 +1069,7 @@ def REQ_CHECK_BATTERIES(master, task, game_state):
 
     global batterys_saved_state, engine_saved_state
 
-    buttons = master.getButtons(CB_SLAVE_1).get()
+    buttons = master.getButtons(CB_SLAVE_2).get()
     batterys_state = [1] * 5
     batterys_state[1] = buttons[CB_CTRL.BATTERY_1]
     batterys_state[2] = buttons[CB_CTRL.BATTERY_2]
