@@ -726,8 +726,11 @@ oldVisiblePanelSwitchers = [None] * 6
 hiddenPanelSwitchers = [None] * 6
 oldHiddenPanelSwitchers = [None] * 6
 
+first_tumbler_step = True
+
 def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
     # return True
+    global first_tumbler_step
     global hiddenPanelColors
     global visiblePanelColors
 
@@ -736,6 +739,17 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
 
     global hiddenPanelSwitchers
     global oldHiddenPanelSwitchers
+
+    if first_tumbler_step:
+        first_tumbler_step = False
+        buttons = master.getButtons(hallwayPuzzles).get()
+        for index in range(len(ButtonsIdTable.VISIBLE_SWITCHERS)):
+            visiblePanelSwitchers[index] = buttons[ButtonsIdTable.VISIBLE_SWITCHERS[index]]
+            hiddenPanelSwitchers[index] = buttons[ButtonsIdTable.HIDDEN_SWITCHERS[index]]
+
+        oldVisiblePanelSwitchers = visiblePanelSwitchers[:]
+        oldHiddenPanelSwitchers = hiddenPanelSwitchers[:]
+
 
     ELEMENTS_NUMBER = 6
     VISIBLE_SWITCHERS_START_NUM = 12
