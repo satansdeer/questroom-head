@@ -46,9 +46,9 @@ class ROOM_LEDS:
     ENGINE_ROOM = RoomLight(room=hallwayPuzzles, led=1)
 
     # captainsBridge_1
-    MAIN_ROOM_TOP = RoomLight(room=CB_SLAVE_1, led=2)
-    MAIN_ROOM_BOTTOM = RoomLight(room=CB_SLAVE_1, led=1)
-    CAPTAINTS_BRIDGE = RoomLight(room=CB_SLAVE_1, led=0)
+    MAIN_ROOM_TOP = RoomLight(room=CB_SLAVE_2, led=2)
+    MAIN_ROOM_BOTTOM = RoomLight(room=CB_SLAVE_2, led=1)
+    CAPTAINTS_BRIDGE = RoomLight(room=CB_SLAVE_2, led=0)
 
 class LedsIdTable:
 #=====SPB======
@@ -1082,7 +1082,7 @@ def REQ_CHECK_BATTERIES(master, task, game_state):
 
     global batterys_saved_state, engine_saved_state
 
-    buttons = master.getButtons(CB_SLAVE_2).get()
+    buttons = master.getButtons(CB_SLAVE_1).get()
     batterys_state = [1] * 5
     batterys_state[1] = buttons[CB_CTRL.BATTERY_1]
     batterys_state[2] = buttons[CB_CTRL.BATTERY_2]
