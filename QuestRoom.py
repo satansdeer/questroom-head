@@ -47,9 +47,9 @@ class QuestRoom(threading.Thread):
         master = DeviceMaster()
         #hallwayPort = "/dev/tty.usbserial-A4033KK5"
         if platform.system() == 'Windows':
-            hallway_comport = "COM3"
-            captain_bridge_1_comport = "COM5"
-            captain_bridge_2_comport = "COM4"
+            hallway_comport = "COM4"
+            captain_bridge_1_comport = "COM4"
+            captain_bridge_2_comport = "COM3"
         else:
             get_tty_script="./get_ttyUSB.sh "
             bashCommand = get_tty_script + "A4033KK5"
@@ -68,9 +68,9 @@ class QuestRoom(threading.Thread):
             captain_bridge_2_comport = process.communicate()[0]
             print("CB_2: {}".format(captain_bridge_2_comport))
 
-        self.captainsBridge_1 = master.addSlave("CB_SLAVE_1", captain_bridge_1_comport, 2, boudrate=5)
         self.captainsBridge_2 = master.addSlave("CB_SLAVE_2", captain_bridge_2_comport, 3, boudrate=5)
         self.hallwayPuzzles = master.addSlave("hallwayPuzzles", hallway_comport, 1, boudrate=5)
+        self.captainsBridge_1 = master.addSlave("CB_SLAVE_1", captain_bridge_1_comport, 2, boudrate=5)
 
         master.start()
 
