@@ -34,7 +34,7 @@ class Sound:
     def open_stream(self):
         stream = self.p.open(format=self.p.get_format_from_width(self.wf.getsampwidth()),
             channels=min(self.wf.getnchannels(), self.max_channels),
-            output_device_index=2,
+            output_device_index=3,
             rate=self.wf.getframerate(),
             output=True)
         return stream
