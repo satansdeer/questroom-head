@@ -11,7 +11,7 @@ function WebSocketTest() {
 	var progressBar = document.querySelector(".time-left_progress");
 	if ("WebSocket" in window) {
 		var id = window.location.search.split("?")[1].split("=")[1];
-		window.ws = new WebSocket("ws://localhost:8888/socket?Id="+id);
+		window.ws = new WebSocket("ws://" + window.location.hostname + ":8888/socket?Id="+id);
 
 		window.document.title = "cb_" + id;
 
