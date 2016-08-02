@@ -93,7 +93,8 @@ class GameState:
         task_skipped = task in self.skipped_tasks
         if task_skipped:
             print("Task with id {}: skipped".format(task.id))
-            self.skipped_tasks.remove(task)
+            if task in self.skipped_tasks:
+                self.skipped_tasks.remove(task)
 
         if task_success or task_skipped:
 
