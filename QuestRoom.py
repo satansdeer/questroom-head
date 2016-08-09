@@ -47,9 +47,9 @@ class QuestRoom(threading.Thread):
         master = DeviceMaster()
         #hallwayPort = "/dev/tty.usbserial-A4033KK5"
         if platform.system() == 'Windows':
-            hallway_comport = "COM6"
-            captain_bridge_1_comport = "COM7"
-            captain_bridge_2_comport = "COM8"
+            hallway_comport = "COM3"
+            captain_bridge_1_comport = "COM3"
+            captain_bridge_2_comport = "COM3"
         else:
             get_tty_script="./get_ttyUSB.sh "
             bashCommand = get_tty_script + "A4033KK5"
