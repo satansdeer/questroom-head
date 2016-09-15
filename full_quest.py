@@ -497,7 +497,7 @@ def AC_ENABLE_RADIO(master, task, game_state):
     if radio is None:
         # print("========================Radio start!=======================")
         radio = Radio(0.5, 0.001)
-        sounds = [('harp.wav',40.0,80.0), ('island_music_x.wav',120.0,160.0), ('leftright_final.wav',200.0,240.0)]
+        sounds = [('harp.wav',40.0,80.0), ('island_music_x.wav',120.0,160.0), ('sounds/radioSolveKey.wav',200.0,240.0)]
         radio.init_sounds(sounds, 'noize.wav')
         radio.start()
 
@@ -903,7 +903,7 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     # ACTIVATION_SEQUENCE = ['L', 'L', 'R', 'L', 'R', 'R', 'L', 'R']
     # Последовательность для открытия
     # L - влево; R - вправо
-    ACTIVATION_SEQUENCE = ['L', 'L', 'R', 'L']
+    ACTIVATION_SEQUENCE = ['L', 'L', 'R', 'L', 'R', 'L', 'L']
     # time.sleep(0.6)
     if lockRead:
         value = master.getAdc(hallwayPuzzles).get()[LOCK_ID]
