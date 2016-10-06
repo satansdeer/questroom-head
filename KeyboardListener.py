@@ -15,7 +15,7 @@ class KeyboardListener(threading.Thread):
     PASS_1 = [1,1,2,3, 5, 8, 1,3,2,1]
     TOGGLE_ENTER_DOOR=[1,1,2,3, 5, 8, 1,3,2,1]
     TOGGLE_ENGINE_DOOR=[5,7,8,3]
-    TOGGLE_CAPTAIN_DOOR=[7,0,6,2]
+    TOGGLE_CAPTAIN_DOOR=[7,3,6,2]
 
     TOGGLE_FIRST_BOX=[1,1,1,1,0,0,0,0]
     TOGGLE_SECOND_BOX=[2,2,2,2,0,0,0,0]
@@ -44,9 +44,9 @@ class KeyboardListener(threading.Thread):
 
         self.last_keys_pressed.insert(0, keyNumber)
 
-        self.toggleDoor(self.TOGGLE_ENTER_DOOR,1)
-        self.toggleDoor(self.TOGGLE_ENGINE_DOOR, 2)
-        self.toggleDoor(self.TOGGLE_CAPTAIN_DOOR, 3)
+        self.toggleDoor(self.TOGGLE_ENTER_DOOR,0)
+        self.toggleDoor(self.TOGGLE_ENGINE_DOOR, 1)
+        self.toggleDoor(self.TOGGLE_CAPTAIN_DOOR, 2)
 
         self.toggleBox(self.TOGGLE_FIRST_BOX, 0)
         self.toggleBox(self.TOGGLE_FIRST_BOX, 2)
