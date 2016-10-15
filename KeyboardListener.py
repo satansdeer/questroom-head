@@ -4,7 +4,7 @@ import pygame
 from Getch import getch
 # from copy import copy
 
-# new version 
+# new version
 import win32api
 import win32console
 import pythoncom,pyHook
@@ -15,7 +15,7 @@ class KeyboardListener(threading.Thread):
     PASS_1 = [1,1,2,3, 5, 8, 1,3,2,1]
     TOGGLE_ENTER_DOOR=[1,1,2,3, 5, 8, 1,3,2,1]
     TOGGLE_ENGINE_DOOR=[5,7,8,3]
-    TOGGLE_CAPTAIN_DOOR=[7,3,6,2]
+    TOGGLE_CAPTAIN_DOOR=[7,0,6,2]
 
     TOGGLE_FIRST_BOX=[1,1,1,1,0,0,0,0]
     TOGGLE_SECOND_BOX=[2,2,2,2,0,0,0,0]
