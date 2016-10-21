@@ -1001,18 +1001,52 @@ def AC_ENABLE_TUMBLER_PUZZLE_LIGHT_WIN(master, task, game_state):
         smartLedsObj.setOneLed(LedsIdTable.VISIBLE_SWITCHERS[index], Colors.GREEN)
 
 def REQ_ROBOT_ASSEMBLED(master, task, game_state):
-    # return True
-    buttons = master.getButtons(hallwayPuzzles)
-    robotAssembled = buttons.get()[ButtonsIdTable.ROBOT_HEAD]
-    if robotAssembled:
+    """
+    Check robot assembled status
 
+    Robot will be assembled if assembled_status from device will be True for
+    all ASSEMBLED_DELAY period
+    """
+    ASSEMBLED_DELAY = 1;
+    if task.stack == []:
+        assembled = False
+        task.stack.append(assembled)
+        task.stack.append(time.time())
+
+    buttons = master.getButtons(hallwayPuzzles)
+    assembled_status = buttons.get()[ButtonsIdTable.ROBOT_HEAD]
+
+    assembled_start_time = task.stack.pop()
+    was_assembled = task.stack.pop()
+
+    robot_still_assembled = \
+        assembled_status and assembled_status == was_assembled
+
+    time_passed = time.time() - assembled_start_time
+
+    assembled_time_overflow = time_passed >= ASSEMBLED_DELAY
+    robot_assembled = robot_still_assembled and assembled_time_overflow
+
+    if robot_assembled:
         smartLeds = master.getSmartLeds(hallwayPuzzles)
 
         smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_LEFT, Colors.GREEN)
         smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, Colors.RED)
         smartLeds.setOneLed(LedsIdTable.ROBOT_HEAD, Colors.WHITE)
 
+        task.stack.append(False)
+        task.stack.append(time.time())
+
         return True
+
+    elif robot_still_assembled and not assembled_time_overflow:
+        task.stack.append(assembled_status)
+        task.stack.append(assembled_start_time)
+
+    else:
+        task.stack.append(assembled_status)
+        task.stack.append(time.time())
+
     return False
 
 robotWasAssembled = False
