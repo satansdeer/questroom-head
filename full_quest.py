@@ -976,6 +976,19 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
 
     lastLockPosition = lockPosition
 
+def REQ_CORRECT_SEQUENCE(master, task, game_state):
+    class Stage:
+        READ = 1
+        BLINK_ON = 2
+        BLINK_OFF = 3
+        WAIT = 4
+
+
+
+
+
+
+
 
 def REQ_MECHANICS_CARD_USED(master, task, game_state):
     # return True
