@@ -8,11 +8,12 @@ class Task:
         self.showOnMonitor = False
         self.state = 0
         self.type = None
+        self.stack = [];
 
 
     def success_requirements_satisfied(self, master, state, game_state):
-        
-        # print("Task in self class Task succ req: {}".format(self)) 
+
+        # print("Task in self class Task succ req: {}".format(self))
         if not self.success_requirements: return False
         return all(requirement.satisfied(master, self, game_state) for requirement in self.success_requirements)
 
