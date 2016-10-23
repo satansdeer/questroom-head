@@ -3,7 +3,8 @@
     -
       id: 0
       success_requirements:
-        [REQ_QUEST_INIT]
+        [REQ_CORRECT_SEQUENCE_ENTERED]
+        # [REQ_QUEST_INIT]
       success_actions:
         # [AC_ADD_ROBOT_PUZZLE, AC_PRESS_HERABORA]
         [AC_ADD_CONNECT_WIRE]
