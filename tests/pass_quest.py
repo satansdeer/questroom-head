@@ -113,7 +113,7 @@ def switching_radio():
 
 def open_first_box_lock():
     print("OPEN FIRST BOX")
-    delay_time = 5
+    delay_time = 1
     code_sequence = [56, 73, 90, 73, 90]
 
     adcs = master.getAdc(hallwayPuzzles, "value")
@@ -253,6 +253,9 @@ def play_game():
 # create a proxy for the Pyro object, and return that
 remote_master = Pyro.core.getProxyForURI(URI)
 master = remote_master
+
+while True:
+    open_first_box_lock()
 
 pass_wire()
 time.sleep(3) # delays for wait colors effects
