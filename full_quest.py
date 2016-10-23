@@ -883,8 +883,8 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     # L - влево; R - вправо
 
     BOX_LOCK_COLOR = Colors.RED
-    BOX_OPEN_COLOR = Colors.GREEN
-    BOX_BLINK_COLOR = Colors.BLUE
+    BOX_OPEN_COLOR = Colors.BLUE # Becouse reverse
+    BOX_BLINK_COLOR = Colors.GREEN
 
     ACTIVATION_SEQUENCE = ['L', 'L', 'R', 'L', 'R', 'L', 'L']
     # Позиция в массиве ADC
@@ -895,7 +895,7 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     # error between last and current read position
     ERROR_POSITION = 10
     # like number of reads before data will be analize
-    READ_DATA_LENGTH = 20
+    READ_DATA_LENGTH = 10
 
     class Time:
         # time after sequence clean
@@ -903,7 +903,7 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
         # delay between every read
         READ_DELAY = 0.01
         # blink time for on/off
-        BLINK = 0.1
+        BLINK = 0.07
 
     class Stage:
         READ = 1
@@ -1055,7 +1055,8 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
             smartLeds = master.getSmartLeds(hallwayPuzzles)
             smartLeds.setOneLed(LedsIdTable.BOX_1, BOX_OPEN_COLOR)
             task.stack = []
-            return True
+
+            return True 
 
         state.stage = Stage.READ_DELAY
         state.start_time = time.time()
