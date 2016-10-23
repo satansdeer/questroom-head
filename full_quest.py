@@ -884,22 +884,28 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     # ACTIVATION_SEQUENCE = ['L', 'L', 'R', 'L', 'R', 'R', 'L', 'R']
     # Последовательность для открытия
     # L - влево; R - вправо
-    ACTIVATION_SEQUENCE = ['L', 'L', 'R', 'L', 'R', 'L', 'L']
-    # Позиция в массиве ADC
-    # ToDo move to head
-    LOCK_ID = ButtonsIdTable.LOCK
-    # погрешность
-    ERROR_VALUE = 10
-    ERROR_POSITION = 10
-    READ_DATA_LENGTH = 20
 
     BOX_LOCK_COLOR = Colors.RED
     BOX_OPEN_COLOR = Colors.GREEN
     BOX_BLINK_COLOR = Colors.BLUE
 
+    ACTIVATION_SEQUENCE = ['L', 'L', 'R', 'L', 'R', 'L', 'L']
+    # Позиция в массиве ADC
+    # ToDo move to head
+    LOCK_ID = AdcIdTable.BOX_LOCK
+    # погрешность
+    ERROR_VALUE = 10
+    # error between last and current read position
+    ERROR_POSITION = 10
+    # like number of reads before data will be analize
+    READ_DATA_LENGTH = 20
+
     class Time:
+        # time after sequence clean
         LOCK_INACTIVE = 10
-        READ_DELAY = 0.05
+        # delay between every read
+        READ_DELAY = 0.01
+        # blink time for on/off
         BLINK = 0.1
 
     class Stage:
@@ -924,16 +930,86 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
             self.start_time = time.time()
 
             self.read_data = []
-            self.READ_DATA_LENGTH = 200
 
             self.player_sequence = []
             self.inactive_start = time.time()
 
             self.last_lock_position = None
 
+    def checkLockPosition(state):
+        first_value = state.read_data[0]
+        for val in state.read_data[1:]:
+            if abs(val - first_value) > ERROR_VALUE:
+                state.read_data = []
+                state.start_time = time.time()
+                state.stage = Stage.READ_DELAY
+                return state
+
+        # detect lock value
+        lock_value = Counter(state.read_data).most_common(1)[0][0]
+        read_data_store  = state.read_data[:]
+        state.read_data = []
+
+        # check lock position
+        if state.last_lock_position is None:
+            state.last_lock_position = lock_value
+
+        gt_default = (lock_value + ERROR_POSITION) <= state.last_lock_position
+        lt_default = (lock_value - ERROR_POSITION) >= state.last_lock_position
+
+        # does it change
+        if not gt_default and not lt_default:
+            state.start_time = time.time()
+            state.stage = Stage.READ_DELAY
+            # maybe previous value is not so stable as this
+            state.last_lock_position = lock_value
+            return state
+
+
+        print("="*80 + "\n==")
+        print("lastLockPosition: {}, lockPosition: {}"
+              .format(state.last_lock_position, lock_value))
+
+        turn_direction = getTurnDirection(state.last_lock_position, lock_value)
+        state.player_sequence.append(turn_direction)
+
+        state.last_lock_position = lock_value
+
+        state.stage = Stage.BLINK
+        state.blink_stage = BlinkStage.ON
+        state.inactive_start = time.time()
+        return state
+
+    def turnLeft(lastValue, newValue):
+        if lastValue == 255 and newValue == 0:
+            return True
+        elif lastValue == 0 and newValue == 255:
+            return False
+        elif newValue > lastValue:
+            return True
+        return False
+
+
+    def turnRigth(lastValue, newValue):
+        if lastValue == 0 and newValue == 255:
+            return True
+        elif lastValue == 255 and newValue == 0:
+            return False
+        elif newValue < lastValue:
+            return True
+        return False
+
+
+    def getTurnDirection(lastValue, newValue):
+        if turnLeft(lastValue, newValue):
+            return "L"
+        if turnRigth(lastValue, newValue):
+            return "R"
+
+
     if task.stack == []:
         state = State()
-        task.stack.push(state)
+        task.stack.append(state)
 
     state = task.stack.pop()
 
@@ -942,9 +1018,9 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
         state.read_data.append(value)
         if len(state.read_data) > READ_DATA_LENGTH:
             state.stage = Stage.CHECK_LOCK_POSITION
-
-        state.stage = Stage.READ_DELAY
-        state.start_time = time.time()
+        else:
+            state.stage = Stage.READ_DELAY
+            state.start_time = time.time()
 
     elif Stage.READ_DELAY == state.stage:
         wait_time = time.time() - state.start_time
@@ -962,7 +1038,7 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
             state.blink_stage = BlinkStage.OFF
 
         elif BlinkStage.OFF == state.blink_stage:
-            blink_time = time.time() - sate.blink_time_start
+            blink_time = time.time() - state.blink_time_start
             if blink_time > Time.BLINK:
                 smartLeds = master.getSmartLeds(hallwayPuzzles)
                 smartLeds.setOneLed(LedsIdTable.BOX_1, BOX_LOCK_COLOR)
@@ -973,7 +1049,7 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
 
     elif Stage.CHECK_SEQUENCE == state.stage:
         rev_player_sequence = copy(
-            state.player_sequence[:len(ACTIVATION_SEQUENCE)])
+            state.player_sequence[-len(ACTIVATION_SEQUENCE):])
         rev_player_sequence.reverse()
         print("Player sequence: {} \n reverse: {}"
                 .format(state.player_sequence, rev_player_sequence))
@@ -1008,77 +1084,7 @@ def REQ_CORRECT_SEQUENCE(master, task, game_state):
         BLINK_OFF = 3
         WAIT = 4
 
-    task.stack.push(state)
-
-    def checkLockPosition(state):
-        first_value = state.read_data[0]
-        for val in state.read_data[1:]:
-            if abs(val - first_value) > ERROR_VALUE:
-                state.read_data = []
-                state.start_time = time.time()
-                state.stage = Stage.READ_DELAY
-                return state
-
-        # detect lock value
-        lock_value = Counter(state.read_data).most_common(1)[0][0]
-        read_data_store  = state.read_data[:]
-        state.read_data = []
-
-        # check lock position
-        if state.last_lock_position is None:
-            state.last_lock_position = lock_value
-
-        gt_default = (lock_value + ERROR_POSITION) > state.last_lock_position
-        lt_default = (lock_value - ERROR_POSITION) < state.last_lock_position
-
-        # does it change
-        if not gt_default and not lt_default:
-            state.start_time = time.time()
-            state.stage = Stage.READ_DELAY
-            # maybe previous value is not so stable as this
-            state.last_lock_position = lock_value
-            return state
-
-
-        print("="*80 + "\n==")
-        print("lastLockPosition: {}, lockPosition: {}"
-              .format(state.last_lock_position, lock_value))
-
-        turn_direction = getTurnDirection(state.last_lock_position, lock_value)
-        state.player_sequence.insert(0, turn_direction)
-
-        state.last_lock_position = lock_value
-
-        state.stage = Stage.BLINK
-        state.blink_stage = BlinkStage.ON
-        state.inactive_start = time.time()
-        return state;
-
-def turnLeft(lastValue, newValue):
-    if lastValue == 255 and newValue == 0:
-        return True
-    elif lastValue == 0 and newValue == 255:
-        return False
-    elif newValue > lastValue:
-        return True
-    return False
-
-
-def turnRigth(lastValue, newValue):
-    if lastValue == 0 and newValue == 255:
-        return True
-    elif lastValue == 255 and newValue == 0:
-        return False
-    elif newValue < lastValue:
-        return True
-    return False
-
-
-def getTurnDirection(lastValue, newValue):
-    if turnLeft(lastValue, newValue):
-        return "L"
-    if turnRigth(lastValue, newValue):
-        return "R"
+    task.stack.append(state)
 
 
 
