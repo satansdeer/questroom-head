@@ -103,6 +103,10 @@ class ButtonsIdTable:
     VISIBLE_SWITCHERS = [0, 1, 2, 6, 7, 8]
     HIDDEN_SWITCHERS  = [5, 4, 3, 11, 10, 9]
 
+class AdcIdTable:
+    RADIO = 0
+    BOX_LOCK = 1
+
 class CB_CTRL:
     """Named constant for Captain's Bridge controls"""
     # Controller 1
@@ -225,11 +229,6 @@ def RANDOM_ROOM_LIGHT(master):
 
     randColorId = random.randint(0, lightRandomLen - 1)
     setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, LIGHT_RANDOM[randColorId])
-
-class AdcIdTable:
-    RADIO = 1
-    BOX_LOCK = 0
-
 
 def setLedValue(leds, id, color):
     leds[id * 3 + 0] = color[0]
@@ -812,71 +811,7 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
 
     return visiblePanelState and hiddenPanelState
 
-
-lastLockPosition = None
-state = 0
-# массив значений
-READ_DATA_STACK = []
-# максимальная длина массива, после достижение которой массив сброситься
-READ_DATA_STACK_LENGTH = 200
-
-def turnLeft(lastValue, newValue):
-    if lastValue == 255 and newValue == 0:
-        return True
-    elif lastValue == 0 and newValue == 255:
-        return False
-    elif newValue > lastValue:
-        return True
-    return False
-
-
-def turnRigth(lastValue, newValue):
-    if lastValue == 0 and newValue == 255:
-        return True
-    elif lastValue == 255 and newValue == 0:
-        return False
-    elif newValue < lastValue:
-        return True
-    return False
-
-
-def turn(lastValue, newValue):
-    if turnLeft(lastValue, newValue):
-        return "L"
-    if turnRigth(lastValue, newValue):
-        return "R"
-
-lockRead = True
-def readLockTimeout():
-    global lockRead
-    # print("ReadLockTimeout")
-    # if lockRead:
-    #     lockRead = False
-    # else:
-    #     lockRead = True
-    lockRead = True
-
-CORRECT_LED = False
-correctLedTimerDescriptor = None
-def enableCorrectLedTimeout(master):
-    global CORRECT_LED
-    global OPEN_FLAG
-    global correctLedTimerDescriptor
-    correctLedTimerDescriptor = None
-    print("CORRECT_LED_DISABLE")
-    CORRECT_LED = False
-    smartLeds = master.getSmartLeds(hallwayPuzzles)
-    if OPEN_FLAG:
-        pass
-    else:
-        smartLeds.setOneLed(LedsIdTable.BOX_LEDS[0], Colors.RED)
-
-sequencePeriodicRead = None
 def AC_ADD_SEQUENCE_PUZZLE(master, task, game_state):
-    global sequencePeriodicRead
-    global READ_SEQUENCE_DELAY
-    sequencePeriodicRead = Timer(READ_SEQUENCE_DELAY, readLockTimeout)
-    sequencePeriodicRead.start()
     if not game_state.task_with_id_active(4):
         game_state.add_active_task_with_id(4)
 
