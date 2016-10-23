@@ -809,71 +809,7 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
 
     return visiblePanelState and hiddenPanelState
 
-
-lastLockPosition = None
-state = 0
-# массив значений
-READ_DATA_STACK = []
-# максимальная длина массива, после достижение которой массив сброситься
-READ_DATA_STACK_LENGTH = 200
-
-def turnLeft(lastValue, newValue):
-    if lastValue == 255 and newValue == 0:
-        return True
-    elif lastValue == 0 and newValue == 255:
-        return False
-    elif newValue > lastValue:
-        return True
-    return False
-
-
-def turnRigth(lastValue, newValue):
-    if lastValue == 0 and newValue == 255:
-        return True
-    elif lastValue == 255 and newValue == 0:
-        return False
-    elif newValue < lastValue:
-        return True
-    return False
-
-
-def turn(lastValue, newValue):
-    if turnLeft(lastValue, newValue):
-        return "L"
-    if turnRigth(lastValue, newValue):
-        return "R"
-
-lockRead = True
-def readLockTimeout():
-    global lockRead
-    # print("ReadLockTimeout")
-    # if lockRead:
-    #     lockRead = False
-    # else:
-    #     lockRead = True
-    lockRead = True
-
-CORRECT_LED = False
-correctLedTimerDescriptor = None
-def enableCorrectLedTimeout(master):
-    global CORRECT_LED
-    global OPEN_FLAG
-    global correctLedTimerDescriptor
-    correctLedTimerDescriptor = None
-    print("CORRECT_LED_DISABLE")
-    CORRECT_LED = False
-    smartLeds = master.getSmartLeds(hallwayPuzzles)
-    if OPEN_FLAG:
-        pass
-    else:
-        smartLeds.setOneLed(LedsIdTable.BOX_LEDS[0], Colors.RED)
-
-sequencePeriodicRead = None
 def AC_ADD_SEQUENCE_PUZZLE(master, task, game_state):
-    global sequencePeriodicRead
-    global READ_SEQUENCE_DELAY
-    sequencePeriodicRead = Timer(READ_SEQUENCE_DELAY, readLockTimeout)
-    sequencePeriodicRead.start()
     if not game_state.task_with_id_active(4):
         game_state.add_active_task_with_id(4)
 
@@ -1056,7 +992,7 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
             smartLeds.setOneLed(LedsIdTable.BOX_1, BOX_OPEN_COLOR)
             task.stack = []
 
-            return True 
+            return True
 
         state.stage = Stage.READ_DELAY
         state.start_time = time.time()
