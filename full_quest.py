@@ -103,7 +103,6 @@ class ButtonsIdTable:
     VISIBLE_SWITCHERS = [0, 1, 2, 6, 7, 8]
     HIDDEN_SWITCHERS  = [5, 4, 3, 11, 10, 9]
 
-
 class CB_CTRL:
     """Named constant for Captain's Bridge controls"""
     # Controller 1
@@ -881,86 +880,112 @@ def AC_ADD_SEQUENCE_PUZZLE(master, task, game_state):
     if not game_state.task_with_id_active(4):
         game_state.add_active_task_with_id(4)
 
-# def findValue(stack):
-OPEN_FLAG = False
-PLAYER_SEQUENCE=[]
-READ_SEQUENCE_DELAY = 0.05
-CORRECT_LED_TIMEOUT = 0.05
 def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
-    # return True
-    # Сохраняем последнее выбранное значение
-    global lastLockPosition, state
-    global PLAYER_SEQUENCE
-    global READ_DATA_STACK, READ_DATA_STACK_LENGTH
-    global lockRead
-    global sequencePeriodicRead
-    global READ_SEQUENCE_DELAY
-    global OPEN_FLAG
-    global CORRECT_LED, CORRECT_LED_TIMEOUT, correctLedTimerDescriptor
-    # Позиция в массиве ADC
-    LOCK_ID = AdcIdTable.BOX_LOCK
-    # погрешность
-    ERROR_VALUE = 15
-
     # ACTIVATION_SEQUENCE = ['L', 'L', 'R', 'L', 'R', 'R', 'L', 'R']
     # Последовательность для открытия
     # L - влево; R - вправо
     ACTIVATION_SEQUENCE = ['L', 'L', 'R', 'L', 'R', 'L', 'L']
-    # time.sleep(0.6)
-    if lockRead:
+    # Позиция в массиве ADC
+    # ToDo move to head
+    LOCK_ID = ButtonsIdTable.LOCK
+    # погрешность
+    ERROR_VALUE = 10
+    ERROR_POSITION = 10
+    READ_DATA_LENGTH = 20
+
+    BOX_LOCK_COLOR = Colors.RED
+    BOX_OPEN_COLOR = Colors.GREEN
+    BOX_BLINK_COLOR = Colors.BLUE
+
+    class Time:
+        LOCK_INACTIVE = 10
+        READ_DELAY = 0.05
+        BLINK = 0.1
+
+    class Stage:
+        READ = 1
+        CHECK_LOCK_POSITION = 2
+        BLINK = 3
+        READ_DELAY = 4
+        CHECK_SEQUENCE = 5
+
+    class BlinkStage:
+        ON = 5
+        OFF = 6
+        IDLE = 7
+
+    class State:
+        def __init__(self, stage=Stage.READ):
+            self.stage = stage
+
+            self.blink_stage = BlinkStage.IDLE
+            self.blink_time_start = time.time()
+
+            self.start_time = time.time()
+
+            self.read_data = []
+            self.READ_DATA_LENGTH = 200
+
+            self.player_sequence = []
+            self.inactive_start = time.time()
+
+            self.last_lock_position = None
+
+    if task.stack == []:
+        state = State()
+        task.stack.push(state)
+
+    state = task.stack.pop()
+
+    if Stage.READ == state.stage:
         value = master.getAdc(hallwayPuzzles).get()[LOCK_ID]
-        READ_DATA_STACK.append(value)
+        state.read_data.append(value)
+        if len(state.read_data) > READ_DATA_LENGTH:
+            state.stage = Stage.CHECK_LOCK_POSITION
 
-    if len(READ_DATA_STACK) < READ_DATA_STACK_LENGTH:
-    # if len(READ_DATA_STACK) != READ_DATA_STACK_LENGTH:
-        return
+        state.stage = Stage.READ_DELAY
+        state.start_time = time.time()
 
-    lockRead = False
-    sequencePeriodicRead = Timer(READ_SEQUENCE_DELAY, readLockTimeout)
-    sequencePeriodicRead.start()
+    elif Stage.READ_DELAY == state.stage:
+        wait_time = time.time() - state.start_time
+        if wait_time > Time.READ_DELAY:
+            state.stage = Stage.READ
 
-    result = READ_DATA_STACK[0]
-    for val in READ_DATA_STACK[1:]:
-        if abs(val - result) > 5:
-            READ_DATA_STACK = []
-            return
-        result = val
+    elif Stage.CHECK_LOCK_POSITION == state.stage:
+        state = checkLockPosition(state)
 
-
-    PLAYER_SEQUENCE = PLAYER_SEQUENCE[:len(ACTIVATION_SEQUENCE)]
-    # get most freq value
-    value = Counter(READ_DATA_STACK).most_common(1)[0][0]
-    savedStack = READ_DATA_STACK[:]
-    READ_DATA_STACK = []
-
-
-    lockPosition = value
-    if lastLockPosition is None:
-        lastLockPosition = lockPosition
-
-    # Смотрим, менялась ли позиция переключателя.
-    lessDefault = lastLockPosition < (lockPosition + ERROR_VALUE)
-    largeDefault = lastLockPosition > (lockPosition - ERROR_VALUE)
-    if lessDefault and largeDefault:
-        lastLockPosition = lockPosition
-        return False
-    print("="*80 + "\n==")
-    print("lastLockPosition: {}, lockPosition: {}".format(lastLockPosition, lockPosition))
-    turnDirection = turn(lastLockPosition, lockPosition)
-    print("We turn to the: {}".format(turnDirection))
-    print("==\n ={}\n".format(savedStack))
-    PLAYER_SEQUENCE.insert(0, turnDirection)
-    if not CORRECT_LED:
-        if correctLedTimerDescriptor is None:
-            correctLedTimerDescriptor = Timer(CORRECT_LED_TIMEOUT, enableCorrectLedTimeout, [master])
-            correctLedTimerDescriptor.start()
-            CORRECT_LED = True
+    elif Stage.BLINK == state.stage:
+        if BlinkStage.ON == state.blink_stage:
             smartLeds = master.getSmartLeds(hallwayPuzzles)
-            smartLeds.setOneLed(LedsIdTable.BOX_LEDS[0], Colors.BLUE)
+            smartLeds.setOneLed(LedsIdTable.BOX_1, BOX_BLINK_COLOR)
+            state.blink_time_start = time.time()
+            state.blink_stage = BlinkStage.OFF
 
-    reversePlayerSequence = copy(PLAYER_SEQUENCE[:len(ACTIVATION_SEQUENCE)])
-    reversePlayerSequence.reverse()
-    print("Player sequence: {} \n reverse: {}".format(PLAYER_SEQUENCE, reversePlayerSequence))
+        elif BlinkStage.OFF == state.blink_stage:
+            blink_time = time.time() - sate.blink_time_start
+            if blink_time > Time.BLINK:
+                smartLeds = master.getSmartLeds(hallwayPuzzles)
+                smartLeds.setOneLed(LedsIdTable.BOX_1, BOX_LOCK_COLOR)
+
+                state.blink_stage = BlinkStage.ON
+                state.stage = Stage.CHECK_SEQUENCE
+            state.inactive_time = time.time()
+
+    elif Stage.CHECK_SEQUENCE == state.stage:
+        rev_player_sequence = copy(
+            state.player_sequence[:len(ACTIVATION_SEQUENCE)])
+        rev_player_sequence.reverse()
+        print("Player sequence: {} \n reverse: {}"
+                .format(state.player_sequence, rev_player_sequence))
+
+        if ACTIVATION_SEQUENCE == rev_player_sequence:
+            smartLeds = master.getSmartLeds(hallwayPuzzles)
+            smartLeds.setOneLed(LedsIdTable.BOX_1, BOX_OPEN_COLOR)
+            task.stack = []
+            return True
+
+        state.stage = Stage.READ_DELAY
+        state.start_time = time.time()
 
     if ACTIVATION_SEQUENCE == reversePlayerSequence:
         print("We opened lock box: sleep!!!")
@@ -983,10 +1008,77 @@ def REQ_CORRECT_SEQUENCE(master, task, game_state):
         BLINK_OFF = 3
         WAIT = 4
 
+    task.stack.push(state)
+
+    def checkLockPosition(state):
+        first_value = state.read_data[0]
+        for val in state.read_data[1:]:
+            if abs(val - first_value) > ERROR_VALUE:
+                state.read_data = []
+                state.start_time = time.time()
+                state.stage = Stage.READ_DELAY
+                return state
+
+        # detect lock value
+        lock_value = Counter(state.read_data).most_common(1)[0][0]
+        read_data_store  = state.read_data[:]
+        state.read_data = []
+
+        # check lock position
+        if state.last_lock_position is None:
+            state.last_lock_position = lock_value
+
+        gt_default = (lock_value + ERROR_POSITION) > state.last_lock_position
+        lt_default = (lock_value - ERROR_POSITION) < state.last_lock_position
+
+        # does it change
+        if not gt_default and not lt_default:
+            state.start_time = time.time()
+            state.stage = Stage.READ_DELAY
+            # maybe previous value is not so stable as this
+            state.last_lock_position = lock_value
+            return state
 
 
+        print("="*80 + "\n==")
+        print("lastLockPosition: {}, lockPosition: {}"
+              .format(state.last_lock_position, lock_value))
+
+        turn_direction = getTurnDirection(state.last_lock_position, lock_value)
+        state.player_sequence.insert(0, turn_direction)
+
+        state.last_lock_position = lock_value
+
+        state.stage = Stage.BLINK
+        state.blink_stage = BlinkStage.ON
+        state.inactive_start = time.time()
+        return state;
+
+def turnLeft(lastValue, newValue):
+    if lastValue == 255 and newValue == 0:
+        return True
+    elif lastValue == 0 and newValue == 255:
+        return False
+    elif newValue > lastValue:
+        return True
+    return False
 
 
+def turnRigth(lastValue, newValue):
+    if lastValue == 0 and newValue == 255:
+        return True
+    elif lastValue == 255 and newValue == 0:
+        return False
+    elif newValue < lastValue:
+        return True
+    return False
+
+
+def getTurnDirection(lastValue, newValue):
+    if turnLeft(lastValue, newValue):
+        return "L"
+    if turnRigth(lastValue, newValue):
+        return "R"
 
 
 
