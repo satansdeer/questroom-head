@@ -821,19 +821,20 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     # L - влево; R - вправо
 
     BOX_LOCK_COLOR = Colors.RED
-    BOX_OPEN_COLOR = Colors.GREEN
+    BOX_OPEN_COLOR = Colors.BLUE # Becouse reverse
     BOX_BLINK_COLOR = Colors.BLUE
 
     ACTIVATION_SEQUENCE = ['L', 'L', 'R', 'L', 'R', 'L', 'L']
     # Позиция в массиве ADC
     # ToDo move to head
     LOCK_ID = AdcIdTable.BOX_LOCK
+    BOX_LED = LedsIdTable.BOX_LEDS[0]
     # погрешность
     ERROR_VALUE = 10
     # error between last and current read position
     ERROR_POSITION = 10
     # like number of reads before data will be analize
-    READ_DATA_LENGTH = 20
+    READ_DATA_LENGTH = 10
 
     class Time:
         # time after sequence clean
@@ -841,7 +842,7 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
         # delay between every read
         READ_DELAY = 0.01
         # blink time for on/off
-        BLINK = 0.1
+        BLINK = 0.07
 
     class Stage:
         READ = 1
@@ -968,7 +969,7 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     elif Stage.BLINK == state.stage:
         if BlinkStage.ON == state.blink_stage:
             smartLeds = master.getSmartLeds(hallwayPuzzles)
-            smartLeds.setOneLed(LedsIdTable.BOX_1, BOX_BLINK_COLOR)
+            smartLeds.setOneLed(BOX_LED, BOX_BLINK_COLOR)
             state.blink_time_start = time.time()
             state.blink_stage = BlinkStage.OFF
 
@@ -976,7 +977,7 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
             blink_time = time.time() - state.blink_time_start
             if blink_time > Time.BLINK:
                 smartLeds = master.getSmartLeds(hallwayPuzzles)
-                smartLeds.setOneLed(LedsIdTable.BOX_1, BOX_LOCK_COLOR)
+                smartLeds.setOneLed(BOX_LED, BOX_LOCK_COLOR)
 
                 state.blink_stage = BlinkStage.ON
                 state.stage = Stage.CHECK_SEQUENCE
@@ -991,33 +992,17 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
 
         if ACTIVATION_SEQUENCE == rev_player_sequence:
             smartLeds = master.getSmartLeds(hallwayPuzzles)
-            smartLeds.setOneLed(LedsIdTable.BOX_1, BOX_OPEN_COLOR)
+            smartLeds.setOneLed(BOX_LED, BOX_OPEN_COLOR)
             task.stack = []
+
             return True
 
         state.stage = Stage.READ_DELAY
         state.start_time = time.time()
 
-    if ACTIVATION_SEQUENCE == reversePlayerSequence:
-        print("We opened lock box: sleep!!!")
-        PLAYER_SEQUENCE = []
-        smartLeds = master.getSmartLeds(hallwayPuzzles)
-        if OPEN_FLAG:
-        # blue, because blue and green are switched
-            OPEN_FLAG = False
-        else:
-            OPEN_FLAG = True
-        # return  False
-        return  True
-
-    lastLockPosition = lockPosition
-
-def REQ_CORRECT_SEQUENCE(master, task, game_state):
-    class Stage:
-        READ = 1
-        BLINK_ON = 2
-        BLINK_OFF = 3
-        WAIT = 4
+    inactive_time = time.time() - state.inactive_start
+    if inactive_time > Time.LOCK_INACTIVE:
+        state.player_sequence = []
 
     task.stack.append(state)
 
