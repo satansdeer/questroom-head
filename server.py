@@ -105,6 +105,12 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
             quest_room.set_room_light(room_led, rgb_color)
 
+        if "radio" == message['message']:
+            radio_action = int(message['radioAction'])
+            quest_room.turn_radio(radio_action)
+
+
+
 
 
     def on_close(self):
