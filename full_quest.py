@@ -477,12 +477,7 @@ def AC_ADD_RADIO_BROADCAST(master, task, game_state):
     game_state.add_active_task_with_id(12)
 
 
-radio = None
-radioDisabled = False
 def AC_ENABLE_RADIO(master, task, game_state):
-    global radioDisabled
-    global radio
-    print("Radio puzzle solved")
     smartLeds = master.getSmartLeds(hallwayPuzzles)
 
 
@@ -494,20 +489,25 @@ def AC_ENABLE_RADIO(master, task, game_state):
             smartLeds.setOneLed(LedsIdTable.BOX_LEDS[index], Colors.GREEN)
 
 
+    RADIO_ENABLE()
+
+radio = None
+radioDisabled = False
+def RADIO_ENABLE():
+    global radioDisabled
+    global radio
     if radio is None:
-        # print("========================Radio start!=======================")
+        print("========================Radio start!=======================")
         radio = Radio(0.5, 0.001)
         sounds = [('harp.wav',40.0,80.0), ('island_music_x.wav',120.0,160.0), ('sounds/radioSolveKey.wav',200.0,240.0)]
         radio.init_sounds(sounds, 'noize.wav')
         radio.start()
-
     radioDisabled = False
-
-
 
 def REQ_RADIO_BROADCAST(master, task, game_state):
     global radioDisabled
     global radio
+    # import pudb; pudb.set_trace()  # XXX BREAKPOINT
     if radioDisabled:
         radio.set_target_value(0)
         return

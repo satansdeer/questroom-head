@@ -81,7 +81,7 @@ class Radio(threading.Thread):
                 self.value -= self.step
                 self.update_sounds_volumes(self.value)
             self.last_time_clock = time.clock()
-			
+
     def stop(self):
         self.noize_sound.stop()
         for sound in self.sounds:
