@@ -181,6 +181,14 @@ class QuestRoom(threading.Thread):
         else:
             print("Error in set_room_light in quest_room: unknown room led {}".format(room_led_id))
 
+    def turn_radio(self, state):
+        # import pudb; pudb.set_trace()  # XXX BREAKPOINT
+
+        if state:
+            RADIO_ENABLE()
+        else:
+            AC_DISABLE_RADIO(master, None, None)
+
     def button_pressed(self, button_id):
         self.game_state.state['pressed_buttons'].append(button_id)
         print(self.game_state.state)
