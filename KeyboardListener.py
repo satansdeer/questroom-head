@@ -4,7 +4,7 @@ import pygame
 from Getch import getch
 # from copy import copy
 
-# new version 
+# new version
 import win32api
 import win32console
 import pythoncom,pyHook
@@ -44,9 +44,9 @@ class KeyboardListener(threading.Thread):
 
         self.last_keys_pressed.insert(0, keyNumber)
 
-        self.toggleDoor(self.TOGGLE_ENTER_DOOR,1)
-        self.toggleDoor(self.TOGGLE_ENGINE_DOOR, 2)
-        self.toggleDoor(self.TOGGLE_CAPTAIN_DOOR, 3)
+        self.toggleDoor(self.TOGGLE_ENTER_DOOR, 0)
+        self.toggleDoor(self.TOGGLE_ENGINE_DOOR, 1)
+        self.toggleDoor(self.TOGGLE_CAPTAIN_DOOR, 2)
 
         self.toggleBox(self.TOGGLE_FIRST_BOX, 0)
         self.toggleBox(self.TOGGLE_FIRST_BOX, 2)
