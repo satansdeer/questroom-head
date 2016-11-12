@@ -58,6 +58,11 @@
               ws.send('{"message": "light", "light_id":"' + light_id + '"}');
             }
 
+            function turnRadio(event) {
+              var radioAction = event.currentTarget.dataset.radio;
+              ws.send('{"message": "radio", "radioAction":"' + radioAction + '"}');
+            }
+
             function setRoomLight(event) {
               let room_led_id = event.currentTarget.dataset.room_led_id;
               let color_value = document.getElementById(room_led_id).value;
@@ -97,6 +102,15 @@
            <td><button data-door_id='2' onClick='openDoor(event)'>Открыть капитанский мостик</button></td>
            <td><button data-door_id='2' onClick='closeDoor(event)'>Закрыть капитанский мостик</button></td>
          </tr>
+       </table>
+
+       <table>
+         <th>Радио</th>
+         <tr>
+           <td><button data-radio="1" onClick='turnRadio(event)'>Вкл. радио</button></td>
+           <td><button data-radio="0" onClick='turnRadio(event)'>Выкл. радио</button></td>
+         </tr>
+         <tr><td><button data-sound='sounds/radioSolveKey.wav' onClick='playSound(event)'>Воспроизвести последовательность</button></td></tr>
        </table>
 
        <table>
