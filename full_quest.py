@@ -163,6 +163,7 @@ class Colors:
     LIGHT_GREEN = [0x33, 0xff, 0x33]
     BLUE = [0x0, 0x0, 0xff]
     NONE = [0x0, 0x0, 0x0]
+    YELLOW = [0xF7 * 16,  0xFF * 16, 0x00 * 16]
 
 class BASIC_COLORS:
     WHITE = [0xFF, 0xFF, 0xFF]
@@ -364,11 +365,11 @@ def AC_ENABLE_FUSE_ROOMS_COLORS(master, task, game_state):
 
 def AC_ENABLE_FUSE_ROOMS_LIGHT(master, task, game_state):
     """ only light """
-    VIOLENT = [232 * 10, 100 *10, 255 * 10]
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, [2000, 2000, 2000])
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, VIOLENT)
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [2000, 2000, 2000])
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, VIOLENT)
+    LIGHT_COLOR = Colors.YELLOW
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, LIGHT_COLOR)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, LIGHT_COLOR)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, LIGHT_COLOR)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, LIGHT_COLOR)
 
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.FUSE, Colors.GREEN)
@@ -404,7 +405,6 @@ def AC_DISABLE_ALL_LIGHT(master, task, game_state):
     setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, COLORS.NONE)
 
 def AC_ENABLE_ROBOT_HEAD_ROOMS_COLORS(master, task, game_state):
-    VIOLENT = [232 * 10, 100 *10, 255 * 10]
     time.sleep(2)
     setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, [0, 0, 500])
 
@@ -412,12 +412,13 @@ def AC_ENABLE_ROBOT_HEAD_ROOMS_COLORS(master, task, game_state):
 
 
 def AC_ENABLE_ENGINE_ROOMS_COLORS(master, task, game_state):
-    WHITE = [ 3500, 3500, 3500 ]
+    pass
+    # WHITE = [ 3500, 3500, 3500 ]
 
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, WHITE)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, WHITE)
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, WHITE)
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, WHITE)
+    # setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, WHITE)
+    # setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, WHITE)
+    # setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, WHITE)
+    # setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, WHITE)
 
 def AC_ENABLE_FUSE_PUZZLE(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
