@@ -405,6 +405,7 @@ def AC_DISABLE_ALL_LIGHT(master, task, game_state):
     setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, COLORS.NONE)
 
 def AC_ENABLE_ROBOT_HEAD_ROOMS_COLORS(master, task, game_state):
+    VIOLENT = [232 * 10, 100 *10, 255 * 10]
     time.sleep(2)
     setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, [0, 0, 500])
 
