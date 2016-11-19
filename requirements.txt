@@ -1,0 +1,10 @@
+Pyro==3.16
+mock==2.0.0
+numpy==1.11.2
+pyaudio==0.2.9
+pygame==1.9.2b6
+pyserial==3.2.1
+sounddevice==0.3.5
+soundfile==0.8.1
+tornado==4.4.2
+PyYAML==3.12
