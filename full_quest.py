@@ -104,8 +104,8 @@ class ButtonsIdTable:
     HIDDEN_SWITCHERS  = [5, 4, 3, 11, 10, 9]
 
 class AdcIdTable:
-    RADIO = 0
-    BOX_LOCK = 1
+    RADIO = 1
+    BOX_LOCK = 0
 
 class CB_CTRL:
     """Named constant for Captain's Bridge controls"""
