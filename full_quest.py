@@ -835,6 +835,8 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
     ERROR_POSITION = 10
     # like number of reads before data will be analize
     READ_DATA_LENGTH = 10
+    # if element connected in different dirrection
+    REVERSE_DIRECTION = True
 
     class Time:
         # time after sequence clean
@@ -938,9 +940,9 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
 
     def getTurnDirection(lastValue, newValue):
         if turnLeft(lastValue, newValue):
-            return "L"
+            return "L" if not REVERSE_DIRECTION else "R"
         if turnRigth(lastValue, newValue):
-            return "R"
+            return "R" if not REVERSE_DIRECTION else "L"
 
 
     if task.stack == []:
