@@ -202,7 +202,11 @@ def REQ_QUEST_INIT(master, task, game_state):
 
 
     # close boxes
-    #master.setRelays(hallwayPuzzles, [0,0,0,0])
+    smartLeds = master.getSmartLeds(hallwayPuzzles)
+    smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.RED)
+    smartLeds.setOneLed(LedsIdTable.BOX_2, Colors.RED)
+    smartLeds.setOneLed(LedsIdTable.BOX_3, Colors.RED)
+    smartLeds.setOneLed(LedsIdTable.BOX_4, Colors.RED)
     master.setRelays(hallwayPuzzles, [1,1,1,1])
 
     # close doors
