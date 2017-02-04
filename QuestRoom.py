@@ -1,11 +1,6 @@
 from __future__ import print_function
 from Parser import parse
 from deviceMaster.devicemaster import DeviceMaster
-from GameState import GameState
-from Requirement import Requirement
-from Task import Task
-from Action import Action
-import time
 import threading
 import platform
 if platform.system() == 'Windows':
@@ -13,6 +8,7 @@ if platform.system() == 'Windows':
 from hallway_function import *
 import tornado
 from full_quest import *
+from utils import colorTo12Bit
 import subprocess
 
 import pygame
@@ -53,24 +49,30 @@ class QuestRoom(threading.Thread):
         else:
             get_tty_script="./get_ttyUSB.sh "
             bashCommand = get_tty_script + "A4033KK5"
-            process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+            process = subprocess.Popen(
+                    bashCommand.split(), stdout=subprocess.PIPE)
 
             hallway_comport = process.communicate()[0]
             print("Hallway: {}".format(hallway_comport))
 
             bashCommand = get_tty_script + "AL0079ZK"
-            process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+            process = subprocess.Popen(
+                    bashCommand.split(), stdout=subprocess.PIPE)
             captain_bridge_1_comport = process.communicate()[0]
             print("CB_1: {}".format(captain_bridge_1_comport))
 
             bashCommand = get_tty_script + "AL0079CW"
-            process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+            process = subprocess.Popen(
+                    bashCommand.split(), stdout=subprocess.PIPE)
             captain_bridge_2_comport = process.communicate()[0]
             print("CB_2: {}".format(captain_bridge_2_comport))
 
-        self.captainsBridge_2 = master.addSlave("CB_SLAVE_2", captain_bridge_2_comport, 3, boudrate=5)
-        self.hallwayPuzzles = master.addSlave("hallwayPuzzles", hallway_comport, 1, boudrate=5)
-        self.captainsBridge_1 = master.addSlave("CB_SLAVE_1", captain_bridge_1_comport, 2, boudrate=5)
+        self.captainsBridge_2 = master.addSlave(
+                "CB_SLAVE_2", captain_bridge_2_comport, 3, boudrate=5)
+        self.hallwayPuzzles = master.addSlave(
+                "hallwayPuzzles", hallway_comport, 1, boudrate=5)
+        self.captainsBridge_1 = master.addSlave(
+                "CB_SLAVE_1", captain_bridge_1_comport, 2, boudrate=5)
 
         master.start()
 
@@ -106,8 +108,10 @@ class QuestRoom(threading.Thread):
         # print("send_ws_message: to client {}".format(client_id))
         str_id = str(client_id)
         if str_id not in clients: return
-        if 'progress_visible' not in message: message['progress_visible'] = True
-        if 'countdown_active' not in message: message['countdown_active'] = True
+        if 'progress_visible' not in message:
+            message['progress_visible'] = True
+        if 'countdown_active' not in message:
+            message['countdown_active'] = True
 
         clients[str_id]['object'].write_message(message)
 
@@ -119,7 +123,12 @@ class QuestRoom(threading.Thread):
         if self.game_state is None:
             return
 
-        message = {'message': [u" ({}).{}".format(x.id, x.title).encode('utf-8') for x in self.game_state.active_tasks]}
+        message = {
+            'message': [
+                u" ({}).{}".format(x.id, x.title).encode('utf-8')
+                for x in self.game_state.active_tasks
+            ]
+        }
         message = tornado.escape.json_encode(message)
         try:
             if '42' in clients:
@@ -156,8 +165,7 @@ class QuestRoom(threading.Thread):
 
     def set_room_light(self, room_led_id, in_color):
         # convert color range from 255 to 4096
-        color = [value * 16 for value in in_color]
-        # print("Color {} in new range {}".format(in_color, color))
+        color = colorTo12Bit(in_color)
 
         if room_led_id == "entrance_top":
             setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, color)
@@ -178,11 +186,10 @@ class QuestRoom(threading.Thread):
             setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, color)
 
         else:
-            print("Error in set_room_light in quest_room: unknown room led {}".format(room_led_id))
+            print("Error in set_room_light in quest_room: "
+                    "unknown room led {}".format(room_led_id))
 
     def turn_radio(self, state):
-        # import pudb; pudb.set_trace()  # XXX BREAKPOINT
-
         if state:
             RADIO_ENABLE()
         else:

@@ -6,8 +6,9 @@ import random
 from Radio import Radio
 from collections import Counter
 from copy import copy
-from threading import Timer
 import pygame
+
+from utils import colorTo12Bit
 
 
 class MESSAGE:
@@ -130,16 +131,12 @@ class BASIC_COLORS:
     RASPBERRY_PINK = [0xff, 0x14, 0x93]
 
 
-def colorTo12Bit(color):
-    COLOR_MULT = 16.058
-    to16Bit = lambda byte: int(byte * COLOR_MULT)
-    return map(to16Bit, color)
-
 class COLORS:
     WHITE = colorTo12Bit(BASIC_COLORS.WHITE)
     RED = colorTo12Bit(BASIC_COLORS.RED)
     LIGHT_RED = colorTo12Bit(BASIC_COLORS.LIGHT_RED)
     GREEN = colorTo12Bit(BASIC_COLORS.GREEN)
+    MANTIS = colorTo12Bit(BASIC_COLORS.MANTIS)
     LIGHT_GREEN = colorTo12Bit(BASIC_COLORS.LIGHT_GREEN)
     BLUE = colorTo12Bit(BASIC_COLORS.BLUE)
     NONE = colorTo12Bit(BASIC_COLORS.NONE)
@@ -160,9 +157,15 @@ class ROOM_LEDS:
     CAPTAINTS_BRIDGE = 0
 
 def setRoomLight(master, roomLed, color):
-    if roomLed in [ROOM_LEDS.ENTRANCE_TOP, ROOM_LEDS.ENTRANCE_BOTTOM, ROOM_LEDS.ENGINE_ROOM]:
+    if roomLed in [
+            ROOM_LEDS.ENTRANCE_TOP,
+            ROOM_LEDS.ENTRANCE_BOTTOM,
+            ROOM_LEDS.ENGINE_ROOM]:
         slave = hallwayPuzzles
-    elif roomLed in [ROOM_LEDS.MAIN_ROOM_TOP, ROOM_LEDS.MAIN_ROOM_BOTTOM, ROOM_LEDS.CAPTAINTS_BRIDGE]:
+    elif roomLed in [
+            ROOM_LEDS.MAIN_ROOM_TOP,
+            ROOM_LEDS.MAIN_ROOM_BOTTOM,
+            ROOM_LEDS.CAPTAINTS_BRIDGE]:
         slave = CB_SLAVE_1
     else: return
 
@@ -170,7 +173,17 @@ def setRoomLight(master, roomLed, color):
     leds.setOneLed(roomLed, color)
 
 def RANDOM_ROOM_LIGHT(master):
-    LIGHT_RANDOM = [COLORS.WHITE, COLORS.RED, COLORS.LIGHT_RED, COLORS.GREEN, COLORS.LIGHT_GREEN, COLORS.BLUE, COLORS.NONE, COLORS.SAND_STORM, COLORS.PSYCHEDELIC_PURPLE, COLORS.RASPBERRY_PINK]
+    LIGHT_RANDOM = [
+            COLORS.WHITE,
+            COLORS.RED,
+            COLORS.LIGHT_RED,
+            COLORS.GREEN,
+            COLORS.LIGHT_GREEN,
+            COLORS.BLUE,
+            COLORS.NONE,
+            COLORS.SAND_STORM,
+            COLORS.PSYCHEDELIC_PURPLE,
+            COLORS.RASPBERRY_PINK]
 
     lightRandomLen = len(LIGHT_RANDOM)
 
@@ -252,7 +265,7 @@ def REQ_WIRE_DISCONNECTED(master, task, game_state):
 
 
 def AC_ENABLE_WIRE_ROOMS_COLORS(master, task, game_state):
-    RED = 2000
+    RED = 0xFF0000
     setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [RED, 0, 0])
     setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, [RED, 0, 0])
 
@@ -473,7 +486,10 @@ def RADIO_ENABLE():
     if radio is None:
         print("========================Radio start!=======================")
         radio = Radio(0.5, 0.001)
-        sounds = [('harp.wav',40.0,80.0), ('island_music_x.wav',120.0,160.0), ('sounds/radioSolveKey.wav',200.0,240.0)]
+        sounds = [
+                ('harp.wav',40.0,80.0),
+                ('island_music_x.wav',120.0,160.0),
+                ('sounds/radioSolveKey.wav',200.0,240.0)]
         radio.init_sounds(sounds, 'noize.wav')
         radio.start()
     radioDisabled = False
@@ -530,7 +546,8 @@ def AC_ADD_FUSE_PUZZLE(master, task, game_state):
 
 def AC_ADD_FUSE_PUZZLE_AGAIN(master, task, game_state):
 
-    if (not game_state.task_with_id_active(TaskIdTable.FUSE_PUZZLE_AGAIN)) and (not game_state.task_with_id_active(TaskIdTable.FUSE_PUZZLE)):
+    if not game_state.task_with_id_active(TaskIdTable.FUSE_PUZZLE_AGAIN)\
+        and not game_state.task_with_id_active(TaskIdTable.FUSE_PUZZLE):
         game_state.add_active_task_with_id(TaskIdTable.FUSE_PUZZLE_AGAIN)
 
 def AC_ADD_FUSE_REMOVED(master, task, game_state):
@@ -659,7 +676,6 @@ def REQ_COMMUTATOR_PUZZLE_SOLVED(master, task, game_state):
     buttons = master.getButtons(hallwayPuzzles).get()
     commutatorSolved = buttons[ButtonsIdTable.COMMUTATOR]
     if commutatorSolved:
-    #if True:
         return True
     return False
 
@@ -745,7 +761,8 @@ def REQ_TUMBLER_PUZZLE_SOLVED(master, task, game_state):
     # checked Hidden Panel
     for index in range(ELEMENTS_NUMBER):
         if oldHiddenPanelSwitchers[index] != hiddenPanelSwitchers[index]:
-           hiddenPanelColors[index] = toggleHiddenColor(hiddenPanelColors[index])
+           hiddenPanelColors[index] = toggleHiddenColor(
+                   hiddenPanelColors[index])
 
            colorId = index + 1
            colorId = colorId % 3
@@ -843,7 +860,6 @@ def REQ_CORRECT_SEQUENCE_ENTERED(master, task, game_state):
 
         # detect lock value
         lock_value = Counter(state.read_data).most_common(1)[0][0]
-        read_data_store  = state.read_data[:]
         state.read_data = []
 
         # check lock position
@@ -1064,8 +1080,6 @@ def REQ_ENGINE_ASSEMBLED(master, task, game_state):
     # return True
     buttons = master.getButtons(hallwayPuzzles)
     engineAssembled = buttons.get()[ButtonsIdTable.ENGINE]
-    smartLeds = master.getSmartLeds(hallwayPuzzles)
-    # print("We in req_engine")
 
     if engineAssembled:
         return True
@@ -1106,35 +1120,68 @@ def REQ_CHECK_BATTERIES(master, task, game_state):
             for index in range(1,5):
                 monitorId = index
                 batteryId = index
-                sendBatteryMessage(game_state, monitorId, batterys_state[index], batteryId)
+                sendBatteryMessage(
+                        game_state,
+                        monitorId,
+                        batterys_state[index],
+                        batteryId)
     else:
 
         if engine_state_changed:
             smartLeds.setOneLed(LedsIdTable.ENGINE_RIGTH, Colors.BLUE)
             smartLeds.setOneLed(LedsIdTable.ENGINE_LEFT, Colors.RED)
             for monitorId in range(1,5):
-                sendMessageToMonitor(game_state, monitorId, MESSAGE.ENGINE_BROKEN, False)
+                sendMessageToMonitor(
+                        game_state,
+                        monitorId,
+                        MESSAGE.ENGINE_BROKEN,
+                        False)
 
-    batteryState = all( state is 1 for state in batterys_state) and engineAssembled
+    batteryState = all(
+            state is 1 for state in batterys_state) and engineAssembled
 
     return batteryState
 
 
 def sendBatteryMessage(game_state, monitorId, battery, batteryId):
     if battery:
-        sendMessageToMonitor(game_state, monitorId, MESSAGE.BATTERY_AVALIABLE.format(id=batteryId), False, True)
+        sendMessageToMonitor(
+                game_state,
+                monitorId,
+                MESSAGE.BATTERY_AVALIABLE.format(id=batteryId),
+                False,
+                True)
     else:
-        sendMessageToMonitor(game_state, monitorId, MESSAGE.BATTERY_ABSENT.format(id=batteryId), False)
+        sendMessageToMonitor(
+                game_state,
+                monitorId,
+                MESSAGE.BATTERY_ABSENT.format(id=batteryId),
+                False)
 
-def sendMessageToMonitor(game_state, monitorId, message, progress_bar_visible, not_a_task=False):
-    game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'progress_visible': progress_bar_visible, 'not_a_task': not_a_task})
+def sendMessageToMonitor(
+        game_state,
+        monitorId,
+        message,
+        progress_bar_visible,
+        not_a_task=False):
+
+    game_state.quest_room.send_ws_message(
+            str(monitorId),
+            {
+                'message': message,
+                'progress_visible': progress_bar_visible,
+                'not_a_task': not_a_task
+            })
 
 
 
 def AC_PRESS_HERABORA(master, task, game_state):
     for monitorId in range(1,5):
-        sendMessageToMonitor(game_state, monitorId, MESSAGE.PRESS_HERABORA, False)
-        # game_state.quest_room.send_ws_message(str(monitorId), {'message': MESSAGE.PRESS_HERABORA})
+        sendMessageToMonitor(
+                game_state,
+                monitorId,
+                MESSAGE.PRESS_HERABORA,
+                False)
     # added REQ_CHECK_HERABORA task and instructions
     game_state.add_active_task_with_id(201)
 
@@ -1149,7 +1196,8 @@ def AC_SHOW_GAME_INSTRUCTIONS(master, task, game_state):
 
 def AC_FINAL_GAME_MUSIC_START(master, task, game_state):
     game_state.quest_room.current_music.stop()
-    game_state.quest_room.current_music = game_state.quest_room.final_game_music
+    game_state.quest_room.current_music = game_state.\
+            quest_room.final_game_music
     game_state.quest_room.current_music.play(-1)
 
 def AC_WIN_MUSIC_START(master, task, game_state):
