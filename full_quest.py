@@ -265,49 +265,39 @@ def REQ_WIRE_DISCONNECTED(master, task, game_state):
 
 
 def AC_ENABLE_WIRE_ROOMS_COLORS(master, task, game_state):
-    RED = 0xFF0000
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [RED, 0, 0])
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, [RED, 0, 0])
+    RED = colorTo12Bit(0xFF0000)
+    DARK_RED = colorTo12Bit(0x1E0000)
+    NONE = colorTo12Bit(0x000000)
 
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, RED)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, DARK_RED)
 
+    blink_time = 0
     time.sleep(2)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0])
-    time.sleep(.2)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.NONE)
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE)
 
-    time.sleep(2)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0])
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, NONE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, NONE)
 
-    time.sleep(.2)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.NONE)
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE)
-    time.sleep(.1)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0])
-    time.sleep(.2)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.NONE)
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE)
-    time.sleep(.1)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0])
-    time.sleep(.2)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.NONE)
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE)
-    time.sleep(.1)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0])
-    time.sleep(.2)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.NONE)
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE)
-    time.sleep(.1)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0])
+    FULL_BLINK_TIME = 3
+    blink_start_time = time.time()
+    while time.time() - blink_start_time < FULL_BLINK_TIME:
+
+        blink_time = random.uniform(0.08, 0.3)
+        time.sleep(blink_time)
+        setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, RED)
+        setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, DARK_RED)
+
+        blink_time = random.uniform(0.08, 0.3)
+        time.sleep(blink_time)
+        setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, NONE)
+        setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, NONE)
+
+
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, NONE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, NONE)
     time.sleep(2)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0])
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, RED)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, DARK_RED)
 
 
 def AC_ENABLE_WIRE_ROOMS_LIGHT(master, task, game_state):
@@ -315,6 +305,7 @@ def AC_ENABLE_WIRE_ROOMS_LIGHT(master, task, game_state):
     setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.RED)
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.FUSE, Colors.RED)
+
 
 def AC_DISABLE_WIRE_ROOMS_COLORS(master, task, game_state):
 
@@ -332,11 +323,16 @@ def AC_ENABLE_FUSE_ROOMS_COLORS(master, task, game_state):
     if not wiredConnection:
         return
     time.sleep(2)
-    VIOLENT = [232 * 10, 100 *10, 255 * 10]
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, [2000, 2000, 2000])
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, VIOLENT)
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [2000, 2000, 2000])
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, VIOLENT)
+
+    BLUE = colorTo12Bit(0x0000FF)
+    BLUE_DARK = colorTo12Bit(0x00047A)
+    VIOLENT_DARK = colorTo12Bit(0x0F000F)
+    VIOLENT = colorTo12Bit(0xB900FF)
+
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, BLUE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, BLUE_DARK)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, VIOLENT_DARK)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, VIOLENT)
 
 
 
