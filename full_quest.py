@@ -989,6 +989,33 @@ def REQ_MECHANICS_CARD_USED(master, task, game_state):
     return False
 
 
+def AC_ENABLE_MECHANICS_CARD_USED_COLORS(master, task, game_state):
+    LIME = colorTo12Bit(0x00FF00)
+    NONE = colorTo12Bit(0x00)
+
+    print("Enable mechanics card COLORS")
+    FULL_BLINK_TIME = 1
+    blink_start_time = time.time()
+    while time.time() - blink_start_time < FULL_BLINK_TIME:
+
+        blink_time = random.uniform(0.08, 0.3)
+        time.sleep(blink_time)
+        print("Blink LIME")
+        setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, LIME)
+        setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, LIME)
+
+        blink_time = random.uniform(0.08, 0.3)
+        time.sleep(blink_time)
+        print("Blink NONE")
+        setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, NONE)
+        setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, NONE)
+
+    TYRIAN_PURPLE = colorTo12Bit(0x0F000F)
+    ELECTRIC_PURPLE = colorTo12Bit(0xB900FF)
+
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, TYRIAN_PURPLE)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, ELECTRIC_PURPLE)
+
 def AC_ENABLE_TUMBLER_PUZZLE(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles).get()
     ledIdStartPosition = 31

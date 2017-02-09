@@ -97,7 +97,7 @@
       success_requirements:
         [REQ_MECHANICS_CARD_USED]
       success_actions:
-        [AC_ENABLE_TUMBLER_PUZZLE, AC_ADD_TUMBLER_PUZZLE]
+        [AC_ENABLE_MECHANICS_CARD_USED_COLORS, AC_ENABLE_TUMBLER_PUZZLE, AC_ADD_TUMBLER_PUZZLE]
       failure_requirements:
         []
       failure_actions:
