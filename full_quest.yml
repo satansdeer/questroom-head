@@ -120,7 +120,7 @@
       success_requirements:
         [REQ_COMMUTATOR_PUZZLE_SOLVED]
       success_actions:
-        [AC_OPEN_FOURTH_BOX]
+        [AC_OPEN_FOURTH_BOX, AC_COMMUTATOR_PUZZLE_SOLVED_ROOM_LIGHT]
       failure_requirements:
         []
       failure_actions:

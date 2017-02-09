@@ -674,6 +674,15 @@ def AC_OPEN_FOURTH_BOX(master, task, game_state):
     beep.set_volume(0.3)
     beep.play()
 
+def AC_COMMUTATOR_PUZZLE_SOLVED_ROOM_LIGHT(master, task, game_state):
+    LIME = colorTo12Bit(0x00FF00)
+    HOLLYWOOD_CERISE = colorTo12Bit(0xFF0090)
+    TYRIAN_PURPLE = colorTo12Bit(0x230000)
+
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, LIME)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, LIME)
+    setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, HOLLYWOOD_CERISE)
+    setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, TYRIAN_PURPLE)
 
 def REQ_COMMUTATOR_PUZZLE_SOLVED(master, task, game_state):
     # return True
