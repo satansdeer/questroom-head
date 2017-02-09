@@ -394,12 +394,15 @@ def AC_ENABLE_ROBOT_HEAD_ROOMS_COLORS(master, task, game_state):
 
 
 def AC_ENABLE_ENGINE_ROOMS_COLORS(master, task, game_state):
-    WHITE = [ 3500, 3500, 3500 ]
+    GREEN = colorTo12Bit(0x00FF00)
+    HOLLYWOOD_CERISE = colorTo12Bit(0xFF0090)
 
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, WHITE)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, WHITE)
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, WHITE)
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, WHITE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, GREEN)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, GREEN)
+    setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, GREEN)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, GREEN)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, GREEN)
+    setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, HOLLYWOOD_CERISE)
 
 def AC_ENABLE_FUSE_PUZZLE(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
