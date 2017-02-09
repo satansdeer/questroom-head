@@ -85,8 +85,17 @@
        <div class='current-tasks' id='current_tasks'></div>
        <hr/>
 
-       <input type="text" id="skip_task_input" placeholder="Номер задачи: ####" pattern="[0-9]{,4}" title="Номер задачи - только цифры">
-       <button id="skip_task_button" onClick='toggle_skip_task(event)'>Пропустить задачу</button></td>
+       <form>
+         <input
+           type="text"
+           id="skip_task_input"
+           placeholder="Номер задачи: ####"
+           pattern="[0-9]{,4}"
+           title="Номер задачи - только цифры"
+           autofocus
+         >
+         <button id="skip_task_button"  type="submit" onClick='toggle_skip_task(event)'>Пропустить задачу</button>
+       </form>
 
        <table>
          <th>Управление дверями</th>

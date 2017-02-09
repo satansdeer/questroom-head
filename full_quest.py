@@ -504,12 +504,10 @@ def RADIO_ENABLE():
 def REQ_RADIO_BROADCAST(master, task, game_state):
     global radioDisabled
     global radio
-    # import pudb; pudb.set_trace()  # XXX BREAKPOINT
     if radioDisabled:
         radio.set_target_value(0)
         return
     radioValue = master.getAdc(hallwayPuzzles).get()[AdcIdTable.RADIO]
-    #print("Radio value: {}".format(radioValue))
     if radio:
         radio.set_target_value(radioValue)
 
@@ -1262,12 +1260,15 @@ def REQ_CHECK_HERABORA(master, task, game_state):
 def AC_HERABORA_PRESSED_ROOM_LIGHT(master, task, game_state):
     DARK_GREEN = colorTo12Bit(0x001900)
     NONE = colorTo12Bit(0x00)
+    BLUE = colorTo12Bit(0x0000FF)
 
     setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, NONE)
     setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, DARK_GREEN)
     setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, NONE)
     setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, DARK_GREEN)
     setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, NONE)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, NONE)
+    setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, BLUE)
 
 def AC_CB_ADD_RANDOM_TASK(master, task, game_state):
     pass
@@ -1316,6 +1317,12 @@ def AC_RANDOM_ROOM_LIGHT(master, task, game_state):
     setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, COLORS.WHITE)
     setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, COLORS.WHITE)
     setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, COLORS.WHITE)
+
+def AC_FINAL_MESSAGE(master, task, game_state):
+    cb_controller = game_state.cb_controller
+    cb_controller.remove_random_tasks()
+    cb_controller.show_on_all_monitors(
+            cb_controller.GAME_MESSAGES.FINAL_MESSAGE)
 
 def REQ_AMOUNT_OF_TASK_FAILURE(master, task, game_state):
     if 0 == game_state.cb_controller.current_lives_num:

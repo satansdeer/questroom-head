@@ -101,7 +101,6 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
         if "set_room_light" == message['message']:
             room_led = message['room_led_id']
-            import pudb; pudb.set_trace() # XXX BREAKPOINT
             rgb_color_str = message['color']
             rgb_color = [
                 int(char_h + char_l, 16)

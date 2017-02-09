@@ -248,7 +248,7 @@
       success_requirements:
         [REQ_CAPTAINS_BRIDGE_GAME_SUCCESS]
       success_actions:
-        [AC_ENTERED_DOOR_OPEN, AC_WIN_MUSIC_START, AC_RANDOM_ROOM_LIGHT]
+        [AC_FINAL_MESSAGE, AC_ENTERED_DOOR_OPEN, AC_WIN_MUSIC_START, AC_RANDOM_ROOM_LIGHT]
         # [AC_ENTERED_DOOR_OPEN, AC_WIN_MUSIC_START]
       failure_requirements:
         [REQ_AMOUNT_OF_TASK_FAILURE]

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import time
+from full_quest import ROOM_LEDS, setRoomLight
+from utils import colorTo12Bit
 
 class CaptainsBridgeController:
     NUM_LEVELS = 5
@@ -22,6 +24,13 @@ class CaptainsBridgeController:
         LEVEL_4 = "Стабилизация искуственного интеллекта"
         LEVEL_5 = "Активация автопилота"
 
+    class LEVEL_CB_ROOM_COLORS:
+        LEVEL_1 = colorTo12Bit(0x004AC9)
+        LEVEL_2 = colorTo12Bit(0x003520)
+        LEVEL_3 = colorTo12Bit(0x006100)
+        LEVEL_4 = colorTo12Bit(0xFF0090)
+        LEVEL_5 = colorTo12Bit(0x700000)
+
     class GAME_MESSAGES:
         DOTS = "..."
         SYSTEM_INIT = "...инициализация системы..."
@@ -29,14 +38,19 @@ class CaptainsBridgeController:
         RUNNING_APP = "...запуск программы..."
         LOGO = "Gen-Ca Inc\nпредставляет"
         PRODUCT_NAME = "Общевидовой пилот без хлопот. v0.78"
-        PROG_OPTIMIZATION = "Программа оптимизирует управление судном под ваш(человек) вид"
+        PROG_OPTIMIZATION = "Программа оптимизирует управление судном под "\
+        "ваш(человек) вид"
         GREETINGS = "Привет человеки."
-        INSTRUCTIONS = "Управление настроено под (человеки) интеллектуальные способности."
-        INSTRUCTIONS_2 = "Чтобы восстановить автопилот - просто нажимайте на кнопки, которые видите на экране"
+        INSTRUCTIONS = "Управление настроено под (человеки) интеллектуальные "\
+        "способности."
+        INSTRUCTIONS_2 = "Чтобы восстановить автопилот - просто нажимайте на "\
+        "кнопки, которые видите на экране"
         PRESS_BUTTON = "Когда будете готовы - жмите H.E.R.A.B.O.R.A"
 
 
-        FINAL_MESSAGE = "Поздравляю, вы активировали автопилот. Возвращайтесь в криокамеру.\nДля поднятия боевого духа играет бодрящая музыка"
+        FINAL_MESSAGE = "Поздравляю, вы активировали автопилот. "\
+                "Возвращайтесь в криокамеру.\nДля поднятия боевого "\
+                "духа играет бодрящая музыка"
 
     def __init__(self, game_state):
         self.game_state = game_state
@@ -57,7 +71,8 @@ class CaptainsBridgeController:
 
     def progress_bar_read_state(self):
         current_time = time.time()
-        if (current_time - self.progress_bar_read_time_start) > self.progress_bar_delay:
+        if (current_time - self.progress_bar_read_time_start)\
+                > self.progress_bar_delay:
             return True
         return False
 
@@ -68,7 +83,33 @@ class CaptainsBridgeController:
         if task.type == 'CB_TASK':
             self.completed_tasks_num = self.completed_tasks_num + 1
             self.showOkMessage(task)
-            monitorId = self.game_state.getMonitorIdByTask(task)
+
+
+    def fail_stage_room_colors(self):
+        if not self.game_state:
+            return
+        if not self.game_state.device_master:
+            return
+
+        master = self.game_state.device_master
+
+        MAROON = colorTo12Bit(0x400000)
+        NONE = colorTo12Bit(0x000000)
+
+        print("Fail stage color off")
+        blink_time = 0.1
+        setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE,
+                NONE)
+        time.sleep(blink_time)
+        print("Fail stage color ON")
+        setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE,
+                MAROON)
+        time.sleep(blink_time)
+        print("Fail stage color OFF")
+        setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE,
+                NONE)
+
+        self.set_room_level_light()
 
     def task_failure(self, task):
         if unicode(task.type) == u'CB_TASK':
@@ -79,19 +120,50 @@ class CaptainsBridgeController:
             self.progressBarReset()
             self.game_state.monitorsWithProgressBarZero = []
 
+            self.fail_stage_room_colors()
+
             self.remove_random_tasks()
 
             self.add_random_tasks()
 
 
     def remove_random_tasks(self):
-        active_cb_task_list = [atask for atask in self.game_state.active_tasks if unicode(atask.type) == u'CB_TASK']
+        active_cb_task_list = [atask for atask in self.game_state.active_tasks\
+                if unicode(atask.type) == u'CB_TASK']
         for someActiveTask in active_cb_task_list:
             self.game_state.remove_active_task(someActiveTask)
 
     def add_random_tasks(self):
         for index in range(4):
             self.game_state.add_cb_random_task()
+
+    def set_room_level_light(self):
+        if not self.game_state:
+            return
+        if not self.game_state.device_master:
+            return
+
+        master = self.game_state.device_master
+        level = self.current_level
+        print("Set room level light: level {}".format(level))
+        if level == 1:
+            setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE,
+                    self.LEVEL_CB_ROOM_COLORS.LEVEL_1)
+        elif level == 2:
+            setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE,
+                    self.LEVEL_CB_ROOM_COLORS.LEVEL_2)
+        elif level == 3:
+            setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE,
+                    self.LEVEL_CB_ROOM_COLORS.LEVEL_3)
+        elif level == 4:
+            setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE,
+                    self.LEVEL_CB_ROOM_COLORS.LEVEL_4)
+        elif level == 5:
+            setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE,
+                    self.LEVEL_CB_ROOM_COLORS.LEVEL_5)
+        else:
+            setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE,
+                    self.LEVEL_CB_ROOM_COLORS.LEVEL_1)
 
     def check(self):
         # Begin
@@ -100,6 +172,7 @@ class CaptainsBridgeController:
             # self.show_initialization_messages()
             self.current_level = 1
             self.current_stage = 1
+            self.set_room_level_light()
             self.showLevelMessage()
             time.sleep(self.LEVEL_DELAY)
 
@@ -128,6 +201,9 @@ class CaptainsBridgeController:
             self.showLevelMessage()
             time.sleep(self.LEVEL_DELAY)
 
+        if level_up:
+            self.set_room_level_light()
+
         # add tasks
         if stage_up or level_up:
             self.add_random_tasks()
@@ -137,16 +213,30 @@ class CaptainsBridgeController:
     def progressBarReset(self):
         message = ""
         for monitorId in range(1,5):
-            self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'level': self.current_level, 'stage': self.current_stage, 'progress_visible': False})
+            self.game_state.quest_room.send_ws_message(
+                    str(monitorId), {'message': message,\
+                            'level': self.current_level,\
+                            'stage': self.current_stage,\
+                            'progress_visible': False})
 
     def showOkMessage(self, task):
         monitorId = self.game_state.getMonitorIdByTask(task)
         message = "OK"
-        self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'level': self.current_level, 'stage': self.current_stage, 'progress_visible': False, 'not_a_task': True})
+        self.game_state.quest_room.send_ws_message(
+                str(monitorId), {'message': message,\
+                        'level': self.current_level,\
+                        'stage': self.current_stage,\
+                        'progress_visible': False,\
+                        'not_a_task': True})
 
     def show_on_all_monitors(self, message):
         for monitorId in range(1,5):
-            self.game_state.quest_room.send_ws_message(str(monitorId), {'message': message, 'level': self.current_level, 'stage': self.current_stage, 'progress_visible': False, 'not_a_task': True})
+            self.game_state.quest_room.send_ws_message(
+                    str(monitorId), {'message': message,\
+                            'level': self.current_level,\
+                            'stage': self.current_stage,\
+                            'progress_visible': False,\
+                            'not_a_task': True})
 
     def showLevelMessage(self):
         if self.current_level == 1:
@@ -203,9 +293,3 @@ class CaptainsBridgeController:
         self.show_on_all_monitors(self.GAME_MESSAGES.DOTS)
         time.sleep(1)
         self.show_on_all_monitors(self.GAME_MESSAGES.PRESS_BUTTON)
-
-
-        pass
-
-
-
