@@ -1259,6 +1259,16 @@ def REQ_CHECK_HERABORA(master, task, game_state):
         #print("Herabora value: {}\n", heraboraPressed)
         return heraboraPressed
 
+def AC_HERABORA_PRESSED_ROOM_LIGHT(master, task, game_state):
+    DARK_GREEN = colorTo12Bit(0x001900)
+    NONE = colorTo12Bit(0x00)
+
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, NONE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, DARK_GREEN)
+    setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, NONE)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, DARK_GREEN)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, NONE)
+
 def AC_CB_ADD_RANDOM_TASK(master, task, game_state):
     pass
     # monitorId = game_state.getMonitorIdByTask(task)

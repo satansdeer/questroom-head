@@ -223,7 +223,7 @@
       success_requirements:
         [REQ_CHECK_HERABORA]
       success_actions:
-        [AC_SHOW_GAME_INSTRUCTIONS]
+        [AC_HERABORA_PRESSED_ROOM_LIGHT, AC_SHOW_GAME_INSTRUCTIONS]
       failure_requirements:
         []
       failure_actions:
