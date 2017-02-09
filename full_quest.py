@@ -989,24 +989,21 @@ def REQ_MECHANICS_CARD_USED(master, task, game_state):
     return False
 
 
-def AC_ENABLE_MECHANICS_CARD_USED_COLORS(master, task, game_state):
+def AC_ENABLE_MECHANICS_CARD_USED_ROOM_LIGTH(master, task, game_state):
     LIME = colorTo12Bit(0x00FF00)
     NONE = colorTo12Bit(0x00)
 
-    print("Enable mechanics card COLORS")
     FULL_BLINK_TIME = 1
     blink_start_time = time.time()
     while time.time() - blink_start_time < FULL_BLINK_TIME:
 
         blink_time = random.uniform(0.08, 0.3)
         time.sleep(blink_time)
-        print("Blink LIME")
         setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, LIME)
         setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, LIME)
 
         blink_time = random.uniform(0.08, 0.3)
         time.sleep(blink_time)
-        print("Blink NONE")
         setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, NONE)
         setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, NONE)
 
@@ -1024,6 +1021,15 @@ def AC_ENABLE_TUMBLER_PUZZLE(master, task, game_state):
         setLedValue(smartLeds, ledID, Colors.RED)
         setLedValue(smartLeds, index, Colors.RED)
     master.setSmartLeds(hallwayPuzzles, smartLeds)
+
+def AC_ENABLE_TUMBLER_PUZZLE_ROOM_LIGHT(master, task, game_state):
+    # Need to add Engine blink
+    DARK_GREEN = colorTo12Bit(0x001400)
+    LIME = colorTo12Bit(0x00FF00)
+
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, DARK_GREEN)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, LIME)
+
 
 def AC_ENABLE_TUMBLER_PUZZLE_LIGHT_WIN(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles).get()
