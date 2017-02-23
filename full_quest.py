@@ -213,22 +213,21 @@ def setLedValue(leds, id, color):
 
 def REQ_QUEST_INIT(master, task, game_state):
 
+    # Set all rgb leds to None
+    master.setSmartLeds(hallwayPuzzles, COLORS.NONE * 32)
 
-    # close boxes
+    # Init boxes
+    # Set box leds color
     smartLeds = master.getSmartLeds(hallwayPuzzles)
-    smartLeds.setOneLed(LedsIdTable.BOX_1, Colors.RED)
-    smartLeds.setOneLed(LedsIdTable.BOX_2, Colors.RED)
-    smartLeds.setOneLed(LedsIdTable.BOX_3, Colors.RED)
-    smartLeds.setOneLed(LedsIdTable.BOX_4, Colors.RED)
+    smartLeds.setOneLed(LedsIdTable.BOX_1, COLORS.RED)
+    smartLeds.setOneLed(LedsIdTable.BOX_2, COLORS.RED)
+    smartLeds.setOneLed(LedsIdTable.BOX_3, COLORS.RED)
+    smartLeds.setOneLed(LedsIdTable.BOX_4, COLORS.RED)
+    # close boxes
     master.setRelays(hallwayPuzzles, [1,1,1,1])
 
     # close doors
-    # master.setRelays(CB_SLAVE_2, [0,0,0,0])
     master.setRelays(CB_SLAVE_2, [1,1,1,1])
-
-
-    master.setSmartLeds(hallwayPuzzles, [0,0,0]*32)
-    # game_state.quest_room.current_music.play(-1)
 
     AC_ENABLE_INIT_LIGHTS(master, task, game_state)
     return True
