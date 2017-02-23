@@ -144,6 +144,8 @@ class COLORS:
     PSYCHEDELIC_PURPLE = colorTo12Bit(BASIC_COLORS.PSYCHEDELIC_PURPLE)
     RASPBERRY_PINK = colorTo12Bit(BASIC_COLORS.RASPBERRY_PINK)
 
+    START_ENTRANCE_BOTTOM = colorTo12Bit(0x230000)
+
 class ROOM_LEDS:
     # hallwayPuzzles
     ENTRANCE_TOP = 6
@@ -234,12 +236,13 @@ def REQ_QUEST_INIT(master, task, game_state):
 
 def AC_ENABLE_INIT_LIGHTS(master, task, game_state):
     # Init Lights
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE)
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [150, 0, 0])
-    setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, Colors.NONE)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.NONE)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, Colors.NONE)
-    setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, Colors.NONE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, COLORS.NONE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM,
+            COLORS.START_ENTRANCE_BOTTOM)
+    setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, COLORS.NONE)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, COLORS.NONE)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, COLORS.NONE)
+    setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, COLORS.NONE)
 
 def REQ_WIRE_CONNECTED(master, task, game_state):
     wiredConnection = master.getButtons(hallwayPuzzles).get()[
@@ -308,12 +311,12 @@ def AC_ENABLE_WIRE_ROOMS_LIGHT(master, task, game_state):
 
 def AC_DISABLE_WIRE_ROOMS_COLORS(master, task, game_state):
 
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, Colors.NONE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, COLORS.NONE)
     setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [150, 0, 0])
-    # setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, Colors.NONE)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, Colors.NONE)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, Colors.NONE)
-    # setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, Colors.NONE)
+    # setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, COLORS.NONE)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, COLORS.NONE)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, COLORS.NONE)
+    # setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, COLORS.NONE)
 
 def AC_ENABLE_FUSE_ROOMS_COLORS(master, task, game_state):
 
