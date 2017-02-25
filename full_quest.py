@@ -146,6 +146,12 @@ class COLORS:
 
     START_ENTRANCE_BOTTOM = colorTo12Bit(0x230000)
 
+    FUSE_ENABLED_ENTRANCE_TOP = colorTo12Bit(0x0000FF)
+    FUSE_ENABLED_ENTRANCE_BOTTOM = colorTo12Bit(0x0000FF)
+    FUSE_ENABLED_MAIN_TOP = colorTo12Bit(0x2B002B)
+    FUSE_ENABLED_MAIN_BOTTOM = colorTo12Bit(0xFF00FF)
+
+
     MECHANIC_CARD_USED_ENTRANCE_TOP = colorTo12Bit(0x007000)
     MECHANIC_CARD_USED_ENTRANCE_BOTTOM = colorTo12Bit(0x00FF00)
     MECHANIC_CARD_USED_MAIN_ROOM_TOP = colorTo12Bit(0xFF00FF)
@@ -326,12 +332,8 @@ def AC_ENABLE_WIRE_ROOMS_LIGHT(master, task, game_state):
 
 def AC_DISABLE_WIRE_ROOMS_COLORS(master, task, game_state):
 
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, COLORS.NONE)
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [150, 0, 0])
-    # setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, COLORS.NONE)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, COLORS.NONE)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, COLORS.NONE)
-    # setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, COLORS.NONE)
+    AC_ENABLE_INIT_LIGHTS(master, task, game_state)
+
 
 def AC_ENABLE_FUSE_ROOMS_COLORS(master, task, game_state):
 
@@ -341,25 +343,17 @@ def AC_ENABLE_FUSE_ROOMS_COLORS(master, task, game_state):
         return
     time.sleep(2)
 
-    BLUE = colorTo12Bit(0x0000FF)
-    BLUE_DARK = colorTo12Bit(0x00047A)
-    VIOLENT_DARK = colorTo12Bit(0x0F000F)
-    VIOLENT = colorTo12Bit(0xB900FF)
-
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, BLUE)
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, BLUE_DARK)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, VIOLENT_DARK)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, VIOLENT)
-
-
+    AC_ENABLE_FUSE_ROOMS_LIGHT(master, task, game_state)
 
 def AC_ENABLE_FUSE_ROOMS_LIGHT(master, task, game_state):
-    """ only light """
-    VIOLENT = [232 * 10, 100 *10, 255 * 10]
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, [2000, 2000, 2000])
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, VIOLENT)
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [2000, 2000, 2000])
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, VIOLENT)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP,
+            COLORS.FUSE_ENABLED_ENTRANCE_TOP)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM,
+            COLORS.FUSE_ENABLED_ENTRANCE_BOTTOM)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP,
+            COLORS.FUSE_ENABLED_MAIN_TOP)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM,
+            COLORS.FUSE_ENABLED_MAIN_BOTTOM)
 
     smartLeds = master.getSmartLeds(hallwayPuzzles)
     smartLeds.setOneLed(LedsIdTable.FUSE, Colors.GREEN)
@@ -370,12 +364,9 @@ def AC_DISABLE_FUSE_ROOMS_COLORS(master, task, game_state):
     if not wiredConnection:
         return
 
-    RED = 2000
     time.sleep(1)
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, [RED, 0, 0])
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, [RED, 0, 0])
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, [RED, 0, 0])
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, [RED, 0, 0])
+
+    AC_ENABLE_WIRE_ROOMS_LIGHT(master, task, game_state)
 
 def AC_ENABLE_ALL_LIGHT(master, task, game_state):
     setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, COLORS.WHITE)
