@@ -151,6 +151,13 @@ class COLORS:
     MECHANIC_CARD_USED_MAIN_ROOM_TOP = colorTo12Bit(0xFF00FF)
     MECHANIC_CARD_USED_MAIN_ROOM_BOTTOM = colorTo12Bit(0xFF00FF)
 
+    HERABORA_PRESSED_ENTRANCE_TOP = colorTo12Bit(0x002000)
+    HERABORA_PRESSED_ENTRANCE_BOTTOM = colorTo12Bit(0x002000)
+    HERABORA_PRESSED_MAIN_TOP = colorTo12Bit(0x002000)
+    HERABORA_PRESSED_MAIN_BOTTOM = colorTo12Bit(0x002000)
+    HERABORA_PRESSED_ENGINE_ROOM = colorTo12Bit(0x000000)
+    HERABORA_PRESSED_CAPTAINS_BRIDGE = colorTo12Bit(0x0000FF)
+
 class ROOM_LEDS:
     # hallwayPuzzles
     ENTRANCE_TOP = 6
@@ -1035,9 +1042,6 @@ def AC_ENABLE_MECHANICS_CARD_USED_ROOM_LIGTH(master, task, game_state):
         setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, NONE)
         setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, NONE)
 
-    TYRIAN_PURPLE = colorTo12Bit(0x0F000F)
-    ELECTRIC_PURPLE = colorTo12Bit(0xB900FF)
-
     setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP,
             COLORS.MECHANIC_CARD_USED_ENTRANCE_TOP)
     setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM,
@@ -1274,17 +1278,18 @@ def REQ_CHECK_HERABORA(master, task, game_state):
         return heraboraPressed
 
 def AC_HERABORA_PRESSED_ROOM_LIGHT(master, task, game_state):
-    DARK_GREEN = colorTo12Bit(0x001900)
-    NONE = colorTo12Bit(0x00)
-    BLUE = colorTo12Bit(0x0000FF)
-
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP, NONE)
-    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM, DARK_GREEN)
-    setRoomLight(master, ROOM_LEDS.ENGINE_ROOM, NONE)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP, DARK_GREEN)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, NONE)
-    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM, NONE)
-    setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE, BLUE)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_TOP,
+            COLORS.HERABORA_PRESSED_ENTRANCE_TOP)
+    setRoomLight(master, ROOM_LEDS.ENTRANCE_BOTTOM,
+            COLORS.HERABORA_PRESSED_ENTRANCE_BOTTOM)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_TOP,
+            COLORS.HERABORA_PRESSED_MAIN_TOP)
+    setRoomLight(master, ROOM_LEDS.MAIN_ROOM_BOTTOM,
+            COLORS.HERABORA_PRESSED_MAIN_BOTTOM)
+    setRoomLight(master, ROOM_LEDS.ENGINE_ROOM,
+            COLORS.HERABORA_PRESSED_ENGINE_ROOM)
+    setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE,
+            COLORS.HERABORA_PRESSED_CAPTAINS_BRIDGE)
 
 def AC_CB_ADD_RANDOM_TASK(master, task, game_state):
     pass

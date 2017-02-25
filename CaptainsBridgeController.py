@@ -96,8 +96,10 @@ class CaptainsBridgeController:
         MAROON = colorTo12Bit(0x400000)
         NONE = colorTo12Bit(0x000000)
 
+        blink_time = 0.4
+        dark_time = 1.5
+
         print("Fail stage color off")
-        blink_time = 0.1
         setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE,
                 NONE)
         time.sleep(blink_time)
@@ -109,6 +111,9 @@ class CaptainsBridgeController:
         setRoomLight(master, ROOM_LEDS.CAPTAINTS_BRIDGE,
                 NONE)
 
+        time.sleep(dark_time)
+
+        print("Fail stage color NORMAL")
         self.set_room_level_light()
 
     def task_failure(self, task):
