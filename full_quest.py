@@ -83,7 +83,7 @@ class LedsIdTable:
 class SOUNDS:
     BOX_OPEN = 'coin.wav'
     ROBOT_SAY_RIDDLE_FIRST_TIME = 'full_robot.wav'
-    ROBOT_SAY_RIDDLE_SECOND_TIME = 'robot_second_time.wav'
+    ROBOT_SAY_RIDDLE_SECOND_TIME = 'sounds/robot_second_time.wav'
 
 class ButtonsIdTable:
 #=====SPB=====
@@ -1011,15 +1011,25 @@ def REQ_ROBOT_ASSEMBLED(master, task, game_state):
         smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_LEFT, Colors.GREEN)
         smartLeds.setOneLed(LedsIdTable.ROBOT_BODY_RIGHT, Colors.RED)
         smartLeds.setOneLed(LedsIdTable.ROBOT_HEAD, Colors.WHITE)
+
         return True
     return False
 
+robotWasAssembled = False
+robot_say_riddle_sound = None
 def REQ_ROBOT_DISASSEMBLED(master, task, game_state):
     buttons = master.getButtons(hallwayPuzzles)
     robotAssembled = buttons.get()[ButtonsIdTable.ROBOT_HEAD]
-    return not robotAssembled
 
-robotWasAssembled = False
+    robotNotAssembled = not robotAssembled
+
+    global robot_say_riddle_sound
+    if robot_say_riddle_sound is not None and robotNotAssembled:
+        robot_say_riddle_sound.stop()
+        robot_say_riddle_sound = None
+
+    return robotNotAssembled
+
 def AC_ROBOT_SAY_RIDDLE(master, task, game_state):
     smartLeds = master.getSmartLeds(hallwayPuzzles)
 
@@ -1028,18 +1038,21 @@ def AC_ROBOT_SAY_RIDDLE(master, task, game_state):
 
     smartLeds.setOneLed(LedsIdTable.ROBOT_HEAD, [0xff, 0xff, 0xff])
 
+
     # play robot
     global robotWasAssembled
+    global robot_say_riddle_sound
     if not robotWasAssembled:
-        robotWasAssembled = True
-        game_state.quest_room.play_robot(SOUNDS.ROBOT_SAY_RIDDLE_FIRST_TIME)
+        robot_say_riddle_sound = pygame.mixer.Sound(
+                SOUNDS.ROBOT_SAY_RIDDLE_FIRST_TIME)
     else:
-        game_state.quest_room.play_robot(SOUNDS.ROBOT_SAY_RIDDLE_SECOND_TIME)
+        robot_say_riddle_sound = pygame.mixer.Sound(
+                SOUNDS.ROBOT_SAY_RIDDLE_SECOND_TIME)
 
+    robot_say_riddle_sound.play()
+
+    robotWasAssembled = True
     print("Robot say RIDDLE!")
-
-
-
 
 def AC_ACTIVATE_CAPTAIN_BRIDGE(master, state):
     print("Captain bridge activated")
