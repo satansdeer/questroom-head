@@ -154,14 +154,16 @@ class CB_CTRL:
     DOOR_ENTER = 0
     DOOR_ENGINE = 1
     DOOR_CAPTAIN = 2
+    MAGMA_SPHIRE = 3
 
 class Colors:
     WHITE = [0xfff, 0xfff, 0xfff]
     RED = [0xfff, 0x0, 0x0]
-    LIGHT_RED = [0xff, 0x33, 0x33]
-    GREEN = [0x0, 0xffF, 0x0]
-    LIGHT_GREEN = [0x33, 0xff, 0x33]
-    BLUE = [0x0, 0x0, 0xff]
+    LIGHT_RED = [0xfff, 0x33, 0x33]
+    RED_LIGHT_BLUE = [0xfff, 0x0, 0x3E8]
+    GREEN = [0x0, 0xfff, 0x0]
+    LIGHT_GREEN = [0x33, 0xfff, 0x33]
+    BLUE = [0x0, 0x0, 0xfff]
     NONE = [0x0, 0x0, 0x0]
 
 class BASIC_COLORS:
@@ -246,7 +248,7 @@ def REQ_QUEST_INIT(master, task, game_state):
 
     # close doors
     # master.setRelays(CB_SLAVE_2, [0,0,0,0])
-    master.setRelays(CB_SLAVE_2, [1,1,1,1])
+    master.setRelays(CB_SLAVE_2, [0,0,0,0])
 
 
     master.setSmartLeds(hallwayPuzzles, [0,0,0]*32)
@@ -1148,11 +1150,16 @@ def REQ_CHECK_BATTERIES(master, task, game_state):
     if engine_state_changed:
         engine_saved_state = engineAssembled
 
+    # Двигатель
     if engineAssembled:
 
         if engine_state_changed:
-            smartLeds.setOneLed(LedsIdTable.ENGINE_RIGTH, Colors.GREEN)
+            smartLeds.setOneLed(LedsIdTable.ENGINE_RIGTH, Colors.RED_LIGHT_BLUE)
             smartLeds.setOneLed(LedsIdTable.ENGINE_LEFT, Colors.GREEN)
+            # Включаем шар
+            relays = master.getRelays(CB_SLAVE_2).get()
+            relays[CB_CTRL.MAGMA_SPHIRE] = 1
+            master.setRelays(CB_SLAVE_2, relays)
 
         if batterys_state_changed or engine_state_changed:
             for index in range(1,5):
@@ -1162,8 +1169,12 @@ def REQ_CHECK_BATTERIES(master, task, game_state):
     else:
 
         if engine_state_changed:
-            smartLeds.setOneLed(LedsIdTable.ENGINE_RIGTH, Colors.BLUE)
+            smartLeds.setOneLed(LedsIdTable.ENGINE_RIGTH, Colors.RED_LIGHT_BLUE)
             smartLeds.setOneLed(LedsIdTable.ENGINE_LEFT, Colors.RED)
+            # Выключаем шар
+            relays = master.getRelays(CB_SLAVE_2).get()
+            relays[CB_CTRL.MAGMA_SPHIRE] = 0
+            master.setRelays(CB_SLAVE_2, relays)
             for monitorId in range(1,5):
                 sendMessageToMonitor(game_state, monitorId, MESSAGE.ENGINE_BROKEN, False)
 
