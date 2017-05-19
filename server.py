@@ -8,6 +8,7 @@ from GameState import GameState
 from time import sleep
 from SoundManager import SoundManager
 from QuestRoom import QuestRoom
+import pygame
 
 import platform
 if platform.system() == 'Windows':
@@ -78,7 +79,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             quest_room.progress_bar_zero(message['id'])
         if "play_sound" == message['message']:
             sound_id = message['sound']
-            sound_manager.play_sound(sound_id)
+            pygame.mixer.Sound(sound_id).play()
         if "door" == message['message']:
             door_id = int(message['door_id'])
             door_state = message['state']
