@@ -1,0 +1,27 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "mendrew",
+      "name": "Andrey Medvedev",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5443359?v=4",
+      "profile": "https://github.com/mendrew",
+      "contributions": [
+        "maintenance",
+        "projectManagement",
+        "bug",
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "questroom-head",
+  "projectOwner": "satansdeer",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
